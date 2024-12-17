@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.sound.midi.*;
 import java.util.HashMap;
 
-public class test1 implements ChangeListener, KeyListener {
+public class Piano implements ChangeListener, KeyListener {
     Synthesizer synth;
     MidiChannel[] mChannels;
     int keypress;
@@ -20,7 +20,7 @@ public class test1 implements ChangeListener, KeyListener {
     JButton[] b = new JButton[6]; // 5 black keys
     boolean isPlaying = false; // To track which notes are currently being played
 
-    public test1() {
+    public Piano() {
         // Initialize MIDI synthesizer
         try {
             synth = MidiSystem.getSynthesizer();
@@ -150,6 +150,6 @@ public class test1 implements ChangeListener, KeyListener {
     }
 
     public static void main(String[] args) {
-        new test1();
+        new Piano();
     }
 }
