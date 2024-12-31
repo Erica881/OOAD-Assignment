@@ -6,7 +6,7 @@ public class Biz extends Piece {
     }
     
     public Biz(String colorTurn) {
-        super("Biz", "Red"); // Hardcoded color "Gold" for the Tor piece
+        super("Biz", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }
         
     @Override
@@ -16,6 +16,6 @@ public class Biz extends Piece {
         
     @Override
     public String getColor() {
-        return "Gold";
+        return super.getColor();
     }
 }

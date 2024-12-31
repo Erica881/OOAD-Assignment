@@ -6,7 +6,7 @@ public class Xor extends Piece {
     }
     
     public Xor(String colorTurn) {
-        super("Xor", "Red"); // Hardcoded color "Gold" for the Tor piece
+        super("Xor", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }
         
     @Override
@@ -16,6 +16,6 @@ public class Xor extends Piece {
         
     @Override
     public String getColor() {
-        return "Gold";
+        return super.getColor();
     }
 }
