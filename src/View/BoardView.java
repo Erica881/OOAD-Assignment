@@ -2,32 +2,43 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import Model.Piece;
 
-public class BoardView extends JFrame {
-    private JButton[][] cells = new JButton[8][8];
+public class BoardView extends JPanel {
+    private JButton[][] buttons; // 2D array of buttons to represent the board cells
+    private static final int ROWS = 8; // 8 rows
+    private static final int COLS = 5; // 5 columns
 
     public BoardView() {
-        setTitle("Chess Game");
-        setSize(800, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(8, 8));
-
-        // Initialize buttons for the board.
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                cells[i][j] = new JButton();
-                cells[i][j].setBackground((i + j) % 2 == 0 ? Color.WHITE : Color.GRAY);
-                add(cells[i][j]);
+        this.setLayout(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
+        buttons = new JButton[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                buttons[i][j] = new JButton("");
+                buttons[i][j].setPreferredSize(new Dimension(60, 60)); // Size of each cell
+                this.add(buttons[i][j]);
             }
         }
     }
 
-    public JButton getCell(int x, int y) {
-        return cells[x][y];
+    // Add a listener to a specific cell
+    public void addCellListener(int x, int y, ActionListener listener) {
+        buttons[x][y].addActionListener(listener); // Add listener to each button
     }
 
-    // Update cell display with piece name.
-    public void updateCell(int x, int y, String pieceName) {
-        cells[x][y].setText(pieceName);
+    // Get a specific cell
+    public JButton getCell(int x, int y) {
+        return buttons[x][y]; // Return the button corresponding to the (x, y) position
+    }
+
+    // Update a cell with the piece's name and color
+    public void updateCell(int x, int y, Piece piece) {
+        JButton cell = buttons[x][y];
+        if (piece != null) {
+            cell.setText(piece.getName() + " (" + piece.getColor() + ")");
+        } else {
+            cell.setText(""); // Empty cell
+        }
     }
 }

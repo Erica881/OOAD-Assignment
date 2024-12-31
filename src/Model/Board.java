@@ -1,14 +1,21 @@
 package Model;
 
-// Board class to hold pieces.
-class Board {
-    private Piece[][] grid = new Piece[8][8];
+public class Board {
+    private Piece[][] board;
+
+    public Board() {
+        this.board = new Piece[8][5]; // 5x8 grid for the board
+
+        // Place some Ram pieces for demonstration
+        board[0][0] = new RamPiece(); // Ram piece at position (0, 0)
+        board[7][4] = new RamPiece(); // Ram piece at position (4, 7)
+    }
 
     public Piece getPiece(int x, int y) {
-        return grid[x][y];
+        return board[x][y]; // Return the piece at the given position
     }
 
     public void setPiece(int x, int y, Piece piece) {
-        grid[x][y] = piece;
+        board[x][y] = piece; // Set a piece at the given position
     }
 }
