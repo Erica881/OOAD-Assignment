@@ -7,8 +7,8 @@ public class Board {
         this.board = new Piece[8][5]; // 5x8 grid for the board
 
         // Place some Ram pieces for demonstration
-        board[0][0] = new RamPiece(); // Ram piece at position (0, 0)
-        board[7][4] = new RamPiece(); // Ram piece at position (4, 7)
+        board[0][0] = new Tor(); // Ram piece at position (0, 0)
+        board[7][4] = new Tor(); // Ram piece at position (4, 7)
     }
 
     public Piece getPiece(int x, int y) {
