@@ -14,7 +14,7 @@ public class Game {
         // Set up the window
         JFrame frame = new JFrame("Kwazam Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(480, 400); // Adjust the window size to fit the grid
+        frame.setSize(530, 600); // Adjust the window size to fit the grid
         frame.add(view);
         frame.setVisible(true);
     }
