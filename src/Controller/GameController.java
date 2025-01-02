@@ -33,29 +33,41 @@ public class GameController {
         // Update the board view with the current state of the board.
         updateBoardView();
     }
+    
+    private String currentPlayer = "Blue";
 
     private void handleCellClick(int x, int y) {
 
-    Piece piece = board.getPiece(x, y);
+        Piece piece = board.getPiece(x, y);
 
-    if (piece != null) {
-        System.out.println(piece.getColor() + " " + piece.getName() + " selected at (" + x + ", " + y + ")");
-
-        if (piece instanceof Ram) {
-            board.moveRam(x, y);
-            updateBoardView();   // Refresh the UI
+        if (piece == null) {
+            System.out.println("Empty cell clicked at (" + x + ", " + y + ")");
+        } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
+            System.out.println(currentPlayer + " selected " + piece.getName() + " at (" + x + ", " + y + ")");
+    
+            if (piece instanceof Ram) {
+                board.moveRam(x, y);
+    
+                // Flip the board after the move
+                board.flipBoard();
+    
+                // Toggle the current player
+                currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
+    
+                // Update the board view
+                updateBoardView();
+            }
+        } else {
+            System.out.println("It's not " + piece.getColor() + "'s turn.");
         }
-    } else {
-        System.out.println("Empty cell clicked at (" + x + ", " + y + ")");
     }
-}
 
-    private void updateBoardView() {
-        for (int i = 0; i < 8; i++) { // Loop over 8 rows
-            for (int j = 0; j < 5; j++) { // Loop over 5 columns
-                Piece piece = board.getPiece(i, j);
-                view.updateCell(i, j, piece); // Update each cell on the view
+        private void updateBoardView() {
+            for (int i = 0; i < 8; i++) { // Loop over 8 rows
+                for (int j = 0; j < 5; j++) { // Loop over 5 columns
+                    Piece piece = board.getPiece(i, j);
+                    view.updateCell(i, j, piece); // Update each cell on the view
+                }
             }
         }
-    }
 }
