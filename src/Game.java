@@ -68,7 +68,7 @@ public class Game {
 
         JFrame frame = new JFrame("Kwazam Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(480, 400);
+        frame.setSize(530, 600);
         frame.add(view);
         frame.setVisible(true);
 
