@@ -34,12 +34,15 @@ public class BoardView extends JPanel {
 
     // Update a cell with the piece's name and color
     public void updateCell(int x, int y, Piece piece) {
+        JButton cell = buttons[x][y];
         if (piece != null) {
+            cell.setIcon(piece.getImage());
             // Update the cell with the piece's information (e.g., name or color)
-            buttons[x][y].setText(piece.getName() + " (" + piece.getColor() + ")");
+            // buttons[x][y].setText(piece.getName() + " (" + piece.getColor() + ")");
         } else {
             // Clear the cell if it's empty
-            buttons[x][y].setText("");
+            cell.setIcon(null);
+            // buttons[x][y].setText("");
         }
     }
 }
