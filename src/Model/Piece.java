@@ -7,12 +7,14 @@ public class Piece {
     private String name;
     private String color;
     private ImageIcon image;
+    private boolean killed;
 
     // "Tor", "tor", "Red"
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
         this.image = loadImage();
+        this.killed = false;
     }
 
     private ImageIcon loadImage() {
@@ -41,7 +43,15 @@ public class Piece {
         return image;
     }
     
-    public void move(int currentX, int currentY, Piece[][] board) {
-        
+    public boolean isKilled() {
+        return killed;
+    }
+
+    public void setKilled(boolean killed) {
+        this.killed = killed;
+    }
+
+    public boolean move(int currentX, int currentY, int targetX, int targetY, Board board) {
+        return true;
     }
 }

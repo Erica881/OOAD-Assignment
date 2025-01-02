@@ -66,13 +66,28 @@ public class Board {
         board[x][y] = piece; // Set a piece at the given position
     }
 
-    public void moveRam(int currentX, int currentY) {
-        Piece piece = board[currentX][currentY];
+    public Piece[][] getBoard() {
+        return board; // Return the 2D array representing the board
+    }
+    
 
+    // public void moveRam(int currentX, int currentY) {
+    //     Piece piece = board[currentX][currentY];
+
+    //     if (piece instanceof Ram) {
+    //         Ram ram = (Ram) piece;
+    //         ram.move(currentX, currentY, board);
+    //     }
+    // }
+
+    public boolean moveRam(int currentX, int currentY, int targetX, int targetY) {
+        Piece piece = getPiece(currentX, currentY);
+    
         if (piece instanceof Ram) {
-            Ram ram = (Ram) piece;
-            ram.move(currentX, currentY, board);
+            return piece.move(currentX, currentY, targetX, targetY, this);
         }
+    
+        return false; // If the piece is not a Ram or the move is invalid
     }
 
 }
