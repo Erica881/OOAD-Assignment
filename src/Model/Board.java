@@ -39,4 +39,5 @@ public class Board {
             ram.moveForward(currentX, currentY, board);
         }
     }
+
 }

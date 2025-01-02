@@ -35,19 +35,20 @@ public class GameController {
     }
 
     private void handleCellClick(int x, int y) {
-        Piece piece = board.getPiece(x, y);
 
-        if (piece != null) {
-            System.out.println(piece.getColor() + " " + piece.getName() + " selected at (" + x + ", " + y + ")");
+    Piece piece = board.getPiece(x, y);
 
-            if (piece instanceof Ram) {
-                board.moveRam(x, y);
-                updateBoardView(); // Refresh the UI
-            }
-        } else {
-            System.out.println("Empty cell clicked at (" + x + ", " + y + ")");
+    if (piece != null) {
+        System.out.println(piece.getColor() + " " + piece.getName() + " selected at (" + x + ", " + y + ")");
+
+        if (piece instanceof Ram) {
+            board.moveRam(x, y);
+            updateBoardView();   // Refresh the UI
         }
+    } else {
+        System.out.println("Empty cell clicked at (" + x + ", " + y + ")");
     }
+}
 
     private void updateBoardView() {
         for (int i = 0; i < 8; i++) { // Loop over 8 rows
