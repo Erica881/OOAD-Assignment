@@ -40,4 +40,8 @@ public class Piece {
     public ImageIcon getImage() {
         return image;
     }
+    
+    public void move(int currentX, int currentY, Piece[][] board) {
+        
+    }
 }

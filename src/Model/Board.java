@@ -36,7 +36,7 @@ public class Board {
 
         if (piece instanceof Ram) {
             Ram ram = (Ram) piece;
-            ram.moveForward(currentX, currentY, board);
+            ram.move(currentX, currentY, board);
         }
     }
 

@@ -18,7 +18,7 @@ public class Ram extends Piece {
         return super.getColor();
     }
 
-    public void moveForward(int currentX, int currentY, Piece[][] board) {
+    public void move(int currentX, int currentY, Piece[][] board) {
         int targetX;
 
         if (currentX == 1) {
