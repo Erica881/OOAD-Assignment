@@ -1,50 +1,3 @@
-// package View;
-
-// import javax.swing.*;
-// import java.awt.*;
-// import java.awt.event.ActionListener;
-// import Model.Piece;
-
-// public class BoardView extends JPanel {
-//     private JButton[][] buttons;
-//     private static final int ROWS = 8;
-//     private static final int COLS = 5;
-
-//     public BoardView() {
-//         this.setLayout(new GridLayout(ROWS, COLS));
-//         buttons = new JButton[ROWS][COLS];
-//         for (int i = 0; i < ROWS; i++) {
-//             for (int j = 0; j < COLS; j++) {
-//                 buttons[i][j] = new JButton("");
-//                 buttons[i][j].setPreferredSize(new Dimension(60, 60));
-//                 this.add(buttons[i][j]);
-//             }
-//         }
-//     }
-
-//     public void addCellListener(int x, int y, ActionListener listener) {
-//         buttons[x][y].addActionListener(listener);
-//     }
-
-//     public void updateCell(int x, int y, Piece piece) {
-//         JButton cell = buttons[x][y];
-//         if (piece != null) {
-//             // Load the image and scale it to the button size
-//             ImageIcon icon = piece.getImage();
-//             if (icon != null) {
-//                 Image scaledImage = icon.getImage().getScaledInstance(
-//                         cell.getWidth(), cell.getHeight(), Image.SCALE_SMOOTH);
-//                 cell.setIcon(new ImageIcon(scaledImage));
-//             }
-//             cell.setText(""); // Clear any text
-//         } else {
-//             cell.setIcon(null); // Clear the icon if no piece is present
-//             cell.setText("");
-//         }
-//     }
-
-// }
-
 package View;
 
 import javax.swing.*;
@@ -53,51 +6,40 @@ import java.awt.event.ActionListener;
 import Model.Piece;
 
 public class BoardView extends JPanel {
-    private JButton[][] buttons;
-    private static final int ROWS = 8;
-    private static final int COLS = 5;
-    private boolean isFlipped = false;
+    private JButton[][] buttons; // 2D array of buttons to represent the board cells
+    private static final int ROWS = 8; // 8 rows
+    private static final int COLS = 5; // 5 columns
 
     public BoardView() {
-        this.setLayout(new GridLayout(ROWS, COLS));
+        this.setLayout(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
         buttons = new JButton[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 buttons[i][j] = new JButton("");
-                buttons[i][j].setPreferredSize(new Dimension(60, 60));
+                buttons[i][j].setPreferredSize(new Dimension(60, 60)); // Size of each cell
                 this.add(buttons[i][j]);
             }
         }
     }
 
+    // Add a listener to a specific cell
     public void addCellListener(int x, int y, ActionListener listener) {
-        buttons[x][y].addActionListener(listener);
+        buttons[x][y].addActionListener(listener); // Add listener to each button
     }
 
+    // Get a specific cell
+    public JButton getCell(int x, int y) {
+        return buttons[x][y]; // Return the button corresponding to the (x, y) position
+    }
+
+    // Update a cell with the piece's name and color
     public void updateCell(int x, int y, Piece piece) {
-        JButton cell = buttons[x][y];
         if (piece != null) {
-            cell.setIcon(piece.getImage());
-            cell.setText("");
+            // Update the cell with the piece's information (e.g., name or color)
+            buttons[x][y].setText(piece.getName() + " (" + piece.getColor() + ")");
         } else {
-            cell.setIcon(null);
-            cell.setText("");
+            // Clear the cell if it's empty
+            buttons[x][y].setText("");
         }
-    }
-
-    public void flipBoard() {
-        this.removeAll(); // Remove all components
-        isFlipped = !isFlipped; // Toggle the flipped state
-
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                int flippedRow = isFlipped ? ROWS - 1 - i : i;
-                int flippedCol = isFlipped ? COLS - 1 - j : j;
-                this.add(buttons[flippedRow][flippedCol]);
-            }
-        }
-
-        this.revalidate();
-        this.repaint();
     }
 }

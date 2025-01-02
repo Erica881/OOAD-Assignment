@@ -56,6 +56,19 @@ public class Board {
         for (int i = 1; i <= 6; i += 5) {
             for (int j = 0; j <= 4; j++) {
                 board[i][j] = new Ram();
+        // Place tor, biz, sau... using for loop
+        for (int i = 0; i <= 7; i += 7){
+                board[i][0] = new Tor(i == 0 ? "Red" : "Blue"); // Ram piece at position (0, 0)
+                board[i][1] = new Biz(i == 0 ? "Red" : "Blue");
+                board[i][2] = new Sau(i == 0 ? "Red" : "Blue");
+                board[i][3] = new Biz(i == 0 ? "Red" : "Blue");
+                board[i][4] = new Tor(i == 0 ? "Red" : "Blue");
+        }
+        
+        // Place ram repeatly 
+        for (int i = 1;i <= 6; i += 5) {
+            for (int j = 0; j <= 4; j++){
+                board[i][j] = new Ram( i == 1 ? "Red" : "Blue");
             }
         }
     }
@@ -66,5 +79,14 @@ public class Board {
 
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece;
+    }
+
+    public void moveRam(int currentX, int currentY) {
+        Piece piece = board[currentX][currentY];
+
+        if (piece instanceof Ram) {
+            Ram ram = (Ram) piece;
+            ram.moveForward(currentX, currentY, board);
+        }
     }
 }

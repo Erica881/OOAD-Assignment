@@ -6,7 +6,7 @@ public class Sau extends Piece {
     }
     
     public Sau(String colorTurn) {
-        super("Sau", "Red"); // Hardcoded color "Gold" for the Tor piece
+        super("Sau", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }
         
     @Override
@@ -16,6 +16,6 @@ public class Sau extends Piece {
         
     @Override
     public String getColor() {
-        return "Gold";
+        return super.getColor();
     }
 }
