@@ -28,10 +28,36 @@ public class Board {
     public Board() {
         this.board = new Piece[8][5]; // 8x5 grid for the board
 
-        // Initialize some pieces for demonstration
-        board[0][0] = new Tor(Player.RED); // Tor for Player.RED
-        board[7][4] = new Tor(Player.BLUE); // Tor for Player.BLUE
-        // Add other pieces as needed
+        // Place pieces for demonstration
+        /*
+         * for (int i = 0; i <= 6; i+= 6){
+         * for (int j = 0; j <= 4; j++) {
+         * board[i][j] = new Tor(); // Ram piece at position (0, 0)
+         * board[i][j] = new Biz();
+         * board[0][j] = new Sau();
+         * board[0][j] = new Biz();
+         * board[0][4] = new Tor();
+         * }
+         * }
+         */
+
+        board[0][0] = new Tor(); // Ram piece at position (0, 0)
+        board[0][1] = new Biz();
+        board[0][2] = new Sau();
+        board[0][3] = new Biz();
+        board[0][4] = new Tor();
+
+        board[7][4] = new Tor(); // Ram piece at position (4, 7)
+        board[7][3] = new Biz();
+        board[7][2] = new Sau();
+        board[7][1] = new Biz();
+        board[7][0] = new Tor();
+
+        for (int i = 1; i <= 6; i += 5) {
+            for (int j = 0; j <= 4; j++) {
+                board[i][j] = new Ram();
+            }
+        }
     }
 
     public Piece getPiece(int x, int y) {
