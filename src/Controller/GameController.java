@@ -35,6 +35,7 @@ public class GameController {
     }
 
     private void handleCellClick(int x, int y) {
+
     Piece piece = board.getPiece(x, y);
 
     if (piece != null) {
