@@ -12,7 +12,7 @@ public class Board {
             board[i][1] = new Biz(i == 0 ? "Red" : "Blue");
             board[i][2] = new Sau(i == 0 ? "Red" : "Blue");
             board[i][3] = new Biz(i == 0 ? "Red" : "Blue");
-            board[i][4] = new Tor(i == 0 ? "Red" : "Blue");
+            board[i][4] = new Xor(i == 0 ? "Red" : "Blue");
         }
 
         // Place ram repeatly
