@@ -59,20 +59,53 @@ public class GameController {
         saveLog(logMessage);
     }
 
+    // private void initializeSaveFile() {
+    // try {
+    // File saveDir = new File("src/resources/savedGames");
+    // if (!saveDir.exists() && !saveDir.mkdirs()) {
+    // throw new IOException("Failed to create directory: " +
+    // saveDir.getAbsolutePath());
+    // } else {
+    // System.out.println("Directory created or already exists: " +
+    // saveDir.getAbsolutePath());
+    // }
+
+    // File saveFile = new File(SAVE_FILE_PATH);
+    // if (!saveFile.exists() && !saveFile.createNewFile()) {
+    // throw new IOException("Failed to create file: " +
+    // saveFile.getAbsolutePath());
+    // } else {
+    // System.out.println("File created or already exists: " +
+    // saveFile.getAbsolutePath());
+    // }
+    // } catch (IOException e) {
+    // System.err.println("Error initializing save file: " + e.getMessage());
+    // }
+    // }
+
     private void initializeSaveFile() {
         try {
-            File saveDir = new File("src/resources/savedGames");
+            // Ensure the directory exists
+            File saveDir = new File("resources/savedGames");
             if (!saveDir.exists() && !saveDir.mkdirs()) {
                 throw new IOException("Failed to create directory: " + saveDir.getAbsolutePath());
             } else {
                 System.out.println("Directory created or already exists: " + saveDir.getAbsolutePath());
             }
 
+            // Ensure the file exists and clear its content on startup
             File saveFile = new File(SAVE_FILE_PATH);
-            if (!saveFile.exists() && !saveFile.createNewFile()) {
-                throw new IOException("Failed to create file: " + saveFile.getAbsolutePath());
+            if (!saveFile.exists()) {
+                if (!saveFile.createNewFile()) {
+                    throw new IOException("Failed to create file: " + saveFile.getAbsolutePath());
+                } else {
+                    System.out.println("File created: " + saveFile.getAbsolutePath());
+                }
             } else {
-                System.out.println("File created or already exists: " + saveFile.getAbsolutePath());
+                // Clear the content of the existing file (open in write mode)
+                FileWriter fileWriter = new FileWriter(SAVE_FILE_PATH, false); // 'false' to overwrite
+                fileWriter.close(); // Close immediately after clearing
+                System.out.println("File content cleared: " + saveFile.getAbsolutePath());
             }
         } catch (IOException e) {
             System.err.println("Error initializing save file: " + e.getMessage());
@@ -86,12 +119,9 @@ public class GameController {
 
             writer.write(logMessage);
             writer.newLine(); // Add a newline after the log message
-            System.out.println("log msg: " + logMessage);
             // Flush and close the writer
             writer.flush(); // Ensure it's written to disk immediately
             writer.close();
-
-            System.out.println("Log written successfully");
         } catch (IOException e) {
             System.err.println("Error writing to save file: " + e.getMessage());
         }
