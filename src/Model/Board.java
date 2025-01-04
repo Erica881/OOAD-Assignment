@@ -30,25 +30,7 @@ public class Board {
         }
 
     }
-    // // Place tor, biz, sau... using for loop
-    // for (int i = 0; i <= 7; i += 7) {
-    // board[i][0] = new Tor(i == 0 ? "Red" : "Blue"); // Ram piece at position (0,
-    // 0)
-    // board[i][1] = new Biz(i == 0 ? "Red" : "Blue");
-    // board[i][2] = new Sau(i == 0 ? "Red" : "Blue");
-    // board[i][3] = new Biz(i == 0 ? "Red" : "Blue");
-    // board[i][4] = new Xor(i == 0 ? "Red" : "Blue");
-    // }
 
-    // // Place ram repeatly
-    // for (int i = 1; i <= 6; i += 5) {
-    // for (int j = 0; j <= 4; j++) {
-    // board[i][j] = new Ram(i == 1 ? "Red" : "Blue");
-    // }
-    // }
-    // }
-
-    // Method to swap two pieces on the board
     private void swapPieces(int x1, int y1, int x2, int y2) {
         Piece temp = board[x1][y1];
         board[x1][y1] = board[x2][y2];
@@ -65,6 +47,17 @@ public class Board {
         };
     }
 
+    public void flipBoard() {
+        int row = board.length;
+    
+        // Reverse the rows in the board
+        for (int i = 0; i < row / 2; i++) {
+            Piece[] temp = board[i];
+            board[i] = board[row - 1 - i];
+            board[row - 1 - i] = temp;
+        }
+    }
+
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
     }
@@ -73,13 +66,39 @@ public class Board {
         board[x][y] = piece; // Set a piece at the given position
     }
 
-    public void moveRam(int currentX, int currentY) {
+    public Piece[][] getBoard() {
+        return board; // Return the 2D array representing the board
+    }
+    
+
+    // public void moveRam(int currentX, int currentY) {
+    //     Piece piece = board[currentX][currentY];
+
+    //     if (piece instanceof Ram) {
+    //         Ram ram = (Ram) piece;
+    //         ram.move(currentX, currentY, board);
+    //     }
+    // }
+
+    // public boolean moveRam(int currentX, int currentY, Board ) {
+    //     Piece piece = getPiece(currentX, currentY);
+    
+    //     if (piece instanceof Ram) {
+    //         return piece.move(currentX, currentY, targetX, targetY, this);
+    //     }
+    
+    //     return false; // If the piece is not a Ram or the move is invalid
+    // }
+
+    public boolean moveRam(int currentX, int currentY) {
         Piece piece = board[currentX][currentY];
 
         if (piece instanceof Ram) {
             Ram ram = (Ram) piece;
-            ram.moveForward(currentX, currentY, board);
+            ram.move(currentX, currentY, this); // Call the Ram's move method.
+            return true;
         }
+        return false; // If the piece isn't a Ram, return false.
     }
 
 }
