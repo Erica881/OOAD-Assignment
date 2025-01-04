@@ -42,42 +42,17 @@ public class GameController {
     private String currentPlayer = "Blue";
 
     private void handleCellClick(int x, int y) {
+
         Piece piece = board.getPiece(x, y);
         String logMessage;
 
-        if (piece != null) {
-            logMessage = piece.getColor() + " " + piece.getName() + " selected at (" + x + ", " + y + ")";
-            System.out.println(logMessage);
-
-            if (piece instanceof Ram) {
-                board.moveRam(x, y);
-                updateBoardView(); // Refresh the UI
-            }
-        } else {
+        if (piece == null) {
             logMessage = "Empty cell clicked at (" + x + ", " + y + ")";
             System.out.println(logMessage);
-        }
-        // Save the log message to the text file
-        saveLog(logMessage);
-    }
-
-    // private void initializeSaveFile() {
-    // try {
-    // File saveDir = new File("src/resources/savedGames");
-    // if (!saveDir.exists() && !saveDir.mkdirs()) {
-    // throw new IOException("Failed to create directory: " +
-    // saveDir.getAbsolutePath());
-    // } else {
-    // System.out.println("Directory created or already exists: " +
-    // saveDir.getAbsolutePath());
-    // }
-
-        Piece piece = board.getPiece(x, y);
-
-        if (piece == null) {
-            System.out.println("Empty cell clicked at (" + x + ", " + y + ")");
         } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
-            System.out.println(currentPlayer + " selected " + piece.getName() + " at (" + x + ", " + y + ")");
+            logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x + ", " + y + ")";
+    
+            System.out.println(logMessage);
     
             if (piece instanceof Ram) {
                 board.moveRam(x, y);
@@ -92,22 +67,15 @@ public class GameController {
                 updateBoardView();
             }
         } else {
-            System.out.println("It's not " + piece.getColor() + "'s turn.");
+            logMessage = "It's not " + piece.getColor() + "'s turn.";
+            System.out.println(logMessage);
         }
+        
+        saveLog(logMessage);
 
-=======
-    // File saveFile = new File(SAVE_FILE_PATH);
-    // if (!saveFile.exists() && !saveFile.createNewFile()) {
-    // throw new IOException("Failed to create file: " +
-    // saveFile.getAbsolutePath());
-    // } else {
-    // System.out.println("File created or already exists: " +
-    // saveFile.getAbsolutePath());
-    // }
-    // } catch (IOException e) {
-    // System.err.println("Error initializing save file: " + e.getMessage());
-    // }
-    // }
+    }
+
+    
 
     private void initializeSaveFile() {
         try {
@@ -163,3 +131,28 @@ public class GameController {
             }
         }
 }
+
+
+// File saveFile = new File(SAVE_FILE_PATH);
+    // if (!saveFile.exists() && !saveFile.createNewFile()) {
+    // throw new IOException("Failed to create file: " +
+    // saveFile.getAbsolutePath());
+    // } else {
+    // System.out.println("File created or already exists: " +
+    // saveFile.getAbsolutePath());
+    // }
+    // } catch (IOException e) {
+    // System.err.println("Error initializing save file: " + e.getMessage());
+    // }
+    // }
+
+// private void initializeSaveFile() {
+// try {
+// File saveDir = new File("src/resources/savedGames");
+// if (!saveDir.exists() && !saveDir.mkdirs()) {
+// throw new IOException("Failed to create directory: " +
+// saveDir.getAbsolutePath());
+// } else {
+// System.out.println("Directory created or already exists: " +
+// saveDir.getAbsolutePath());
+// }
