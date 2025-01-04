@@ -21,7 +21,7 @@ public class Piece {
 
     private ImageIcon loadImage() {
         // Construct the image path dynamically
-        String imagePath = "/resources/" + name + color + ".png"; // Adjust path as needed
+        String imagePath = "/resources/image/" + name + color + ".png"; // Adjust path as needed
         try {
             ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
             Image img = icon.getImage(); // Get the original image
