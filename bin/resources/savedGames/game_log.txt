@@ -1,5 +1,0 @@
-Red Ram selected at (1, 1)
-Blue Ram selected at (6, 3)
-Empty cell clicked at (6, 3)
-Blue Ram selected at (6, 2)
-Red Ram selected at (2, 1)

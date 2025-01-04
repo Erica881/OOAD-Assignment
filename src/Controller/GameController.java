@@ -14,7 +14,11 @@ import java.io.IOException;
 public class GameController {
     private Board board;
     private BoardView view;
-    private static final String SAVE_FILE_PATH = "src/resources/savedGames/game_log.txt";
+    private static final String SAVE_FILE_PATH = System.getProperty("user.dir")
+            + "/src/resources/savedGames/game_log.txt";
+    // private static final String SAVE_FILE_PATH =
+    // "src/resources/savedGames/game_log.txt";
+    private String currentPlayer = "Blue";
 
     public GameController(Board board, BoardView view) {
         this.board = board;
@@ -38,8 +42,6 @@ public class GameController {
         // Update the board view with the current state of the board.
         updateBoardView();
     }
-    
-    private String currentPlayer = "Blue";
 
     private void handleCellClick(int x, int y) {
 
@@ -51,18 +53,18 @@ public class GameController {
             System.out.println(logMessage);
         } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
             logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x + ", " + y + ")";
-    
+
             System.out.println(logMessage);
-    
+
             if (piece instanceof Ram) {
                 board.moveRam(x, y);
-    
+
                 // Flip the board after the move
                 board.flipBoard();
-    
+
                 // Toggle the current player
                 currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
-    
+
                 // Update the board view
                 updateBoardView();
             }
@@ -70,17 +72,16 @@ public class GameController {
             logMessage = "It's not " + piece.getColor() + "'s turn.";
             System.out.println(logMessage);
         }
-        
+
         saveLog(logMessage);
 
     }
 
-    
-
     private void initializeSaveFile() {
         try {
             // Ensure the directory exists
-            File saveDir = new File("src/resources/savedGames/game_log.txt");
+            File saveDir = new File("/src/resources/savedGames/game_log.txt");
+            // File saveDir = new File(SAVE_FILE_PATH);
             if (!saveDir.exists() && !saveDir.mkdirs()) {
                 throw new IOException("Failed to create directory: " + saveDir.getAbsolutePath());
             } else {
@@ -118,41 +119,16 @@ public class GameController {
             writer.close();
         } catch (IOException e) {
             System.err.println("Error writing to save file: " + e.getMessage());
-          
+
         }
     }
 
-        private void updateBoardView() {
-            for (int i = 0; i < 8; i++) { // Loop over 8 rows
-                for (int j = 0; j < 5; j++) { // Loop over 5 columns
-                    Piece piece = board.getPiece(i, j);
-                    view.updateCell(i, j, piece); // Update each cell on the view
-                }
+    private void updateBoardView() {
+        for (int i = 0; i < 8; i++) { // Loop over 8 rows
+            for (int j = 0; j < 5; j++) { // Loop over 5 columns
+                Piece piece = board.getPiece(i, j);
+                view.updateCell(i, j, piece); // Update each cell on the view
             }
         }
+    }
 }
-
-
-// File saveFile = new File(SAVE_FILE_PATH);
-    // if (!saveFile.exists() && !saveFile.createNewFile()) {
-    // throw new IOException("Failed to create file: " +
-    // saveFile.getAbsolutePath());
-    // } else {
-    // System.out.println("File created or already exists: " +
-    // saveFile.getAbsolutePath());
-    // }
-    // } catch (IOException e) {
-    // System.err.println("Error initializing save file: " + e.getMessage());
-    // }
-    // }
-
-// private void initializeSaveFile() {
-// try {
-// File saveDir = new File("src/resources/savedGames");
-// if (!saveDir.exists() && !saveDir.mkdirs()) {
-// throw new IOException("Failed to create directory: " +
-// saveDir.getAbsolutePath());
-// } else {
-// System.out.println("Directory created or already exists: " +
-// saveDir.getAbsolutePath());
-// }
