@@ -19,27 +19,69 @@ public class Ram extends Piece {
     }
 
     @Override
-    public boolean move(int currentX, int currentY, int targetX, int targetY, Board board) {
-        // Calculate the target position
-        int newX = currentX + 1;
+    public void move(int currentX, int currentY, Board board) {
+        int newX = currentX - direction;
 
-        // Ensure the move is within bounds and the target cell is either empty or occupied by an opponent's piece
-        if (newX < board.getBoard().length) {
-            Piece targetPiece = board.getPiece(newX, currentY);
-            if (targetPiece == null || !targetPiece.getColor().equals(this.getColor())) {
-                // If the target cell is occupied, mark the opponent's piece as "killed"
-                if (targetPiece != null) {
-                    targetPiece.setKilled(true);
-                    System.out.println(targetPiece.getName() + " has been eliminated by " + this.getName());
-                }
+        if (newX >= 0 && newX < board.getBoard().length) {
+            Piece targetPosition = board.getPiece(newX, currentY);
 
-                // Perform the move
+            if (targetPosition == null) {
+
                 board.setPiece(newX, currentY, this);
                 board.setPiece(currentX, currentY, null);
-                return true;
+
+            } else if (!targetPosition.getColor().equals(this.getColor())) {
+
+                System.out.println(targetPosition.getNameNColour() +" has been eliminated by " + this.getNameNColour() + " at (" + newX + ", " + currentY + ")." );
+               
+                board.setPiece(newX, currentY, this);
+                board.setPiece(currentX, currentY, null);
+                
             }
-        }   
-            return false; // Move was invalid
         }
+
+    // @Override
+    // public void move(int currentX, int currentY, Board board) {
+    //     int newX = currentX + direction; // Assume Ram always moves forward.
+    //     if (newX >= 0 && newX < board.length && board[newX][currentY] == null) {
+    //         // Move the Ram piece
+    //         board[newX][currentY] = this;
+    //         board[currentX][currentY] = null;
+
+    //     } else if (board[newX][currentY] != null) {
+    //         setKilled(newX, currentY);
+    //         System.out.println(Piece.getName(newX, currentY) +" at " + board[newX][currentY] + " has been eliminated by " + this.getName());
+            
+    //         board.setPiece(newX, currentY, this);
+    //         board.setPiece(currentX, currentY, null);
+            
+    //         return; // Invalid move.
+    //     }
+    // }
+}
+
+    // public void move(int currentX, int currentY, Piece[][] board) {
+    //     int targetX;
+
+    //     if (currentX == 1) {
+    //         targetX = currentX + direction;
+    //     } else {
+    //         targetX = currentX - direction;
+    //     }
+
+    //     // Check if the target position is within bounds and not occupied
+    //     if (targetX >= 0 && targetX < board.length && board[targetX][currentY] == null) {
+    //         // Move the Ram piece
+    //         board[targetX][currentY] = this;
+    //         board[currentX][currentY] = null;
+
+    //         // Update direction if Ram reaches the end of the board
+    //         if (targetX == 0) {
+    //             direction = 1; // Start moving forward
+    //         } else if (targetX == board.length - 1) {
+    //             direction = -1; // Start moving backward
+    //         }
+    //     }
+    // }
 }
 

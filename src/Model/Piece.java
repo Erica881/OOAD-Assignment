@@ -7,14 +7,16 @@ public class Piece {
     private String name;
     private String color;
     private ImageIcon image;
-    private boolean killed;
+    //private boolean isKilled;
+    // private int x; // X-coordinate on the board
+    // private int y; // Y-coordinate on the board
 
     // "Tor", "tor", "Red"
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
         this.image = loadImage();
-        this.killed = false;
+        //this.isKilled = false;
     }
 
     private ImageIcon loadImage() {
@@ -39,19 +41,21 @@ public class Piece {
         return color;
     }
 
+    public String getNameNColour() {
+        return name + " (" + color + ")";
+    }
+
     public ImageIcon getImage() {
         return image;
     }
     
-    public boolean isKilled() {
-        return killed;
-    }
+    // public void setKilled(boolean isKill) {
+    //     this.isKilled = isKill;
+    // }
+    //
+    // not sure what to set, not using yet but might use in future
 
-    public void setKilled(boolean killed) {
-        this.killed = killed;
-    }
-
-    public boolean move(int currentX, int currentY, int targetX, int targetY, Board board) {
-        return true;
+    public void move(int currentX, int currentY, Board board) {
+        ;
     }
 }

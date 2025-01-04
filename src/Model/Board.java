@@ -80,14 +80,25 @@ public class Board {
     //     }
     // }
 
-    public boolean moveRam(int currentX, int currentY, int targetX, int targetY) {
-        Piece piece = getPiece(currentX, currentY);
+    // public boolean moveRam(int currentX, int currentY, Board ) {
+    //     Piece piece = getPiece(currentX, currentY);
     
+    //     if (piece instanceof Ram) {
+    //         return piece.move(currentX, currentY, targetX, targetY, this);
+    //     }
+    
+    //     return false; // If the piece is not a Ram or the move is invalid
+    // }
+
+    public boolean moveRam(int currentX, int currentY) {
+        Piece piece = board[currentX][currentY];
+
         if (piece instanceof Ram) {
-            return piece.move(currentX, currentY, targetX, targetY, this);
+            Ram ram = (Ram) piece;
+            ram.move(currentX, currentY, this); // Call the Ram's move method.
+            return true;
         }
-    
-        return false; // If the piece is not a Ram or the move is invalid
+        return false; // If the piece isn't a Ram, return false.
     }
 
 }
