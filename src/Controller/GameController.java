@@ -80,7 +80,7 @@ public class GameController {
     private void initializeSaveFile() {
         try {
             // Ensure the directory exists
-            File saveDir = new File("resources/savedGames");
+            File saveDir = new File("src/resources/savedGames/game_log.txt");
             if (!saveDir.exists() && !saveDir.mkdirs()) {
                 throw new IOException("Failed to create directory: " + saveDir.getAbsolutePath());
             } else {
@@ -88,7 +88,7 @@ public class GameController {
             }
 
             // Ensure the file exists and clear its content on startup
-            File saveFile = new File(SAVE_FILE_PATH);
+            File saveFile = new File(saveDir, "game_log.txt");
             if (!saveFile.exists()) {
                 if (!saveFile.createNewFile()) {
                     throw new IOException("Failed to create file: " + saveFile.getAbsolutePath());

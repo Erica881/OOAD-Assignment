@@ -1,7 +1,8 @@
 package Model;
 
 public class Ram extends Piece {
-    private int direction;
+    private int direction = 1;
+    private boolean moveBack = false;
     
     public Ram(String colorTurn) {
         super("Ram", colorTurn); 
@@ -18,11 +19,28 @@ public class Ram extends Piece {
         return super.getColor();
     }
 
+    public void movingBack(boolean backward) {
+        this.moveBack = backward;
+    }
+
     @Override
-    public void move(int currentX, int currentY, Board board) {
-        int newX = currentX - direction;
+    public void move(int currentX, int currentY, Board board) { 
+        int newX;
+
+        if (this.moveBack) {
+            newX = currentX + this.direction;
+        } else {
+            newX = currentX - this.direction;
+        }
+
+        
+
+        if (newX == 0) {
+            this.movingBack(true);
+        } 
 
         if (newX >= 0 && newX < board.getBoard().length) {
+            
             Piece targetPosition = board.getPiece(newX, currentY);
 
             if (targetPosition == null) {
@@ -39,49 +57,7 @@ public class Ram extends Piece {
                 
             }
         }
-
-    // @Override
-    // public void move(int currentX, int currentY, Board board) {
-    //     int newX = currentX + direction; // Assume Ram always moves forward.
-    //     if (newX >= 0 && newX < board.length && board[newX][currentY] == null) {
-    //         // Move the Ram piece
-    //         board[newX][currentY] = this;
-    //         board[currentX][currentY] = null;
-
-    //     } else if (board[newX][currentY] != null) {
-    //         setKilled(newX, currentY);
-    //         System.out.println(Piece.getName(newX, currentY) +" at " + board[newX][currentY] + " has been eliminated by " + this.getName());
-            
-    //         board.setPiece(newX, currentY, this);
-    //         board.setPiece(currentX, currentY, null);
-            
-    //         return; // Invalid move.
-    //     }
-    // }
+    }
 }
 
-    // public void move(int currentX, int currentY, Piece[][] board) {
-    //     int targetX;
-
-    //     if (currentX == 1) {
-    //         targetX = currentX + direction;
-    //     } else {
-    //         targetX = currentX - direction;
-    //     }
-
-    //     // Check if the target position is within bounds and not occupied
-    //     if (targetX >= 0 && targetX < board.length && board[targetX][currentY] == null) {
-    //         // Move the Ram piece
-    //         board[targetX][currentY] = this;
-    //         board[currentX][currentY] = null;
-
-    //         // Update direction if Ram reaches the end of the board
-    //         if (targetX == 0) {
-    //             direction = 1; // Start moving forward
-    //         } else if (targetX == board.length - 1) {
-    //             direction = -1; // Start moving backward
-    //         }
-    //     }
-    // }
-}
 
