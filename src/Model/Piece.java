@@ -1,6 +1,8 @@
 package Model;
 
 import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 
 public class Piece {
@@ -61,6 +63,6 @@ public class Piece {
     // not sure what to set, not using yet but might use in future
 
     public void move(int currentX, int currentY, Board board) {
-        ;
+
     }
 }

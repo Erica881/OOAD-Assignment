@@ -5,7 +5,9 @@ import Model.Piece;
 import Model.Ram;
 import View.BoardView;
 import View.MainView;
+import Sound.Sound;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -16,6 +18,7 @@ import java.io.IOException;
 public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
+    private Sound sound;
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
 
@@ -40,6 +43,10 @@ public class GameController {
             logMessage = "Empty cell clicked at (" + x + ", " + y + ")";
             mainView.updateStatus(logMessage); // Update status label
         } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
+            // Inside your GameController's handleCellClick method
+            sound = new Sound();
+            sound.soundMove(); // This will play the move sound
+
             logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x +
                     ", " + y + ")";
             System.out.println(logMessage);
