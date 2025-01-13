@@ -1,4 +1,4 @@
-import Controller.GameController;
+import Controller.GameController_temp;
 import Model.Board;
 import View.BoardView;
 
@@ -9,7 +9,7 @@ public class Game {
         // Create the model, view, and controller
         Board board = new Board();
         BoardView view = new BoardView();
-        GameController controller = new GameController(board, view);
+        GameController_temp controller = new GameController_temp(board, view);
 
         // Set up the window
         JFrame frame = new JFrame("Kwazam Chess");

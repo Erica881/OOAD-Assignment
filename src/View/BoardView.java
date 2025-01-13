@@ -3,12 +3,14 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
 import Model.Piece;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
+    private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
 
     public BoardView() {
         this.setLayout(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
@@ -16,10 +18,15 @@ public class BoardView extends JPanel {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 buttons[i][j] = new JButton("");
-                buttons[i][j].setPreferredSize(new Dimension(60, 60)); // Size of each cell
+                buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 this.add(buttons[i][j]);
+
             }
         }
+
+        // Add padding around the board view
+        this.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); // 20px padding on all sides
+
     }
 
     // Add a listener to a specific cell

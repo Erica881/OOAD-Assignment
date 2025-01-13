@@ -16,7 +16,7 @@ import java.io.IOException;
 public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
-    private BoardView boardView; // The board view within MainView
+    // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
 
     private static final String SAVE_FILE_PATH = System.getProperty("user.dir")
@@ -26,31 +26,10 @@ public class GameController {
         this.board = board;
 
         // Initialize views
-        mainView = new MainView();
-        boardView = mainView.getBoardView();
+        mainView = new MainView(this);
 
-        initializeSaveFile();
-
-        // Attach listeners to the board cells
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 5; j++) {
-                final int x = i;
-                final int y = j;
-
-                boardView.addCellListener(x, y, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        handleCellClick(x, y);
-                    }
-                });
-            }
-        }
-
-        // Show the main view
         mainView.display();
 
-        // Update the board view with the initial state of the board
-        updateBoardView();
     }
 
     private void handleCellClick(int x, int y) {
@@ -61,7 +40,9 @@ public class GameController {
             logMessage = "Empty cell clicked at (" + x + ", " + y + ")";
             mainView.updateStatus(logMessage); // Update status label
         } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
-            logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x + ", " + y + ")";
+            logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x +
+                    ", " + y + ")";
+            System.out.println(logMessage);
             mainView.updateStatus(logMessage);
 
             if (piece instanceof Ram) {
@@ -122,9 +103,36 @@ public class GameController {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
                 Piece piece = board.getPiece(i, j);
-                boardView.updateCell(i, j, piece);
+                mainView.getBoardView().updateCell(i, j, piece);
             }
         }
+    }
+
+    public void startGame() {
+        // board-related logic
+        initializeSaveFile();
+
+        // Attach listeners to the board cells
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                final int x = i;
+                final int y = j;
+
+                mainView.getBoardView().addCellListener(x, y, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        handleCellClick(x, y);
+                    }
+                });
+            }
+        }
+
+        // Show the main view
+        mainView.getBoardView();
+
+        // Update the board view with the initial state of the board
+        updateBoardView();
+
     }
 
     public static void main(String[] args) {
