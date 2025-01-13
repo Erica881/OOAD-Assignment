@@ -7,11 +7,10 @@ import Controller.GameController;
 public class MainView {
     private JFrame frame;
     private BoardView boardView;
-    private JPanel menuPanel;
+    private MenuView menuView;
+    private JPanel statusPanel;
     private JLabel statusLabel;
-    private JButton startGameButton;
-
-    private GameController controller; // Reference to the controller
+    private GameController controller;
 
     public MainView(GameController controller) {
         this.controller = controller; // Initialize the controller
@@ -24,41 +23,31 @@ public class MainView {
         // Initialize the board view (not displayed initially)
         boardView = new BoardView();
 
-        // Initialize the menu panel with a button
-        menuPanel = new JPanel();
-        startGameButton = new JButton("Start Game");
-        startGameButton.setPreferredSize(new Dimension(200, 50));
-        startGameButton.setFont(new Font("Arial", Font.BOLD, 18));
-
-        // Action listener for the start game button
-        startGameButton.addActionListener(e -> startGame());
-
-        // Add the button to the menu panel
-        menuPanel.add(startGameButton);
+        // Initialize the menu view
+        menuView = new MenuView(this);
 
         // Initialize the status panel
-        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // FlowLayout for left alignment
+        statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         statusLabel = new JLabel("Welcome to the game!");
-        statusLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font size
+        statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         statusPanel.add(statusLabel);
 
         // Add the status panel to the top (BorderLayout.NORTH)
         frame.add(statusPanel, BorderLayout.NORTH);
 
-        // Add the menu panel to the frame
-        frame.add(menuPanel, BorderLayout.CENTER);
+        // Add the menu panel to the center
+        frame.add(menuView, BorderLayout.CENTER);
 
-        // Set a size for the frame, ensuring it's large enough to display the menu
+        // Set the frame size and visibility
         frame.setSize(400, 600);
-        frame.setMinimumSize(new Dimension(600, 750)); // Set minimum width and
-
+        frame.setMinimumSize(new Dimension(600, 750));
         frame.setVisible(true);
     }
 
-    // Method to start the game when the button is clicked
-    private void startGame() {
+    // Delegation archieve -
+    public void startGame() {
         // Remove the menu panel and show the board
-        frame.getContentPane().remove(menuPanel); // Hide menu panel
+        frame.getContentPane().remove(menuView); // Hide menu panel
 
         // Add the board view
         frame.add(boardView, BorderLayout.CENTER);
@@ -85,4 +74,5 @@ public class MainView {
     public BoardView getBoardView() {
         return boardView;
     }
+
 }
