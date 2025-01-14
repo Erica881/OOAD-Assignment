@@ -32,7 +32,7 @@ public class GameController {
 
         // Initialize views
         mainView = new MainView(this);
-
+        sound = mainView.getSound();
         mainView.display();
 
     }
