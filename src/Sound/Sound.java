@@ -50,17 +50,26 @@ import java.io.InputStream;
 
 public class Sound {
     private final InputStream move; // Use InputStream instead of URL
+    private final InputStream notify; // Use InputStream instead of URL
+    private final InputStream capture; // Use InputStream instead of URL
 
     public Sound() {
         // Load the move sound from the resources folder
         this.move = getClass().getResourceAsStream("move.wav"); // Ensure the path is correct
-        if (move == null) {
-            System.err.println("Sound file not found");
-        }
+        this.notify = getClass().getResourceAsStream("notify.wav"); // Ensure the path is correct
+        this.capture = getClass().getResourceAsStream("capture.wav"); // Ensure the path is correct
     }
 
     public void soundMove() {
         play(move);
+    }
+
+    public void soundNotify() {
+        play(notify);
+    }
+
+    public void soundCapture() {
+        play(capture);
     }
 
     private void play(InputStream inputStream) {

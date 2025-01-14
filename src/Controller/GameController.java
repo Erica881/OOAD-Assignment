@@ -21,6 +21,8 @@ public class GameController {
     private Sound sound;
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
+    String logMessage;
+    String errorMessage;
 
     private static final String SAVE_FILE_PATH = System.getProperty("user.dir")
             + "/src/resources/savedGames/game_log.txt";
@@ -36,42 +38,43 @@ public class GameController {
     }
 
     private void handleCellClick(int x, int y) {
-        Piece piece = board.getPiece(x, y);
-        String logMessage;
+        // Inside your GameController's handleCellClick method
+        sound = new Sound();
+        Piece selectedPiece = board.getPiece(x, y);
 
-        if (piece == null) {
-            logMessage = "Empty cell clicked at (" + x + ", " + y + ")";
-            mainView.updateStatus(logMessage); // Update status label
-        } else if (piece.getColor().equalsIgnoreCase(currentPlayer)) {
-            // Inside your GameController's handleCellClick method
-            sound = new Sound();
-            sound.soundMove(); // This will play the move sound
-
-            logMessage = currentPlayer + " selected " + piece.getName() + " at (" + x +
+        if (isSelectedPieceValidate(selectedPiece)) {
+            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x +
                     ", " + y + ")";
+            sound.soundMove(); // This will play the move sound
             System.out.println(logMessage);
             mainView.updateStatus(logMessage);
 
-            if (piece instanceof Ram) {
-                board.moveRam(x, y);
+            // Call movePiece in the board (this will handle all pieces)
+            board.movePiece(x, y);
 
-                // Flip the board after the move
-                board.flipBoard();
+            // Flip the board after the move
+            board.flipBoard();
 
-                // Toggle the current player
-                currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
+            // Toggle the current player
+            currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
 
-                // Update the board view
-                updateBoardView();
+            // Update the board view
+            updateBoardView();
 
-                mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
-            }
-        } else {
-            logMessage = "It's not " + piece.getColor() + "'s turn.";
-            mainView.updateStatus(logMessage);
+            mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
+            saveLog(logMessage);
         }
 
-        saveLog(logMessage);
+    }
+
+    public boolean isSelectedPieceValidate(Piece selectedPiece) {
+        if (selectedPiece == null || (!selectedPiece.getColor().equalsIgnoreCase(currentPlayer))) {
+            sound.soundNotify();
+            errorMessage = "Please select any " + currentPlayer + " piece to move.";
+            mainView.updateStatus(errorMessage); // Update status label
+            return false;
+        }
+        return true;
     }
 
     private void initializeSaveFile() {

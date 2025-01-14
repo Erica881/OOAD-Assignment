@@ -49,7 +49,7 @@ public class Board {
 
     public void flipBoard() {
         int row = board.length;
-    
+
         // Reverse the rows in the board
         for (int i = 0; i < row / 2; i++) {
             Piece[] temp = board[i];
@@ -69,36 +69,24 @@ public class Board {
     public Piece[][] getBoard() {
         return board; // Return the 2D array representing the board
     }
-    
 
-    // public void moveRam(int currentX, int currentY) {
-    //     Piece piece = board[currentX][currentY];
+    // public boolean moveRam(int currentX, int currentY) {
+    // Piece piece = board[currentX][currentY];
 
-    //     if (piece instanceof Ram) {
-    //         Ram ram = (Ram) piece;
-    //         ram.move(currentX, currentY, board);
-    //     }
+    // if (piece instanceof Ram) {
+    // Ram ram = (Ram) piece;
+    // ram.move(currentX, currentY, this); // Call the Ram's move method.
+    // return true;
+    // }
+    // return false; // If the piece isn't a Ram, return false.
     // }
 
-    // public boolean moveRam(int currentX, int currentY, Board ) {
-    //     Piece piece = getPiece(currentX, currentY);
-    
-    //     if (piece instanceof Ram) {
-    //         return piece.move(currentX, currentY, targetX, targetY, this);
-    //     }
-    
-    //     return false; // If the piece is not a Ram or the move is invalid
-    // }
+    public void movePiece(int x, int y) {
+        Piece piece = board[x][y];
 
-    public boolean moveRam(int currentX, int currentY) {
-        Piece piece = board[currentX][currentY];
-
-        if (piece instanceof Ram) {
-            Ram ram = (Ram) piece;
-            ram.move(currentX, currentY, this); // Call the Ram's move method.
-            return true;
+        if (piece != null) {
+            piece.move(x, y, this); // Let the piece handle its own movement
         }
-        return false; // If the piece isn't a Ram, return false.
     }
 
 }
