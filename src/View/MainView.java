@@ -10,10 +10,12 @@ public class MainView {
     private BoardView boardView;
     private MenuView menuView;
     private JPanel statusPanel;
+    private JPanel iconPanel;
     private JLabel statusLabel;
     private GameController controller;
     private Sound sound;
     private JLabel soundIcon;
+    private JLabel settingIcon;
 
     private String unmute_icon_path = "/resources/image/unmute_icon.png";
     private String mute_icon_path = "/resources/image/mute_icon.png";
@@ -34,14 +36,13 @@ public class MainView {
         menuView = new MenuView(this);
 
         // Initialize the status panel
-        statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusLabel = new JLabel("Welcome to the game!");
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         statusPanel.add(statusLabel);
 
-        // soundIcon = new JLabel(new ImageIcon(getClass().getResource(iconPath)));
+        iconPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(unmute_icon_path));
-
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         soundIcon = new JLabel(new ImageIcon(resizedImage));
@@ -53,10 +54,29 @@ public class MainView {
                 setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
             }
         });
-        statusPanel.add(soundIcon);
+        iconPanel.add(soundIcon);
 
-        // Add the status panel to the top (BorderLayout.NORTH)
-        frame.add(statusPanel, BorderLayout.NORTH);
+        // Add Settings Icon
+        ImageIcon originalSettingIcon = new ImageIcon(getClass().getResource("/resources/image/setting.png"));
+
+        // Resize the image to a smaller size (e.g., 24x24)
+        Image resizedSettingImage = originalSettingIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        settingIcon = new JLabel(new ImageIcon(resizedSettingImage));
+        settingIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        settingIcon.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                // setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
+                // open setting view
+            }
+        });
+        iconPanel.add(settingIcon);
+
+        // Initialize a container panel for the top bar
+        JPanel topBarPanel = new JPanel(new BorderLayout());
+        topBarPanel.add(statusPanel, BorderLayout.WEST);
+        topBarPanel.add(iconPanel, BorderLayout.EAST);
+        frame.add(topBarPanel, BorderLayout.NORTH);
 
         // Add the menu panel to the center
         frame.add(menuView, BorderLayout.CENTER);
