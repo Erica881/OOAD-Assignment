@@ -1,9 +1,10 @@
-package View;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
-import Controller.GameController;
+
 import Sound.Sound;
+import controller.GameController;
 
 public class MainView {
     private JFrame frame;

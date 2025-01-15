@@ -1,7 +1,9 @@
 package Sound;
 
 import javax.sound.sampled.*;
-import Controller.GameController;
+
+import controller.GameController;
+
 import java.io.InputStream;
 
 public class Sound {

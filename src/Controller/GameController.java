@@ -1,8 +1,8 @@
-package Controller;
+package controller;
 
-import Model.Board;
-import Model.Piece;
-import View.MainView;
+import model.Board;
+import model.Piece;
+import view.MainView;
 import Sound.Sound;
 
 import java.awt.event.ActionEvent;
