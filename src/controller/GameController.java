@@ -20,9 +20,6 @@ public class GameController {
     String logMessage;
     String errorMessage;
 
-    // private static final String SAVE_FILE_PATH = System.getProperty("user.dir")
-    // + "/src/resources/savedGames/game_log.txt";
-
     public GameController(Board board) {
         this.board = board;
 
@@ -73,41 +70,6 @@ public class GameController {
         }
         return true;
     }
-
-    // private void initializeSaveFile() {
-    // try {
-    // File saveFile = new File(SAVE_FILE_PATH);
-
-    // // Ensure the parent directory exists
-    // File parentDir = saveFile.getParentFile();
-    // if (!parentDir.exists() && !parentDir.mkdirs()) {
-    // throw new IOException("Failed to create directory: " +
-    // parentDir.getAbsolutePath());
-    // }
-
-    // // Clear the content of the save file on startup
-    // if (!saveFile.exists()) {
-    // if (!saveFile.createNewFile()) {
-    // throw new IOException("Failed to create file: " +
-    // saveFile.getAbsolutePath());
-    // }
-    // } else {
-    // new FileWriter(saveFile, false).close(); // Clear file content
-    // }
-    // } catch (IOException e) {
-    // System.err.println("Error initializing save file: " + e.getMessage());
-    // }
-    // }
-
-    // private void saveLog(String logMessage) {
-    // try (BufferedWriter writer = new BufferedWriter(new
-    // FileWriter(SAVE_FILE_PATH, true))) {
-    // writer.write(logMessage);
-    // writer.newLine();
-    // } catch (IOException e) {
-    // System.err.println("Error writing to save file: " + e.getMessage());
-    // }
-    // }
 
     private void updateBoardView() {
         for (int i = 0; i < 8; i++) {
