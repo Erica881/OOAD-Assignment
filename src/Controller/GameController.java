@@ -2,8 +2,8 @@ package Controller;
 
 import Model.Board;
 import Model.Piece;
+import Model.Sound.Sound;
 import View.MainView;
-import Sound.Sound;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
