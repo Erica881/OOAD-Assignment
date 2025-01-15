@@ -14,11 +14,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
     private Sound sound;
+    private boolean isMuted = false; // Centralized mute state
+
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
     String logMessage;
@@ -39,7 +42,7 @@ public class GameController {
 
     private void handleCellClick(int x, int y) {
         // Inside your GameController's handleCellClick method
-        sound = new Sound();
+        sound = new Sound(this);
         Piece selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
@@ -144,6 +147,17 @@ public class GameController {
         // Update the board view with the initial state of the board
         updateBoardView();
 
+    }
+
+    public void setMute(boolean mute) {
+        isMuted = mute;
+        String status = isMuted ? "Sound muted." : "Sound unmuted.";
+        mainView.updateStatus(status);
+        mainView.updateSoundIcon(mute);
+    }
+
+    public boolean getMuteStatus() {
+        return isMuted;
     }
 
     public static void main(String[] args) {

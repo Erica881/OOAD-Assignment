@@ -15,8 +15,11 @@ public class MainView {
     private Sound sound;
     private JLabel soundIcon;
 
+    private String unmute_icon_path = "/resources/image/unmute_icon.png";
+    private String mute_icon_path = "/resources/image/mute_icon.png";
+
     public MainView(GameController controller) {
-        sound = new Sound();
+        sound = new Sound(controller);
         this.controller = controller; // Initialize the controller
 
         // Initialize the frame
@@ -36,11 +39,8 @@ public class MainView {
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         statusPanel.add(statusLabel);
 
-        // Load the image from the resources/image folder
-        String iconPath = "/resources/image/unmute_icon.png"; // Relative path for resources
-
         // soundIcon = new JLabel(new ImageIcon(getClass().getResource(iconPath)));
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource(iconPath));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource(unmute_icon_path));
 
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
@@ -50,7 +50,7 @@ public class MainView {
         soundIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                toggleMute(); // Mute or unmute when clicked
+                setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
             }
         });
         statusPanel.add(soundIcon);
@@ -60,11 +60,6 @@ public class MainView {
 
         // Add the menu panel to the center
         frame.add(menuView, BorderLayout.CENTER);
-
-        // Set the frame size and visibility
-        // frame.setSize(400, 600);
-        // frame.setMinimumSize(new Dimension(600, 750));
-        // frame.setVisible(true);
 
         frame.setSize(400, 600);
         frame.setMinimumSize(new Dimension(600, 750));
@@ -105,33 +100,16 @@ public class MainView {
 
     // Mute/unmute functionality for MenuView
     public void setMute(boolean mute) {
-        sound.mute(mute);// Update the mute status in Sound
-        String iconPath = mute ? "/resources/image/mute_icon.png" : "/resources/image/unmute_icon.png";
+        controller.setMute(mute);
+    }
+
+    public void updateSoundIcon(boolean isMuted) {
+        String iconPath = isMuted ? mute_icon_path : unmute_icon_path;
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(iconPath));
 
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         soundIcon.setIcon(new ImageIcon(resizedImage));
-    }
-
-    public void toggleMute() {
-        if (sound != null) {
-
-            boolean isMuted = !sound.isMuted();
-            sound.mute(isMuted);
-
-            // Change the icon based on mute state
-            String muteIconPath = isMuted ? "/resources/image/mute_icon.png" : "/resources/image/unmute_icon.png";
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource(muteIconPath));
-            // Resize the image to a smaller size (e.g., 24x24)
-            Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24,
-                    Image.SCALE_SMOOTH);
-            soundIcon.setIcon(new ImageIcon(resizedImage));
-        } else {
-            System.out.println("Sound object is not initialized.");
-
-        }
-
     }
 
     public Sound getSound() {

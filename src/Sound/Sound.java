@@ -1,171 +1,95 @@
-// package Sound;
-
-// import javax.sound.sampled.*;
-// import java.io.IOException;
-// import java.io.InputStream;
-
-// public class Sound {
-//     private final InputStream move; // Use InputStream instead of URL
-//     private final InputStream notify; // Use InputStream instead of URL
-//     private final InputStream capture; // Use InputStream instead of URL
-
-//     private boolean isMuted;
-//     private Clip clip;
-
-//     public Sound() {
-//         // Load the move sound from the resources folder
-//         this.move = getClass().getResourceAsStream("move.wav"); // Ensure the path is correct
-//         this.notify = getClass().getResourceAsStream("notify.wav"); // Ensure the path is correct
-//         this.capture = getClass().getResourceAsStream("capture.wav"); // Ensure the path is correct
-//     }
-
-//     public void soundMove() {
-//         play(move);
-//     }
-
-//     public void soundNotify() {
-//         play(notify);
-//     }
-
-//     public void soundCapture() {
-//         play(capture);
-//     }
-
-//     public void mute(boolean mute) {
-//         isMuted = mute;
-//         if (mute) {
-//             stop();
-//         } else {
-//             unmute();
-//         }
-//     }
-
-//     public boolean isMuted() {
-//         return isMuted;
-//     }
-
-//     public void unmute() {
-//         if (!isMuted && clip != null) {
-//             clip.setFramePosition(0); // Reset to the start
-//             clip.start();
-//         }
-//     }
-
-//     public void loop() {
-//         if (!isMuted && clip != null) {
-//             clip.loop(Clip.LOOP_CONTINUOUSLY);
-//         }
-//     }
-
-//     public void stop() {
-//         if (clip != null) {
-//             clip.stop();
-//         }
-//     }
-
-//     private void play(InputStream inputStream) {
-//         try {
-//             // Open the audio input stream from the InputStream
-//             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-//             Clip clip = AudioSystem.getClip();
-//             clip.open(audioInputStream);
-//             clip.addLineListener(event -> {
-//                 if (event.getType() == LineEvent.Type.STOP) {
-//                     clip.close();
-//                 }
-//             });
-//             clip.start();
-//         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-//             e.printStackTrace();
-//         }
-//     }
-// }
-
 package Sound;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
+import Controller.GameController;
 import java.io.InputStream;
 
 public class Sound {
-    private final InputStream move;
-    private final InputStream notify;
-    private final InputStream capture;
-
-    private boolean isMuted;
+    private GameController controller;
+    private Clip move;
+    private Clip notify;
+    private Clip capture;
     private Clip clip;
 
-    public Sound() {
-        // Load the sound files
-        this.move = getClass().getResourceAsStream("move.wav");
-        this.notify = getClass().getResourceAsStream("notify.wav");
-        this.capture = getClass().getResourceAsStream("capture.wav");
+    public Sound(GameController controller) {
+        this.controller = controller;
+        try {
+            this.move = AudioSystem.getClip();
+            this.notify = AudioSystem.getClip();
+            this.capture = AudioSystem.getClip();
+
+            initializeClip(getClass().getResourceAsStream("move.wav"), move);
+            initializeClip(getClass().getResourceAsStream("notify.wav"), notify);
+            initializeClip(getClass().getResourceAsStream("capture.wav"), capture);
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void soundMove() {
-        if (!isMuted) { // Check if sound is muted before playing
+        if (!isMuted()) { // Check if sound is muted before playing
             play(move);
         }
     }
 
     public void soundNotify() {
-        if (!isMuted) { // Check if sound is muted before playing
+        if (!isMuted()) { // Check if sound is muted before playing
             play(notify);
         }
     }
 
     public void soundCapture() {
-        if (!isMuted) { // Check if sound is muted before playing
+        if (!isMuted()) { // Check if sound is muted before playing
             play(capture);
         }
     }
 
-    public void mute(boolean mute) {
-        System.out.println("is muted?; " + mute);
-        isMuted = mute;
-        if (isMuted) {
-            stop(); // Stop the sound if muted
+    public void toggleMute(boolean mute) {
+        // isMuted = !isMuted; // Toggle the mute state
+
+        if (mute) {
+            controller.setMute(mute);
+            System.out.println("Mute toggled. isMuted: " + isMuted());
+
+        } else {
+            System.out.println("Unmuted: ready to play sounds.");
+            controller.setMute(!mute);
+
         }
     }
 
     public boolean isMuted() {
-        return isMuted;
+        return controller.getMuteStatus();
     }
 
     public void unmute() {
-        if (!isMuted && clip != null) {
+        if (!isMuted() && clip != null) {
             clip.setFramePosition(0); // Reset to the start
             clip.start();
         }
     }
 
-    public void loop() {
-        if (!isMuted && clip != null) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-    }
-
     public void stop() {
-        System.out.println("where is clip " + clip);
         if (clip != null) {
             clip.stop();
-            System.out.println("clip shoudl stop");
         }
     }
 
-    private void play(InputStream inputStream) {
+    private void initializeClip(InputStream soundStream, Clip clip) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            clip = AudioSystem.getClip();
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundStream);
             clip.open(audioInputStream);
-            clip.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP) {
-                    clip.close();
-                }
-            });
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void play(Clip clip) {
+        if (clip != null && !isMuted()) {
+            clip.setFramePosition(0); // Reset to the start
+            clip.start();
+        } else {
+            System.out.println("Sound playback skipped (muted or null).");
         }
     }
 }
