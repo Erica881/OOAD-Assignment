@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import controller.GameController;
 
@@ -9,8 +11,10 @@ public class MainView {
     private BoardView boardView;
     private MenuView menuView;
     private JPanel statusPanel;
+    private JPanel timePanel;
     private JPanel iconPanel;
     private JLabel statusLabel;
+    private JLabel timeLabel;
     private GameController controller;
     private JLabel soundIcon;
     private JLabel settingIcon;
@@ -37,6 +41,15 @@ public class MainView {
         statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusLabel = new JLabel("Welcome to the game!");
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Initialize the time panel
+        timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        timeLabel = new JLabel("Time: 00:00");
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        timeLabel.setBorder(new EmptyBorder(0, 20, 0, 30)); // Top, Left, Bottom, Right
+        statusPanel.setBorder(new EmptyBorder(10, 0, 10, 20)); // Top, Left, Bottom, Right
+
+        statusPanel.add(timeLabel);
         statusPanel.add(statusLabel);
 
         iconPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -44,7 +57,6 @@ public class MainView {
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         soundIcon = new JLabel(new ImageIcon(resizedImage));
-
         soundIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
         soundIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -99,6 +111,13 @@ public class MainView {
 
         // Inform the controller that the game has started
         controller.startGame();
+    }
+
+    // Update the time label with the formatted time
+    public void updateTimeLabel(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        timeLabel.setText(String.format("Time: %02d:%02d", minutes, remainingSeconds));
     }
 
     // Update the status label with game messages

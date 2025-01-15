@@ -3,17 +3,19 @@ package controller;
 import model.*;
 import model.sound.Sound;
 import view.MainView;
-import utility.LogManager;
+import utility.*;
+import utility.Stopwatch.GameTimerListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameController {
+public class GameController implements GameTimerListener {
     private Board board; // The model
     private MainView mainView; // The main view
     private Sound sound;
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
+    private Stopwatch stopwatch;
 
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
@@ -25,6 +27,8 @@ public class GameController {
 
         // initialize log manager
         this.logManager = new LogManager();
+
+        this.stopwatch = new Stopwatch(this);
 
         // Initialize views
         mainView = new MainView(this);
@@ -81,9 +85,8 @@ public class GameController {
     }
 
     public void startGame() {
-
+        stopwatch.start(); // Delegate to model
         // board-related logic
-        // initializeSaveFile();
         logManager.initializeSaveFile();
         attachBoardListener();
 
@@ -124,5 +127,27 @@ public class GameController {
         // Initialize the model and start the game
         Board board = new Board();
         new GameController(board);
+    }
+
+    // Starts the timer
+    public void startTimer() {
+        stopwatch.start();
+    }
+
+    // Stops the timer
+    public void stopTimer() {
+        stopwatch.stop();
+    }
+
+    // Resets the timer
+    public void resetTimer() {
+        stopwatch.reset();
+    }
+
+    // Method from the GameTimerListener interface to update the view
+    @Override
+    public void onTimeUpdate(int seconds) {
+        // Inform the view to update the time label with the current seconds
+        mainView.updateTimeLabel(seconds);
     }
 }
