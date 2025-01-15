@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import model.*;
 import model.sound.Sound;
@@ -7,10 +7,6 @@ import utility.LogManager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class GameController {
     private Board board; // The model

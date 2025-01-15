@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import Controller.GameController;
+import controller.GameController;
 
 public class MainView {
     private JFrame frame;
