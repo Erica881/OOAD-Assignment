@@ -1,4 +1,4 @@
-package Model.Sound;
+package model.sound;
 
 import javax.sound.sampled.*;
 import Controller.GameController;

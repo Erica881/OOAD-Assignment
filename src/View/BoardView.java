@@ -1,10 +1,11 @@
-package View;
+package view;
 
 import javax.swing.*;
+
+import model.Piece;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
-
-import Model.Piece;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
