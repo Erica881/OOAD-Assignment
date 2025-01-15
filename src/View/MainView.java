@@ -3,7 +3,6 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import Controller.GameController;
-import Sound.Sound;
 
 public class MainView {
     private JFrame frame;
@@ -13,7 +12,6 @@ public class MainView {
     private JPanel iconPanel;
     private JLabel statusLabel;
     private GameController controller;
-    private Sound sound;
     private JLabel soundIcon;
     private JLabel settingIcon;
 
@@ -21,7 +19,7 @@ public class MainView {
     private String mute_icon_path = "/resources/image/mute_icon.png";
 
     public MainView(GameController controller) {
-        sound = new Sound(controller);
+        // sound = new Sound(controller);
         this.controller = controller; // Initialize the controller
 
         // Initialize the frame
@@ -132,7 +130,4 @@ public class MainView {
         soundIcon.setIcon(new ImageIcon(resizedImage));
     }
 
-    public Sound getSound() {
-        return sound;
-    }
 }
