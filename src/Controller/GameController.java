@@ -2,19 +2,15 @@ package Controller;
 
 import Model.Board;
 import Model.Piece;
-import Model.Ram;
-import View.BoardView;
 import View.MainView;
 import Sound.Sound;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class GameController {
     private Board board; // The model
