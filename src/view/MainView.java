@@ -3,8 +3,8 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-import Sound.Sound;
 import controller.GameController;
+import sound.Sound;
 
 public class MainView {
     private JFrame frame;
