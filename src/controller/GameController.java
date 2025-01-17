@@ -139,6 +139,13 @@ public class GameController implements GameTimerListener {
         stopwatch.stop();
     }
 
+    public void pauseGame() {
+        if (stopwatch != null) {
+            stopwatch.pause(); // Pause the game timer
+        }
+        mainView.updateStatus("Game paused!");
+    }
+
     // Resets the timer
     public void resetTimer() {
         stopwatch.reset();
@@ -149,5 +156,12 @@ public class GameController implements GameTimerListener {
     public void onTimeUpdate(int seconds) {
         // Inform the view to update the time label with the current seconds
         mainView.updateTimeLabel(seconds);
+    }
+
+    public void resumeGame() {
+        if (stopwatch != null) {
+            startTimer(); // Resume the game timer if it's paused
+        }
+        mainView.updateStatus("Game resumed!"); // Optionally update the status label
     }
 }

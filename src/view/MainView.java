@@ -7,23 +7,19 @@ import java.awt.*;
 import controller.GameController;
 
 public class MainView {
-    private JFrame frame;
     private BoardView boardView;
     private MenuView menuView;
-    private JPanel statusPanel;
-    private JPanel timePanel;
-    private JPanel iconPanel;
-    private JLabel statusLabel;
-    private JLabel timeLabel;
+    private SettingView settingView;
+    private JFrame frame;
+    private JPanel statusPanel, iconPanel, currentView;
+    private JLabel statusLabel, timeLabel;
     private GameController controller;
-    private JLabel soundIcon;
-    private JLabel settingIcon;
+    private JLabel soundIcon, settingIcon;
 
     private String unmute_icon_path = "/resources/image/unmute_icon.png";
     private String mute_icon_path = "/resources/image/mute_icon.png";
 
     public MainView(GameController controller) {
-        // sound = new Sound(controller);
         this.controller = controller; // Initialize the controller
 
         // Initialize the frame
@@ -33,9 +29,12 @@ public class MainView {
 
         // Initialize the board view (not displayed initially)
         boardView = new BoardView();
-
-        // Initialize the menu view
         menuView = new MenuView(this);
+        settingView = new SettingView(this);
+
+        // Add the initial view (MenuView) to the frame
+        currentView = menuView;
+        frame.add(currentView, BorderLayout.CENTER);
 
         // Initialize the status panel
         statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -43,7 +42,7 @@ public class MainView {
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
         // Initialize the time panel
-        timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         timeLabel = new JLabel("Time: 00:00");
         timeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         timeLabel.setBorder(new EmptyBorder(0, 20, 0, 30)); // Top, Left, Bottom, Right
@@ -76,8 +75,8 @@ public class MainView {
         settingIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                // setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
                 // open setting view
+                showSettingView();
             }
         });
         iconPanel.add(settingIcon);
@@ -97,16 +96,21 @@ public class MainView {
         frame.setVisible(true);
     }
 
+    public void showSettingView() {
+        controller.stopTimer();
+        frame.remove(currentView); // Remove the current view
+        currentView = settingView; // Update the current view to SettingView
+        frame.add(currentView, BorderLayout.CENTER); // Add the SettingView
+        frame.revalidate(); // Refresh the frame
+        frame.repaint();
+    }
+
     // Delegation archieve -
     public void startGame() {
-        // Remove the menu panel and show the board
-        frame.getContentPane().remove(menuView); // Hide menu panel
-
-        // Add the board view
-        frame.add(boardView, BorderLayout.CENTER);
-
-        // Revalidate and repaint to update the view
-        frame.revalidate();
+        frame.remove(currentView); // Remove the current view
+        currentView = boardView; // Update the current view to SettingView
+        frame.add(currentView, BorderLayout.CENTER); // Add the SettingView
+        frame.revalidate(); // Refresh the frame
         frame.repaint();
 
         // Inform the controller that the game has started
@@ -147,6 +151,18 @@ public class MainView {
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         soundIcon.setIcon(new ImageIcon(resizedImage));
+    }
+
+    public void resumeGame() {
+        // Update the UI if needed (e.g., hide settings view and show the game board)
+        frame.getContentPane().remove(currentView); // Remove the current view (e.g., settings)
+        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
+        currentView = boardView; // Update the current view reference
+
+        frame.revalidate();
+        frame.repaint();
+
+        // controller.resumeGame();
     }
 
 }

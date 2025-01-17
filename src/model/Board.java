@@ -2,6 +2,7 @@ package model;
 
 public class Board {
     private Piece[][] board;
+    // private boolean isGamePaused;
     private static final int ROWS = 8;
     private static final int COLS = 5;
 
@@ -81,4 +82,15 @@ public class Board {
             piece.move(x, y, this); // Let the piece handle its own movement
         }
     }
+
+    // // Method to pause or unpause the game
+    // public void setGamePaused(boolean isPaused) {
+    // this.isGamePaused = isPaused;
+    // }
+
+    // // Method to check if the game is paused
+    // public boolean isGamePaused() {
+    // return isGamePaused;
+    // }
+
 }
