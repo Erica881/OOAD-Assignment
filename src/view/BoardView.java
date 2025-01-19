@@ -6,12 +6,14 @@ import model.Piece;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+// import java.util.ArrayList;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
+    // private ArrayList<int[]> highlightedCells = new ArrayList<>();
 
     public BoardView() {
         this.setLayout(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
@@ -49,4 +51,34 @@ public class BoardView extends JPanel {
             cell.setIcon(null);
         }
     }
+
+    // public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
+    // // First clear previous highlights
+    // clearHighlights();
+
+    // // Store the highlighted cells for later use
+    // highlightedCells = availableMoves;
+
+    // // Change the background color of the buttons for the available moves
+    // for (int[] position : highlightedCells) {
+    // int x = position[0];
+    // int y = position[1];
+    // buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow
+    // for highlighting
+    // }
+    // }
+
+    // // Clear all highlights
+    // public void clearHighlights() {
+    // // Reset the background color of all buttons to default (can be transparent
+    // or
+    // // original color)
+    // for (int i = 0; i < ROWS; i++) {
+    // for (int j = 0; j < COLS; j++) {
+    // buttons[i][j].setBackground(null); // Reset to the default background color
+    // }
+    // }
+
+    // highlightedCells.clear();
+    // }
 }

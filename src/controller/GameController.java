@@ -10,6 +10,8 @@ import utility.Stopwatch.GameTimerListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController implements GameTimerListener {
     private Board board; // The model
@@ -44,6 +46,10 @@ public class GameController implements GameTimerListener {
         Piece selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
+            // Get the available moves for the selected piece
+            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
+            // board);
+
             logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x +
                     ", " + y + ")";
 
@@ -167,9 +173,4 @@ public class GameController implements GameTimerListener {
         mainView.updateStatus("Game stopped!");
     }
 
-    public static void main(String[] args) {
-        // Initialize the model and start the game
-        Board board = new Board();
-        new GameController(board);
-    }
 }
