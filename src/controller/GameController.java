@@ -47,14 +47,15 @@ public class GameController implements GameTimerListener {
 
         if (isSelectedPieceValidate(selectedPiece)) {
             // Get the available moves for the selected piece
-            ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y, board);
+            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
+            // board);
 
             logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x +
                     ", " + y + ")";
 
-            // sound.soundMove();
-            // System.out.println(logMessage);
-            // updateGameState(x, y, logMessage);
+            sound.soundMove();
+            System.out.println(logMessage);
+            updateGameState(x, y, logMessage);
         }
 
     }

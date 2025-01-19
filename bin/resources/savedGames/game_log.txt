@@ -1,0 +1,3 @@
+Blue selected Ram at (6, 2)
+Red selected Ram at (6, 3)
+Blue selected Ram at (6, 1)
