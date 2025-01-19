@@ -2,7 +2,9 @@ package controller;
 
 import model.*;
 import model.sound.Sound;
+import view.BoardView;
 import view.MainView;
+import view.MenuView;
 import utility.*;
 import utility.Stopwatch.GameTimerListener;
 
@@ -157,6 +159,11 @@ public class GameController implements GameTimerListener {
     public void stopGame() {
         stopwatch.reset();
         board.initialize();
+        mainView.getFrame().setVisible(false); // Hides the current game view
+        GameController newGameController = new GameController(board);
+        newGameController.mainView.getFrame().setVisible(true); // Show the new game view
+
+        // new GameController(board);
         mainView.updateStatus("Game stopped!");
     }
 

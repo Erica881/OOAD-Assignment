@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import controller.GameController;
+import utility.*;
 
 public class MainView {
     private BoardView boardView;
@@ -98,21 +99,12 @@ public class MainView {
 
     public void showSettingView() {
         controller.stopTimer();
-        frame.remove(currentView); // Remove the current view
-        currentView = settingView; // Update the current view to SettingView
-        frame.add(currentView, BorderLayout.CENTER); // Add the SettingView
-        frame.revalidate(); // Refresh the frame
-        frame.repaint();
+        switchView(settingView);
     }
 
     // Delegation archieve -
     public void startGame() {
-        frame.remove(currentView); // Remove the current view
-        currentView = boardView; // Update the current view to SettingView
-        frame.add(currentView, BorderLayout.CENTER); // Add the SettingView
-        frame.revalidate(); // Refresh the frame
-        frame.repaint();
-
+        switchView(boardView);
         // Inform the controller that the game has started
         controller.startGame();
     }
@@ -155,27 +147,13 @@ public class MainView {
 
     public void resumeGame() {
         // Update the UI if needed (e.g., hide settings view and show the game board)
-        frame.getContentPane().remove(currentView); // Remove the current view (e.g., settings)
-        currentView = boardView; // Update the current view reference
-        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
-
-        frame.revalidate();
-        frame.repaint();
-
+        switchView(settingView);
         controller.resumeGame();
     }
 
     public void resetGame() {
-        // Update the UI if needed (e.g., hide settings view and show the game board)
-        frame.getContentPane().remove(currentView); // Remove the current view (e.g., settings)
-        currentView = boardView; // Update the current view reference
-        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
-
-        frame.revalidate();
-        frame.repaint();
-
+        switchView(boardView);
         controller.resetGame();
-
     }
 
     public void stopGame() {
@@ -189,22 +167,26 @@ public class MainView {
 
         // Check the user's choice
         if (choice == JOptionPane.YES_OPTION) {
-            // Perform the necessary actions to stop the game
-            frame.getContentPane().remove(currentView); // Remove the current view (e.g., game board)
-            currentView = menuView; // Update the current view reference
-            frame.add(menuView, BorderLayout.CENTER); // Add the menu view
-
-            frame.revalidate();
-            frame.repaint();
-
+            switchView(menuView);
+            // new MenuView(this);
             controller.stopGame(); // Stop game logic in the controller
-
+            return;
         }
-
         // Do nothing if the user selects "No"
         // Optionally, you can log or display a message in the status bar
         System.out.println("User canceled quitting the game.");
+    }
 
+    private void switchView(JPanel newView) {
+        frame.getContentPane().remove(currentView); // Remove the current view
+        currentView = newView; // Update the current view reference
+        frame.add(currentView, BorderLayout.CENTER); // Add the new view
+        frame.revalidate(); // Refresh the frame
+        frame.repaint(); // Repaint the frame
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 
 }
