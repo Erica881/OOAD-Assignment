@@ -2,11 +2,24 @@ package model;
 
 public class Board {
     private Piece[][] board;
+    // private boolean isGamePaused;
     private static final int ROWS = 8;
     private static final int COLS = 5;
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
+        initialize(); // Call initialize() to set up the board
+    }
+
+    // Initialize the board with pieces
+    public void initialize() {
+        // Clear the board
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                board[row][col] = null; // clear all positions
+            }
+        }
+
         // Piece order for the top (Red) and bottom (Blue) rows
         String[] pieceOrder = { "Xor", "Biz", "Sau", "Biz", "Tor" };
 
@@ -28,7 +41,6 @@ public class Board {
                 board[row][col] = new Ram(color);
             }
         }
-
     }
 
     private void swapPieces(int x1, int y1, int x2, int y2) {
@@ -69,17 +81,6 @@ public class Board {
     public Piece[][] getBoard() {
         return board; // Return the 2D array representing the board
     }
-
-    // public boolean moveRam(int currentX, int currentY) {
-    // Piece piece = board[currentX][currentY];
-
-    // if (piece instanceof Ram) {
-    // Ram ram = (Ram) piece;
-    // ram.move(currentX, currentY, this); // Call the Ram's move method.
-    // return true;
-    // }
-    // return false; // If the piece isn't a Ram, return false.
-    // }
 
     public void movePiece(int x, int y) {
         Piece piece = board[x][y];

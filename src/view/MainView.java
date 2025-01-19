@@ -1,26 +1,26 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.border.EmptyBorder;
 
+import java.awt.*;
 import controller.GameController;
-import sound.Sound;
+import utility.*;
 
 public class MainView {
-    private JFrame frame;
     private BoardView boardView;
     private MenuView menuView;
-    private JPanel statusPanel;
-    private JLabel statusLabel;
+    private SettingView settingView;
+    private JFrame frame;
+    private JPanel statusPanel, iconPanel, currentView;
+    private JLabel statusLabel, timeLabel;
     private GameController controller;
-    private Sound sound;
-    private JLabel soundIcon;
+    private JLabel soundIcon, settingIcon;
 
     private String unmute_icon_path = "/resources/image/unmute_icon.png";
     private String mute_icon_path = "/resources/image/mute_icon.png";
 
     public MainView(GameController controller) {
-        sound = new Sound(controller);
         this.controller = controller; // Initialize the controller
 
         // Initialize the frame
@@ -30,23 +30,33 @@ public class MainView {
 
         // Initialize the board view (not displayed initially)
         boardView = new BoardView();
-
-        // Initialize the menu view
         menuView = new MenuView(this);
+        settingView = new SettingView(this);
+
+        // Add the initial view (MenuView) to the frame
+        currentView = menuView;
+        frame.add(currentView, BorderLayout.CENTER);
 
         // Initialize the status panel
-        statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusLabel = new JLabel("Welcome to the game!");
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Initialize the time panel
+        statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        timeLabel = new JLabel("Time: 00:00");
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        timeLabel.setBorder(new EmptyBorder(0, 20, 0, 30)); // Top, Left, Bottom, Right
+        statusPanel.setBorder(new EmptyBorder(10, 0, 10, 20)); // Top, Left, Bottom, Right
+
+        statusPanel.add(timeLabel);
         statusPanel.add(statusLabel);
 
-        // soundIcon = new JLabel(new ImageIcon(getClass().getResource(iconPath)));
+        iconPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(unmute_icon_path));
-
         // Resize the image to a smaller size (e.g., 24x24)
         Image resizedImage = originalIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         soundIcon = new JLabel(new ImageIcon(resizedImage));
-
         soundIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
         soundIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -54,10 +64,29 @@ public class MainView {
                 setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
             }
         });
-        statusPanel.add(soundIcon);
+        iconPanel.add(soundIcon);
 
-        // Add the status panel to the top (BorderLayout.NORTH)
-        frame.add(statusPanel, BorderLayout.NORTH);
+        // Add Settings Icon
+        ImageIcon originalSettingIcon = new ImageIcon(getClass().getResource("/resources/image/setting.png"));
+
+        // Resize the image to a smaller size (e.g., 24x24)
+        Image resizedSettingImage = originalSettingIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        settingIcon = new JLabel(new ImageIcon(resizedSettingImage));
+        settingIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        settingIcon.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                // open setting view
+                showSettingView();
+            }
+        });
+        iconPanel.add(settingIcon);
+
+        // Initialize a container panel for the top bar
+        JPanel topBarPanel = new JPanel(new BorderLayout());
+        topBarPanel.add(statusPanel, BorderLayout.WEST);
+        topBarPanel.add(iconPanel, BorderLayout.EAST);
+        frame.add(topBarPanel, BorderLayout.NORTH);
 
         // Add the menu panel to the center
         frame.add(menuView, BorderLayout.CENTER);
@@ -68,20 +97,23 @@ public class MainView {
         frame.setVisible(true);
     }
 
+    public void showSettingView() {
+        controller.stopTimer();
+        switchView(settingView);
+    }
+
     // Delegation archieve -
     public void startGame() {
-        // Remove the menu panel and show the board
-        frame.getContentPane().remove(menuView); // Hide menu panel
-
-        // Add the board view
-        frame.add(boardView, BorderLayout.CENTER);
-
-        // Revalidate and repaint to update the view
-        frame.revalidate();
-        frame.repaint();
-
+        switchView(boardView);
         // Inform the controller that the game has started
         controller.startGame();
+    }
+
+    // Update the time label with the formatted time
+    public void updateTimeLabel(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        timeLabel.setText(String.format("Time: %02d:%02d", minutes, remainingSeconds));
     }
 
     // Update the status label with game messages
@@ -113,7 +145,48 @@ public class MainView {
         soundIcon.setIcon(new ImageIcon(resizedImage));
     }
 
-    public Sound getSound() {
-        return sound;
+    public void resumeGame() {
+        // Update the UI if needed (e.g., hide settings view and show the game board)
+        switchView(boardView);
+        controller.resumeGame();
     }
+
+    public void resetGame() {
+        switchView(boardView);
+        controller.resetGame();
+    }
+
+    public void stopGame() {
+        // Show a confirmation dialog
+        int choice = JOptionPane.showConfirmDialog(
+                frame,
+                "Do you really want to quit the game?",
+                "Quit Game",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        // Check the user's choice
+        if (choice == JOptionPane.YES_OPTION) {
+            switchView(menuView);
+            // new MenuView(this);
+            controller.stopGame(); // Stop game logic in the controller
+            return;
+        }
+        // Do nothing if the user selects "No"
+        // Optionally, you can log or display a message in the status bar
+        System.out.println("User canceled quitting the game.");
+    }
+
+    private void switchView(JPanel newView) {
+        frame.getContentPane().remove(currentView); // Remove the current view
+        currentView = newView; // Update the current view reference
+        frame.add(currentView, BorderLayout.CENTER); // Add the new view
+        frame.revalidate(); // Refresh the frame
+        frame.repaint(); // Repaint the frame
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
 }
