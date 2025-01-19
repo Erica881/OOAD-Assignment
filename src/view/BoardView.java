@@ -45,12 +45,8 @@ public class BoardView extends JPanel {
         JButton cell = buttons[x][y];
         if (piece != null) {
             cell.setIcon(piece.getImage());
-            // Update the cell with the piece's information (e.g., name or color)
-            // buttons[x][y].setText(piece.getName() + " (" + piece.getColor() + ")");
         } else {
-            // Clear the cell if it's empty
             cell.setIcon(null);
-            // buttons[x][y].setText("");
         }
     }
 }

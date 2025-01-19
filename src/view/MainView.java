@@ -156,13 +156,55 @@ public class MainView {
     public void resumeGame() {
         // Update the UI if needed (e.g., hide settings view and show the game board)
         frame.getContentPane().remove(currentView); // Remove the current view (e.g., settings)
-        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
         currentView = boardView; // Update the current view reference
+        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
 
         frame.revalidate();
         frame.repaint();
 
-        // controller.resumeGame();
+        controller.resumeGame();
+    }
+
+    public void resetGame() {
+        // Update the UI if needed (e.g., hide settings view and show the game board)
+        frame.getContentPane().remove(currentView); // Remove the current view (e.g., settings)
+        currentView = boardView; // Update the current view reference
+        frame.add(boardView, BorderLayout.CENTER); // Add the main game board view
+
+        frame.revalidate();
+        frame.repaint();
+
+        controller.resetGame();
+
+    }
+
+    public void stopGame() {
+        // Show a confirmation dialog
+        int choice = JOptionPane.showConfirmDialog(
+                frame,
+                "Do you really want to quit the game?",
+                "Quit Game",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        // Check the user's choice
+        if (choice == JOptionPane.YES_OPTION) {
+            // Perform the necessary actions to stop the game
+            frame.getContentPane().remove(currentView); // Remove the current view (e.g., game board)
+            currentView = menuView; // Update the current view reference
+            frame.add(menuView, BorderLayout.CENTER); // Add the menu view
+
+            frame.revalidate();
+            frame.repaint();
+
+            controller.stopGame(); // Stop game logic in the controller
+
+        }
+
+        // Do nothing if the user selects "No"
+        // Optionally, you can log or display a message in the status bar
+        System.out.println("User canceled quitting the game.");
+
     }
 
 }

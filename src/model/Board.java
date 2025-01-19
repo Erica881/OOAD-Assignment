@@ -13,6 +13,13 @@ public class Board {
 
     // Initialize the board with pieces
     public void initialize() {
+        // Clear the board
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                board[row][col] = null; // clear all positions
+            }
+        }
+
         // Piece order for the top (Red) and bottom (Blue) rows
         String[] pieceOrder = { "Xor", "Biz", "Sau", "Biz", "Tor" };
 
@@ -82,15 +89,5 @@ public class Board {
             piece.move(x, y, this); // Let the piece handle its own movement
         }
     }
-
-    // // Method to pause or unpause the game
-    // public void setGamePaused(boolean isPaused) {
-    // this.isGamePaused = isPaused;
-    // }
-
-    // // Method to check if the game is paused
-    // public boolean isGamePaused() {
-    // return isGamePaused;
-    // }
 
 }

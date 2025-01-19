@@ -17,17 +17,17 @@ public class SettingView extends JPanel {
         resumeGameButton.setFont(new Font("Arial", Font.BOLD, 15));
         resumeGameButton.addActionListener(e -> mainView.resumeGame());
 
-        // Stop Game button
-        stopGameButton = new JButton("Stop Game");
-        stopGameButton.setPreferredSize(new Dimension(150, 50));
-        stopGameButton.setFont(new Font("Arial", Font.BOLD, 15));
-        // stopGameButton.addActionListener(e -> mainView.startGame());
-
         // Adjust the size and font of the button
         resetGameButton = new JButton("Reset Game");
         resetGameButton.setPreferredSize(new Dimension(150, 50));
         resetGameButton.setFont(new Font("Arial", Font.BOLD, 15));
-        // resetGameButton.addActionListener(e -> mainView.startGame());
+        resetGameButton.addActionListener(e -> mainView.resetGame());
+
+        // Stop Game button
+        stopGameButton = new JButton("Stop Game");
+        stopGameButton.setPreferredSize(new Dimension(150, 50));
+        stopGameButton.setFont(new Font("Arial", Font.BOLD, 15));
+        stopGameButton.addActionListener(e -> mainView.stopGame());
 
         // Configure GridBagConstraints for the button
         gbc.insets = new Insets(10, 10, 10, 10);

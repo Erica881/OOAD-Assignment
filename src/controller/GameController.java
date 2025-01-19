@@ -85,9 +85,10 @@ public class GameController implements GameTimerListener {
     }
 
     public void startGame() {
-        stopwatch.start(); // Delegate to model
+        stopwatch.start();
         // board-related logic
         logManager.initializeSaveFile();
+        board.initialize(); // Call initialize() to set up the board board.
         attachBoardListener();
 
         // Update the board view with the initial state of the board
@@ -123,32 +124,9 @@ public class GameController implements GameTimerListener {
         return isMuted;
     }
 
-    public static void main(String[] args) {
-        // Initialize the model and start the game
-        Board board = new Board();
-        new GameController(board);
-    }
-
-    // Starts the timer
-    public void startTimer() {
-        stopwatch.start();
-    }
-
     // Stops the timer
     public void stopTimer() {
         stopwatch.stop();
-    }
-
-    public void pauseGame() {
-        if (stopwatch != null) {
-            stopwatch.pause(); // Pause the game timer
-        }
-        mainView.updateStatus("Game paused!");
-    }
-
-    // Resets the timer
-    public void resetTimer() {
-        stopwatch.reset();
     }
 
     // Method from the GameTimerListener interface to update the view
@@ -160,8 +138,31 @@ public class GameController implements GameTimerListener {
 
     public void resumeGame() {
         if (stopwatch != null) {
-            startTimer(); // Resume the game timer if it's paused
+            stopwatch.start();// Resume the game timer if it's paused
         }
         mainView.updateStatus("Game resumed!"); // Optionally update the status label
+    }
+
+    public void resetGame() {
+        stopwatch.reset();
+        stopwatch.start();
+        currentPlayer = "Blue"; // Reset the player to the initial player
+        board.initialize(); // Reinitialize the board
+        updateBoardView(); // Update the board view to reflect the new state
+        logManager.initializeSaveFile(); // Optionally reset logs
+        mainView.updateStatus("Board has been reset."); // Update the status
+
+    }
+
+    public void stopGame() {
+        stopwatch.reset();
+        board.initialize();
+        mainView.updateStatus("Game stopped!");
+    }
+
+    public static void main(String[] args) {
+        // Initialize the model and start the game
+        Board board = new Board();
+        new GameController(board);
     }
 }
