@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "GameLauncher",
+      "request": "launch",
+      "mainClass": "GameLauncher",
+      "projectName": "OOAD-Assignment_890418c3"
+    },
+    {
+      "type": "java",
       "name": "MenuView",
       "request": "launch",
       "mainClass": "view.MenuView",

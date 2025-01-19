@@ -1,6 +1,9 @@
 package model;
 
 import java.awt.Image;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -63,5 +66,10 @@ public class Piece {
 
     public void move(int currentX, int currentY, Board board) {
 
+    }
+
+    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
+        // print the available move for the piece
+        return new ArrayList<>();
     }
 }
