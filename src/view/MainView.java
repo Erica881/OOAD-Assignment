@@ -147,7 +147,7 @@ public class MainView {
 
     public void resumeGame() {
         // Update the UI if needed (e.g., hide settings view and show the game board)
-        switchView(settingView);
+        switchView(boardView);
         controller.resumeGame();
     }
 

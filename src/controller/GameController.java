@@ -153,7 +153,7 @@ public class GameController implements GameTimerListener {
         updateBoardView(); // Update the board view to reflect the new state
         logManager.initializeSaveFile(); // Optionally reset logs
         mainView.updateStatus("Board has been reset."); // Update the status
-
+        System.out.println("Log reseted.");
     }
 
     public void stopGame() {

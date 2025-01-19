@@ -11,13 +11,13 @@ public class SettingView extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Stop Game button
+        // resume Game button
         resumeGameButton = new JButton("Resume Game");
         resumeGameButton.setPreferredSize(new Dimension(150, 50));
         resumeGameButton.setFont(new Font("Arial", Font.BOLD, 15));
         resumeGameButton.addActionListener(e -> mainView.resumeGame());
 
-        // Adjust the size and font of the button
+        // reset game button
         resetGameButton = new JButton("Reset Game");
         resetGameButton.setPreferredSize(new Dimension(150, 50));
         resetGameButton.setFont(new Font("Arial", Font.BOLD, 15));
@@ -37,11 +37,11 @@ public class SettingView extends JPanel {
         gbc.insets = new Insets(20, 20, 20, 20);
 
         this.add(resumeGameButton, gbc);
-        gbc.gridy++;
-        this.add(stopGameButton, gbc);
-
         // Configure GridBagConstraints for the checkbox
         gbc.gridy++;
         this.add(resetGameButton, gbc);
+        gbc.gridy++;
+        this.add(stopGameButton, gbc);
+
     }
 }
