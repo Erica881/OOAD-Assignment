@@ -6,6 +6,8 @@ import controller.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+import controller.GameController;
+import model.Piece;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
@@ -15,6 +17,8 @@ public class BoardView extends JPanel {
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
+    private GameController controller;
+
     // private ArrayList<int[]> highlightedCells = new ArrayList<>();
 
     public BoardView(GameController controller) {
