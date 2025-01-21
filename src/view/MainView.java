@@ -29,7 +29,7 @@ public class MainView {
         frame.setLayout(new BorderLayout());
 
         // Initialize the board view (not displayed initially)
-        boardView = new BoardView();
+        boardView = new BoardView(controller);
         menuView = new MenuView(this);
         settingView = new SettingView(this);
 

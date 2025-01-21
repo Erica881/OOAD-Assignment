@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-public class Piece {
+public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
@@ -64,12 +64,30 @@ public class Piece {
     //
     // not sure what to set, not using yet but might use in future
 
-    public void move(int currentX, int currentY, Board board) {
+    public void move(int toX, int currentY, Board board) {
 
     }
 
-    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-        // print the available move for the piece
-        return new ArrayList<>();
-    }
+    // public List<int[]> getAvailableMoves(int x, int y, Board board) {
+
+    // List<int[]> availableMoves = new ArrayList<>();
+    // // Example: Ram can move one square forward or backward
+    // int forward = x - 1; // Move forward
+    // int backward = x + 1; // Move backward
+
+    // if (forward >= 0 && forward < board.getBoard().length) {
+    // if (board.getPiece(forward, y) == null) { // No piece in the target cell
+    // availableMoves.add(new int[] { forward, y });
+    // }
+    // }
+    // if (backward >= 0 && backward < board.getBoard().length) {
+    // if (board.getPiece(backward, y) == null) {
+    // availableMoves.add(new int[] { backward, y });
+    // }
+    // }
+
+    // return availableMoves;
+    // }
+
+    public abstract List<int[]> getAvailableMoves(int x, int y, Board board); // Abstract method for getting moves
 }

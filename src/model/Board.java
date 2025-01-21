@@ -74,6 +74,10 @@ public class Board {
         return board[x][y]; // Return the piece at the given position
     }
 
+    // public Piece getPieceX() {
+    // return; // Return the piece at the given position
+    // }
+
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece; // Set a piece at the given position
     }
@@ -82,12 +86,13 @@ public class Board {
         return board; // Return the 2D array representing the board
     }
 
-    public void movePiece(int x, int y) {
-        Piece piece = board[x][y];
+    public void movePiece(int newX, int newY, Piece piece) {
+        // Piece piece = board[newX][new];
 
-        if (piece != null) {
-            piece.move(x, y, this); // Let the piece handle its own movement
-        }
+        // if (piece != null) {
+        System.out.println("Moving in movePiece");
+        piece.move(newX, newY, this); // Let the piece handle its own movement
+        // }
     }
 
 }

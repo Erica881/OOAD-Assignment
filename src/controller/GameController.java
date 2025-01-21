@@ -10,8 +10,9 @@ import utility.Stopwatch.GameTimerListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JButton;
 
 public class GameController implements GameTimerListener {
     private Board board; // The model
@@ -20,6 +21,11 @@ public class GameController implements GameTimerListener {
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
     private Stopwatch stopwatch;
+
+    private int selectedPieceX = -1; // Store the X coordinate of the selected piece
+    private int selectedPieceY = -1; // Store the Y coordinate of the selected piece
+    private List<int[]> availableMoves;
+    private Piece selectedPiece;
 
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
@@ -41,28 +47,55 @@ public class GameController implements GameTimerListener {
 
     }
 
-    private void handleCellClick(int x, int y) {
+    public void handleCellClick(int x, int y) {
         sound = new Sound(this);
-        Piece selectedPiece = board.getPiece(x, y);
+        selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
-            // Get the available moves for the selected piece
-            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
-            // board);
+            selectedPieceX = x;
+            selectedPieceY = y;
+            // Get available moves for the selected piece (polymorphic call)
+            availableMoves = selectedPiece.getAvailableMoves(x, y, board);
 
-            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x +
-                    ", " + y + ")";
+            mainView.getBoardView().showAvailableMoves(availableMoves);
 
-            sound.soundMove();
-            System.out.println(logMessage);
-            updateGameState(x, y, logMessage);
+            // attachClickedCell(availableMoves);
         }
-
     }
 
-    private void updateGameState(int x, int y, String logMessage) {
+    public void movePiece(int x, int y, Piece selectedPiece) {
+        selectedPiece = this.selectedPiece;
+        if (selectedPiece == null) {
+            System.out.println("No piece selected for moving.");
+            return;
+        }
+
+        // Update the board model
+        board.setPiece(x, y, selectedPiece);
+        board.setPiece(selectedPieceX, selectedPieceY, null); // Clear the old position
+
+        System.out.println(selectedPiece.getName() + " piece moved from (" + selectedPieceX + ", " + selectedPieceY
+                + ") to (" + x + ", " + y + ")");
+        logMessage = currentPlayer + " moved " + selectedPiece.getName() + " from (" + selectedPieceX + ", "
+                + selectedPieceY + ") to (" + x + ", " + y + ")";
+
+        // Update the view
+        updateBoardView();
         mainView.updateStatus(logMessage);
-        board.movePiece(x, y);
+
+        // Switch players (if applicable)
+        currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
+        mainView.updateStatus("It's now " + currentPlayer + "'s turn.");
+
+        // Reset the selected piece
+        selectedPiece = null;
+        selectedPieceX = -1;
+        selectedPieceY = -1;
+    }
+
+    public void updateGameState(int x, int y, String logMessage) {
+        mainView.updateStatus(logMessage);
+        // board.movePiece(x, y);
         board.flipBoard();
 
         // Switch players
@@ -108,13 +141,16 @@ public class GameController implements GameTimerListener {
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
-                final int x = i;
-                final int y = j;
+                int x = i;
+                int y = j;
 
                 mainView.getBoardView().addCellListener(x, y, new ActionListener() {
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println("i am in atatch board listener");
                         handleCellClick(x, y);
+
                     }
                 });
             }

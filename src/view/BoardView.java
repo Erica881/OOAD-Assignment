@@ -5,17 +5,27 @@ import javax.swing.*;
 import model.Piece;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-// import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
+import model.Board;
+import controller.GameController;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
-    // private ArrayList<int[]> highlightedCells = new ArrayList<>();
+    private List<int[]> highlightedCells = new ArrayList<>();
+    private List<ActionListener> highlightListeners = new ArrayList<>(); // Store listeners for highlighted cells
+    private Board board;
+    private GameController controller;
+    private Piece selectedPiece;
+    private int newX, newY;
 
-    public BoardView() {
+    public BoardView(GameController controller) {
+        this.controller = controller;
         this.setLayout(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
         buttons = new JButton[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
@@ -23,7 +33,6 @@ public class BoardView extends JPanel {
                 buttons[i][j] = new JButton("");
                 buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 this.add(buttons[i][j]);
-
             }
         }
 
@@ -42,6 +51,11 @@ public class BoardView extends JPanel {
         return buttons[x][y]; // Return the button corresponding to the (x, y) position
     }
 
+    // get the selected button
+    public JButton getSelectedCell(int selectedPieceX, int selectedPieceY) {
+        return buttons[selectedPieceX][selectedPieceY];
+    }
+
     // Update a cell with the piece's name and color
     public void updateCell(int x, int y, Piece piece) {
         JButton cell = buttons[x][y];
@@ -52,33 +66,59 @@ public class BoardView extends JPanel {
         }
     }
 
-    // public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
-    // // First clear previous highlights
-    // clearHighlights();
+    public void showAvailableMoves(List<int[]> availableMoves) {
 
-    // // Store the highlighted cells for later use
-    // highlightedCells = availableMoves;
+        // Clear previous highlights
+        clearHighlights();
 
-    // // Change the background color of the buttons for the available moves
-    // for (int[] position : highlightedCells) {
-    // int x = position[0];
-    // int y = position[1];
-    // buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow
-    // for highlighting
-    // }
-    // }
+        // highlight seleectedX and Y to green
+        for (int[] move : availableMoves) {
+            int moveX = move[0];
+            int moveY = move[1];
+            buttons[moveX][moveY].setBackground(Color.GREEN);
+            // Attach a new ActionListener for this cell
+            buttons[moveX][moveY].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Notify the controller about the selected move
+                    newX = moveX;
+                    newY = moveY;
+                    System.out.println("Selected move: (" + newX + ", " + newY + ")");
 
-    // // Clear all highlights
-    // public void clearHighlights() {
-    // // Reset the background color of all buttons to default (can be transparent
-    // or
-    // // original color)
-    // for (int i = 0; i < ROWS; i++) {
-    // for (int j = 0; j < COLS; j++) {
-    // buttons[i][j].setBackground(null); // Reset to the default background color
-    // }
-    // }
+                    // call controller to move the piece
+                    controller.movePiece(newX, newY, selectedPiece);
 
-    // highlightedCells.clear();
-    // }
+                    // Clear highlights after the move
+                    clearHighlights();
+                }
+            });
+        }
+    }
+
+    // Clear all highlights
+    public void clearHighlights() {
+        // Reset the background color of all buttons to default (can be transparent or
+        // original color)
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                buttons[i][j].setBackground(null); // Reset to the default background color
+            }
+        }
+
+        highlightedCells.clear();
+    }
+
+    // Getter for highlightedCells
+    public List<int[]> getHighlightedCells() {
+        return highlightedCells;
+    }
+
+    public JButton getButton(int x, int y) {
+        if (x < 0 || x >= buttons.length || y < 0 || y >= buttons[0].length) {
+            System.out.println("invalid coordinates");
+        }
+        System.out.println("Board view x: " + x + ", y: " + y);
+        return buttons[x][y];
+    }
+
 }
