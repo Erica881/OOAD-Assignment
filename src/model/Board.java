@@ -69,6 +69,7 @@ public class Board {
             board[i] = board[row - 1 - i];
             board[row - 1 - i] = temp;
         }
+
     }
 
     public Piece getPiece(int x, int y) {

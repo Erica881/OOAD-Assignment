@@ -43,14 +43,17 @@ public class BoardView extends JPanel {
         // Create row labels (1-8)
         JPanel rowLabelPanel = new JPanel(new GridLayout(ROWS, 1));
         for (int i = 0; i < ROWS; i++) {
-            rowLabels[i] = new JLabel(String.valueOf(i + 1), SwingConstants.CENTER);
+            rowLabels[i] = new JLabel(String.valueOf(i), SwingConstants.CENTER);
             rowLabelPanel.add(rowLabels[i]);
         }
 
         // Create column labels (a-h)
         JPanel colLabelPanel = new JPanel(new GridLayout(1, COLS));
         for (int i = 0; i < COLS; i++) {
-            colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
+            // colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)),
+            // SwingConstants.CENTER);
+            colLabels[i] = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+
             colLabelPanel.add(colLabels[i]);
         }
 
