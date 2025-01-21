@@ -40,6 +40,7 @@ public class Ram extends Piece {
         if (newX >= 0 && newX < board.getBoard().length) {
 
             Piece targetPosition = board.getPiece(newX, currentY);
+            //boolean isFlipped = targetPosition.getFlipped();
 
             if (targetPosition == null) {
 
@@ -49,7 +50,7 @@ public class Ram extends Piece {
             } else if (!targetPosition.getColor().equals(this.getColor())) {
 
                 System.out.println(targetPosition.getNameNColour() + " has been eliminated by " + this.getNameNColour()
-                        + " at (" + newX + ", " + currentY + ").");
+                        + " at (" + newX + "," + currentY + ")");
 
                 board.setPiece(newX, currentY, this);
                 board.setPiece(currentX, currentY, null);

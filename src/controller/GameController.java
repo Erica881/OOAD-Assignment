@@ -46,12 +46,12 @@ public class GameController implements GameTimerListener {
         Piece selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
+            String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
             // Get the available moves for the selected piece
             // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
             // board);
 
-            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x +
-                    ", " + y + ")";
+            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formattedCoordinate;
 
             sound.soundMove();
             System.out.println(logMessage);
@@ -64,6 +64,7 @@ public class GameController implements GameTimerListener {
         mainView.updateStatus(logMessage);
         board.movePiece(x, y);
         board.flipBoard();
+        mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
         for (int i = 0; i < 8; i++) {
@@ -98,6 +99,10 @@ public class GameController implements GameTimerListener {
             for (int j = 0; j < 5; j++) {
                 Piece piece = board.getPiece(i, j);
                 mainView.getBoardView().updateCell(i, j, piece);
+
+                // Update the coordinate on the cell (optional)
+                // String formattedCoordinate = piece.formatCoordinate(i, j, isFlipped);
+                // mainView.getBoardView().getCell(i, j).setText(formattedCoordinate);
             }
         }
     }

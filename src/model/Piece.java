@@ -14,16 +14,13 @@ public class Piece {
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
-    // private boolean isKilled;
-    // private int x; // X-coordinate on the board
-    // private int y; // Y-coordinate on the board
 
-    // "Tor", "tor", "Red"
+
+    // "Tor", "Red", (7, b)
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
         this.image = loadImage();
-        // this.isKilled = false;
     }
 
     private ImageIcon loadImage() {
@@ -67,10 +64,19 @@ public class Piece {
     //
     // not sure what to set, not using yet but might use in future
 
+    public String formatCoordinate(int x, int y, boolean isFlipped) {
+        char columnLetter = (char) ('a' + y); // Convert column index to letter
+        int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
+        return "(" + rowNumber + ", " + columnLetter + ")";
+    }
+
     public void move(int currentX, int currentY, Board board) {
 
     }
 
+    public boolean getFlipped() {
+        return isFlipped;
+    }
     public void rotateImage() {
         try {
             String imagePath = "/resources/image/" + name + color + ".png";

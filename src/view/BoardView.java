@@ -13,6 +13,9 @@ public class BoardView extends JPanel {
     private JPanel gridPanel; // Panel for the board grid
     private JLabel[] rowLabels; // Labels for rows (1-8)
     private JLabel[] colLabels; // Labels for columns (a-e)
+    private JPanel colLabelPanel;
+    private JPanel rowLabelPanel;
+
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
@@ -55,6 +58,31 @@ public class BoardView extends JPanel {
          this.add(colLabelPanel, BorderLayout.NORTH); // Column labels on the top
          this.add(gridPanel, BorderLayout.CENTER); // Board grid in the center
     }
+
+    
+    public void flipBoardView() {
+        // Flip row labels (invert order)
+        for (int i = 0; i < rowLabels.length / 2; i++) {
+            String temp = rowLabels[i].getText();
+            rowLabels[i].setText(rowLabels[rowLabels.length - 1 - i].getText());
+            rowLabels[rowLabels.length - 1 - i].setText(temp);
+        }
+    
+        // Flip column labels (move from top to bottom)
+        colLabelPanel = new JPanel(new GridLayout(1, COLS));
+        for (int i = 0; i < COLS; i++) {
+            colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
+            colLabelPanel.add(colLabels[i]);
+        }
+    
+        this.add(colLabelPanel, BorderLayout.NORTH); // Move to bottom
+        //colLabelPanel = newColLabelPanel; // Update reference
+    
+        // Refresh the grid panel
+        gridPanel.revalidate();
+        gridPanel.repaint();
+    }
+    
 
     // Add a listener to a specific cell
     public void addCellListener(int x, int y, ActionListener listener) {
