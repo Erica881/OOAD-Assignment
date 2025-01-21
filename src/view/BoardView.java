@@ -6,6 +6,8 @@ import model.Piece;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
+import controller.GameController;
 // import java.util.ArrayList;
 
 public class BoardView extends JPanel {
@@ -15,13 +17,15 @@ public class BoardView extends JPanel {
     private JLabel[] colLabels; // Labels for columns (a-e)
     private JPanel colLabelPanel;
     private JPanel rowLabelPanel;
+    private GameController controller;
 
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
     // private ArrayList<int[]> highlightedCells = new ArrayList<>();
 
-    public BoardView() {
+    public BoardView(GameController controller) {
+        this.controller = controller;
         this.setLayout(new BorderLayout());
         gridPanel = new JPanel(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
         buttons = new JButton[ROWS][COLS];
@@ -39,27 +43,26 @@ public class BoardView extends JPanel {
         // Add padding around the board view
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 20px padding on all sides
 
-         // Create row labels (1-8)
-         JPanel rowLabelPanel = new JPanel(new GridLayout(ROWS, 1));
-         for (int i = 0; i < ROWS ; i++) {
-             rowLabels[i] = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
-             rowLabelPanel.add(rowLabels[i]);
-         }
- 
-         // Create column labels (a-h)
-         JPanel colLabelPanel = new JPanel(new GridLayout(1, COLS));
-         for (int i = 0; i < COLS; i++) {
-             colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
-             colLabelPanel.add(colLabels[i]);
-         }
- 
-         // Add labels and grid to the main panel
-         this.add(rowLabelPanel, BorderLayout.WEST); // Row labels on the left
-         this.add(colLabelPanel, BorderLayout.NORTH); // Column labels on the top
-         this.add(gridPanel, BorderLayout.CENTER); // Board grid in the center
+        // Create row labels (1-8)
+        JPanel rowLabelPanel = new JPanel(new GridLayout(ROWS, 1));
+        for (int i = 0; i < ROWS; i++) {
+            rowLabels[i] = new JLabel(String.valueOf(i + 1), SwingConstants.CENTER);
+            rowLabelPanel.add(rowLabels[i]);
+        }
+
+        // Create column labels (a-h)
+        JPanel colLabelPanel = new JPanel(new GridLayout(1, COLS));
+        for (int i = 0; i < COLS; i++) {
+            colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
+            colLabelPanel.add(colLabels[i]);
+        }
+
+        // Add labels and grid to the main panel
+        this.add(rowLabelPanel, BorderLayout.WEST); // Row labels on the left
+        this.add(colLabelPanel, BorderLayout.NORTH); // Column labels on the top
+        this.add(gridPanel, BorderLayout.CENTER); // Board grid in the center
     }
 
-    
     public void flipBoardView() {
         // Flip row labels (invert order)
         for (int i = 0; i < rowLabels.length / 2; i++) {
@@ -67,22 +70,21 @@ public class BoardView extends JPanel {
             rowLabels[i].setText(rowLabels[rowLabels.length - 1 - i].getText());
             rowLabels[rowLabels.length - 1 - i].setText(temp);
         }
-    
+
         // Flip column labels (move from top to bottom)
         colLabelPanel = new JPanel(new GridLayout(1, COLS));
         for (int i = 0; i < COLS; i++) {
             colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
             colLabelPanel.add(colLabels[i]);
         }
-    
+
         this.add(colLabelPanel, BorderLayout.NORTH); // Move to bottom
-        //colLabelPanel = newColLabelPanel; // Update reference
-    
+        // colLabelPanel = newColLabelPanel; // Update reference
+
         // Refresh the grid panel
         gridPanel.revalidate();
         gridPanel.repaint();
     }
-    
 
     // Add a listener to a specific cell
     public void addCellListener(int x, int y, ActionListener listener) {
@@ -104,33 +106,24 @@ public class BoardView extends JPanel {
         }
     }
 
-    // public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
-    // // First clear previous highlights
-    // clearHighlights();
+    public void showAvailableMoves(List<int[]> availableMoves) {
+        clearHighlights();
+        for (int[] move : availableMoves) {
+            int moveX = move[0], moveY = move[1];
+            buttons[moveX][moveY].setBackground(Color.GREEN);
+            buttons[moveX][moveY].addActionListener(e -> {
+                controller.movePiece(moveX, moveY);
+                // controller.logMove(moveX, moveY);
+                clearHighlights();
+            });
+        }
+    }
 
-    // // Store the highlighted cells for later use
-    // highlightedCells = availableMoves;
-
-    // // Change the background color of the buttons for the available moves
-    // for (int[] position : highlightedCells) {
-    // int x = position[0];
-    // int y = position[1];
-    // buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow
-    // for highlighting
-    // }
-    // }
-
-    // // Clear all highlights
-    // public void clearHighlights() {
-    // // Reset the background color of all buttons to default (can be transparent
-    // or
-    // // original color)
-    // for (int i = 0; i < ROWS; i++) {
-    // for (int j = 0; j < COLS; j++) {
-    // buttons[i][j].setBackground(null); // Reset to the default background color
-    // }
-    // }
-
-    // highlightedCells.clear();
-    // }
+    public void clearHighlights() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                buttons[i][j].setBackground(null);
+            }
+        }
+    }
 }

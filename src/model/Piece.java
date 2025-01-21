@@ -9,18 +9,27 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class Piece {
+public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
-
+    private int x; // Current row of the piece
+    private int y; // Current column of the piece
 
     // "Tor", "Red", (7, b)
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
         this.image = loadImage();
+    }
+
+    public Piece(String name, String color, int x, int y) {
+        this.name = name;
+        this.color = color;
+        this.image = loadImage();
+        this.x = x;
+        this.y = y;
     }
 
     private ImageIcon loadImage() {
@@ -42,6 +51,22 @@ public class Piece {
         }
     }
 
+    // Getter for the X position
+    public int getX() {
+        return x;
+    }
+
+    // Getter for the Y position
+    public int getY() {
+        return y;
+    }
+
+    // Method to set the position of the piece
+    // public void setPosition(int x, int y) {
+    // this.x = x;
+    // this.y = y;
+    // }
+
     public String getName() {
         return name;
     }
@@ -58,25 +83,26 @@ public class Piece {
         return image;
     }
 
-    // public void setKilled(boolean isKill) {
-    // this.isKilled = isKill;
-    // }
-    //
-    // not sure what to set, not using yet but might use in future
-
     public String formatCoordinate(int x, int y, boolean isFlipped) {
         char columnLetter = (char) ('a' + y); // Convert column index to letter
         int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
         return "(" + rowNumber + ", " + columnLetter + ")";
     }
 
-    public void move(int currentX, int currentY, Board board) {
+    public abstract List<int[]> getAvailableMoves(int x, int y, Board board); // Abstract method for getting moves
 
+    public void move(int toX, int toY, Board board) {
+        System.out.println("Moving from: (" + getX() + ", " + getY() + ") to: (" +
+                toX + ", " + toY + ")");
+        board.setPiece(getX(), getY(), null);
+        board.setPiece(toX, toY, this);
+        System.out.println("Successfully Moved to: (" + toX + ", " + toY + ")");
     }
 
     public boolean getFlipped() {
         return isFlipped;
     }
+
     public void rotateImage() {
         try {
             String imagePath = "/resources/image/" + name + color + ".png";
@@ -88,7 +114,7 @@ public class Piece {
             if (!isFlipped) {
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
-                    flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
+                        flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
                     }
                 }
             } else { // Use the original image (unflipped)
@@ -106,8 +132,4 @@ public class Piece {
         }
     }
 
-    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-        // print the available move for the piece
-        return new ArrayList<>();
-    }
 }

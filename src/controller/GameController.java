@@ -20,6 +20,8 @@ public class GameController implements GameTimerListener {
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
     private Stopwatch stopwatch;
+    private List<int[]> availableMoves;
+    private Piece selectedPiece;
 
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
@@ -43,28 +45,28 @@ public class GameController implements GameTimerListener {
 
     private void handleCellClick(int x, int y) {
         sound = new Sound(this);
-        Piece selectedPiece = board.getPiece(x, y);
+        selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
             String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
             // Get the available moves for the selected piece
-            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
-            // board);
-
-            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formattedCoordinate;
-
+            availableMoves = selectedPiece.getAvailableMoves(x, y, board);
+            mainView.getBoardView().showAvailableMoves(availableMoves);
+            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
+                    + formattedCoordinate;
+            // logMove(x, y);
             sound.soundMove();
             System.out.println(logMessage);
-            updateGameState(x, y, logMessage);
+            // updateGameState(x, y, logMessage);
         }
 
     }
 
-    private void updateGameState(int x, int y, String logMessage) {
+    private void logMove(int x, int y) {
+        String logMessage = currentPlayer + " moved " + selectedPiece.getName() + " to (" + x + ", " + y + ")";
         mainView.updateStatus(logMessage);
-        board.movePiece(x, y);
+        board.movePiece(x, y, selectedPiece);
         board.flipBoard();
-        mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
         for (int i = 0; i < 8; i++) {
@@ -78,11 +80,55 @@ public class GameController implements GameTimerListener {
 
         // Switch players
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
-
         updateBoardView();
         mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
         logManager.logAction(logMessage);
     }
+
+    private boolean isMoveValid(int x, int y, List<int[]> availableMoves) {
+        for (int[] move : availableMoves) {
+            if (move[0] == x && move[1] == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void movePiece(int x, int y) {
+        if (isMoveValid(x, y, availableMoves)) {
+            board.movePiece(x, y, selectedPiece);
+            logMove(x, y);
+            // switchPlayer();
+            updateBoardView();
+        }
+    }
+
+    // private void updateGameState(int x, int y, String logMessage) {
+    // mainView.updateStatus(logMessage);
+    // System.out.println("selectedPiece: " + selectedPiece.getX() + ", " +
+    // selectedPiece.getY());
+    // board.movePiece(x, y, selectedPiece);
+    // board.flipBoard();
+    // mainView.getBoardView().flipBoardView();
+
+    // // Rotate images for all pieces
+    // for (int i = 0; i < 8; i++) {
+    // for (int j = 0; j < 5; j++) {
+    // Piece piece = board.getPiece(i, j);
+    // if (piece != null) {
+    // piece.rotateImage(); // Rotate the image of the piece
+    // }
+    // }
+    // }
+
+    // // Switch players
+    // currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
+
+    // updateBoardView();
+    // mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s
+    // turn.");
+    // logManager.logAction(logMessage);
+    // }
 
     public boolean isSelectedPieceValidate(Piece selectedPiece) {
         if (selectedPiece == null || (!selectedPiece.getColor().equalsIgnoreCase(currentPlayer))) {
@@ -112,10 +158,9 @@ public class GameController implements GameTimerListener {
         // board-related logic
         logManager.initializeSaveFile();
         board.initialize(); // Call initialize() to set up the board board.
-        attachBoardListener();
-
         // Update the board view with the initial state of the board
         updateBoardView();
+        attachBoardListener();
 
     }
 
@@ -123,15 +168,10 @@ public class GameController implements GameTimerListener {
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
-                final int x = i;
-                final int y = j;
+                int x = i;
+                int y = j;
 
-                mainView.getBoardView().addCellListener(x, y, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        handleCellClick(x, y);
-                    }
-                });
+                mainView.getBoardView().addCellListener(x, y, e -> handleCellClick(x, y));
             }
         }
     }

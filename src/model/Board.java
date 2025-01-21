@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Board {
     private Piece[][] board;
     // private boolean isGamePaused;
@@ -39,16 +41,16 @@ public class Board {
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = new Ram(color);
+                board[row][col] = new Ram(color, row, col);
             }
         }
     }
 
     // private String formatCoordinate(int row, int col) {
-    //     // Convert column index to a letter
-    //     char columnLetter = (char) ('a' + col);
-    //     // Return formatted coordinate
-    //     return "(" + (row + 1) + ", " + columnLetter + ")";
+    // // Convert column index to a letter
+    // char columnLetter = (char) ('a' + col);
+    // // Return formatted coordinate
+    // return "(" + (row + 1) + ", " + columnLetter + ")";
     // }
 
     private void swapPieces(int x1, int y1, int x2, int y2) {
@@ -70,7 +72,7 @@ public class Board {
     public boolean isFlipped() {
         return isFlipped;
     }
-    
+
     public void setFlipped(boolean flipped) {
         this.isFlipped = flipped;
     }
@@ -88,7 +90,6 @@ public class Board {
         isFlipped = !isFlipped;
     }
 
-
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
     }
@@ -101,12 +102,72 @@ public class Board {
         return board; // Return the 2D array representing the board
     }
 
-    public void movePiece(int x, int y) {
-        Piece piece = board[x][y];
+    // public void movePiece(int x, int y) {
+    // Piece piece = board[x][y];
+
+    // if (piece != null) {
+    // piece.move(x, y, this); // Let the piece handle its own movement
+    // }
+    // }
+
+    // public void movePiece(int targetX, int targetY, Piece selectedPiece) {
+
+    // if (selectedPiece == null) {
+    // throw new IllegalStateException("No piece selected for movement.");
+    // }
+
+    // int currentX = selectedPiece.getX();
+    // int currentY = selectedPiece.getY();
+    // System.out.println("currentX: " + currentX + ", " + currentY);
+
+    // // Validate the move
+    // List<int[]> validMoves =
+    // selectedPiece.getAvailableMoves(selectedPiece.getX(), selectedPiece.getY(),
+    // this);
+    // boolean isValidMove = validMoves.stream().anyMatch(move -> move[0] == targetX
+    // && move[1] == targetY);
+
+    // if (!isValidMove) {
+    // throw new IllegalArgumentException("Invalid move for the selected piece.");
+    // }
+
+    // // Handle capturing an opponent's piece
+    // Piece targetPiece = getPiece(targetX, targetY);
+    // if (targetPiece != null &&
+    // !targetPiece.getColor().equals(selectedPiece.getColor())) {
+    // // Optionally handle capturing logic (e.g., removing the piece from the game)
+    // }
+    // // Clear the original position
+    // setPiece(currentX, currentY, null);
+    // // Move the piece to the target position
+    // setPiece(targetX, targetY, selectedPiece);
+
+    // // Update the piece's internal state (e.g., its position)
+    // selectedPiece.setPosition(targetX, targetY);
+    // }
+
+    // public void movePiece(int newX, int newY, Piece piece) {
+
+    // if (piece != null) {
+    // piece.move(newX, newY, this); // Let the piece handle its own movement
+    // }
+
+    // }
+    // public void movePiece(int x, int y) {
+    // Piece piece = board[x][y];
+
+    // if (piece != null) {
+    // piece.move(x, y, this); // Let the piece handle its own movement
+    // }
+    // }
+
+    public void movePiece(int newX, int newY, Piece piece) {
 
         if (piece != null) {
-            piece.move(x, y, this); // Let the piece handle its own movement
+            piece.move(newX, newY, this); // Let the piece handle its own movement
         }
-    }
 
+        getPiece(newX, newY);
+
+    }
 }
