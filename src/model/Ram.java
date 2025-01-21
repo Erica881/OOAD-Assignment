@@ -7,8 +7,6 @@ import controller.GameController;
 public class Ram extends Piece {
     private int direction = 1;
     private boolean moveBack = false;
-    private GameController controller;
-    // private int x, y; // Current position of the piece
 
     public Ram(String colorTurn, int x, int y) {
         super("Ram", colorTurn, x, y);
@@ -68,9 +66,6 @@ public class Ram extends Piece {
     // }
 
     public void move(int toX, int toY, Board board) {
-        System.out.println("move need to be done in RAM");
-        // delete the previous piece when havnt move
-        board.setPiece(x, y, null);
         board.setPiece(toX, toY, this);
 
         this.x = toX;
@@ -82,32 +77,41 @@ public class Ram extends Piece {
     @Override
     public List<int[]> getAvailableMoves(int x, int y, Board board) {
         List<int[]> availableMoves = new ArrayList<>();
+        // int newX;
 
         // Example: Ram can move 1 square forward and backward
         // Example: Ram can move 2 squares forward and backward
         int forward = x - 1;
-        int forward2 = x - 2;
         int backward = x + 1;
-        int backward2 = x + 2;
+
+        System.out.println("x in getAvailableMove in Ram class (" + x + ", " + y + ")");
+
+        if (x == 0) {
+            moveBack = true;
+        }
+
+        System.out.println("moveBack: " + moveBack);
 
         // Check forward move
-        if (forward >= 0 && forward < board.getBoard().length) {
+        if (moveBack == false && forward >= 0 && forward < board.getBoard().length) {
             if (board.getPiece(forward, y) == null) { // No piece in the target cell
                 availableMoves.add(new int[] { forward, y });
+            } else {
+                System.out.println("Have enemy at " + forward + ", " + y);
+                // should be call availableEnemyMoves (change button to red)
+                availableMoves.add(new int[] { forward, y });
             }
-        }
-        if (forward2 >= 0 && forward2 < board.getBoard().length) {
-            if (board.getPiece(forward2, y) == null) {
-                availableMoves.add(new int[] { forward2, y });
-            }
+        } else if (moveBack == true) {
+            // moveBack = true;
+            availableMoves.add(new int[] { backward, y });
         }
 
-        // Check backward move
-        if (backward >= 0 && backward < board.getBoard().length) {
-            if (board.getPiece(backward, y) == null) { // No piece in the target cell
-                availableMoves.add(new int[] { backward, y });
-            }
-        }
+        // // Check backward move
+        // if (backward >= 0 && backward < board.getBoard().length) {
+        // if (board.getPiece(backward, y) == null) { // No piece in the target cell
+        // availableMoves.add(new int[] { backward, y });
+        // }
+        // }
 
         // You can add additional logic here for other moves, such as diagonals,
         // captures, etc.

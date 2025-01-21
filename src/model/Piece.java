@@ -85,35 +85,9 @@ public abstract class Piece {
         return image;
     }
 
-    // public void setKilled(boolean isKill) {
-    // this.isKilled = isKill;
-    // }
-    //
-    // not sure what to set, not using yet but might use in future
-
+    // polymorphic is used
     public void move(int toX, int toY, Board board) {
     }
 
-    // public List<int[]> getAvailableMoves(int x, int y, Board board) {
-
-    // List<int[]> availableMoves = new ArrayList<>();
-    // // Example: Ram can move one square forward or backward
-    // int forward = x - 1; // Move forward
-    // int backward = x + 1; // Move backward
-
-    // if (forward >= 0 && forward < board.getBoard().length) {
-    // if (board.getPiece(forward, y) == null) { // No piece in the target cell
-    // availableMoves.add(new int[] { forward, y });
-    // }
-    // }
-    // if (backward >= 0 && backward < board.getBoard().length) {
-    // if (board.getPiece(backward, y) == null) {
-    // availableMoves.add(new int[] { backward, y });
-    // }
-    // }
-
-    // return availableMoves;
-    // }
-
-    public abstract List<int[]> getAvailableMoves(int x, int y, Board board); // Abstract method for getting moves
+    public abstract List<int[]> getAvailableMoves(int x, int y, Board board);
 }

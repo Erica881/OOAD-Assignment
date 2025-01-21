@@ -88,10 +88,11 @@ public class Board {
     }
 
     public void movePiece(int newX, int newY, Piece piece) {
-        // Piece piece = board[newX][new];
 
         if (piece != null) {
-            System.out.println("Moving in movePiece");
+            int curX = piece.getX();
+            int curY = piece.getY();
+            board[curX][curY] = null; // Remove the piece from the current position
             piece.move(newX, newY, this); // Let the piece handle its own movement
         }
 
