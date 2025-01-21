@@ -11,9 +11,20 @@ public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
+    int x, y;
     // private boolean isKilled;
     // private int x; // X-coordinate on the board
     // private int y; // Y-coordinate on the board
+
+    // "Tor", "tor", "Red"
+    public Piece(String name, String color, int x, int y) {
+        this.name = name;
+        this.color = color;
+        this.x = x;
+        this.y = y;
+        this.image = loadImage();
+        // this.isKilled = false;
+    }
 
     // "Tor", "tor", "Red"
     public Piece(String name, String color) {
@@ -21,6 +32,22 @@ public abstract class Piece {
         this.color = color;
         this.image = loadImage();
         // this.isKilled = false;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public void setY(int newY) {
+        y = newY;
     }
 
     private ImageIcon loadImage() {
@@ -64,8 +91,7 @@ public abstract class Piece {
     //
     // not sure what to set, not using yet but might use in future
 
-    public void move(int toX, int currentY, Board board) {
-
+    public void move(int toX, int toY, Board board) {
     }
 
     // public List<int[]> getAvailableMoves(int x, int y, Board board) {

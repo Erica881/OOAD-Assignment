@@ -8,9 +8,12 @@ public class Ram extends Piece {
     private int direction = 1;
     private boolean moveBack = false;
     private GameController controller;
+    // private int x, y; // Current position of the piece
 
-    public Ram(String colorTurn) {
-        super("Ram", colorTurn);
+    public Ram(String colorTurn, int x, int y) {
+        super("Ram", colorTurn, x, y);
+        this.x = x;
+        this.y = y;
         this.direction = 1;
     }
 
@@ -63,6 +66,18 @@ public class Ram extends Piece {
     // }
     // }
     // }
+
+    public void move(int toX, int toY, Board board) {
+        System.out.println("move need to be done in RAM");
+        // delete the previous piece when havnt move
+        board.setPiece(x, y, null);
+        board.setPiece(toX, toY, this);
+
+        this.x = toX;
+        this.y = toY;
+
+        System.out.println("Successfully Moved to: (" + toX + ", " + toY + ")");
+    }
 
     @Override
     public List<int[]> getAvailableMoves(int x, int y, Board board) {

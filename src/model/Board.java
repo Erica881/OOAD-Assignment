@@ -13,6 +13,7 @@ public class Board {
 
     // Initialize the board with pieces
     public void initialize() {
+
         // Clear the board
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -38,7 +39,7 @@ public class Board {
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = new Ram(color);
+                board[row][col] = new Ram(color, row, col);
             }
         }
     }
@@ -89,10 +90,11 @@ public class Board {
     public void movePiece(int newX, int newY, Piece piece) {
         // Piece piece = board[newX][new];
 
-        // if (piece != null) {
-        System.out.println("Moving in movePiece");
-        piece.move(newX, newY, this); // Let the piece handle its own movement
-        // }
+        if (piece != null) {
+            System.out.println("Moving in movePiece");
+            piece.move(newX, newY, this); // Let the piece handle its own movement
+        }
+
     }
 
 }
