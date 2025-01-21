@@ -5,12 +5,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
+    private boolean isFlipped = false;
     int x, y;
     // private boolean isKilled;
     // private int x; // X-coordinate on the board
@@ -87,6 +90,35 @@ public abstract class Piece {
 
     // polymorphic is used
     public void move(int toX, int toY, Board board) {
+    }
+
+    public void rotateImage() {
+        try {
+            String imagePath = "/resources/image/" + name + color + ".png";
+            BufferedImage originalImage = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            int width = originalImage.getWidth();
+            int height = originalImage.getHeight();
+
+            BufferedImage flippedImage = new BufferedImage(width, height, originalImage.getType());
+            if (!isFlipped) {
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
+                    }
+                }
+            } else { // Use the original image (unflipped)
+                flippedImage = originalImage;
+            }
+
+            // Resize the flipped image to fit the button size
+            int cellSize = 45; // Match the size defined in loadImage
+            Image scaledFlippedImage = flippedImage.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+
+            this.image = new ImageIcon(scaledFlippedImage);
+            isFlipped = !isFlipped; // Toggle the state
+        } catch (Exception e) {
+            System.err.println("Error flipping image: " + e.getMessage());
+        }
     }
 
     public abstract List<int[]> getAvailableMoves(int x, int y, Board board);

@@ -282,6 +282,24 @@ public class GameController implements GameTimerListener {
     private void logMove(int x, int y) {
         String logMessage = currentPlayer + " moved " + selectedPiece.getName() + " to (" + x + ", " + y + ")";
         mainView.updateStatus(logMessage);
+        board.movePiece(x, y);
+        board.flipBoard();
+
+        // Rotate images for all pieces
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                Piece piece = board.getPiece(i, j);
+                if (piece != null) {
+                    piece.rotateImage(); // Rotate the image of the piece
+                }
+            }
+        }
+
+        // Switch players
+        currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
+
+        updateBoardView();
+        mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
         logManager.logAction(logMessage);
     }
 
