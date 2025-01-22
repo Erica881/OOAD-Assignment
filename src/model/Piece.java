@@ -65,7 +65,7 @@ public class Piece {
     // not sure what to set, not using yet but might use in future
 
     public String formatCoordinate(int x, int y, boolean isFlipped) {
-        char columnLetter = (char) ('a' + y); // Convert column index to letter
+        char columnLetter = (char) ('a' + (isFlipped ? (4 - y) : y)); // Adjust column for flipped board
         int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
         return "(" + rowNumber + ", " + columnLetter + ")";
     }

@@ -68,11 +68,11 @@ public class BoardView extends JPanel {
         }
 
         // Reverse column labels (a-e -> e-a or vice versa)
-    for (int i = 0; i < colLabels.length / 2; i++) {
-        String temp = colLabels[i].getText();
-        colLabels[i].setText(colLabels[colLabels.length - 1 - i].getText());
-        colLabels[colLabels.length - 1 - i].setText(temp);
-    }
+        for (int i = 0; i < colLabels.length / 2; i++) {
+            String temp = colLabels[i].getText();
+            colLabels[i].setText(colLabels[colLabels.length - 1 - i].getText());
+            colLabels[colLabels.length - 1 - i].setText(temp);
+        }
     
         // Refresh the grid panel
         gridPanel.revalidate();
