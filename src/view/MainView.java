@@ -4,6 +4,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import controller.GameController;
 import utility.*;
 
@@ -11,6 +16,8 @@ public class MainView {
     private BoardView boardView;
     private MenuView menuView;
     private SettingView settingView;
+    private SettingView winningView;
+    private LogManager logManager;
     private JFrame frame;
     private JPanel statusPanel, iconPanel, currentView;
     private JLabel statusLabel, timeLabel;
@@ -22,6 +29,8 @@ public class MainView {
 
     public MainView(GameController controller) {
         this.controller = controller; // Initialize the controller
+        // Initialize LogManager
+        logManager = new LogManager(); // Initialize logManager here
 
         // Initialize the frame
         frame = new JFrame("Kwazam Game");
@@ -77,7 +86,10 @@ public class MainView {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 // open setting view
-                showSettingView();
+                // showSettingView();
+
+                // test for winning view
+                showWinningView();
             }
         });
         iconPanel.add(settingIcon);
@@ -100,6 +112,30 @@ public class MainView {
     public void showSettingView() {
         controller.stopTimer();
         switchView(settingView);
+    }
+
+    public void showWinningView() {
+        controller.stopTimer();
+        // switchView(winningView);
+
+        int option = JOptionPane.showConfirmDialog(
+                null, // Parent component, null will center it on screen
+                "The current player has won the game. Do you want to save the game?", // Message
+                "Game Over", // Title of the dialog
+                JOptionPane.YES_NO_OPTION, // Option type (Yes/No buttons)
+                JOptionPane.QUESTION_MESSAGE); // Message type (Question icon)
+
+        // Handle the user's response
+        if (option == JOptionPane.YES_OPTION) {
+            // User clicked "Yes"
+            logManager.saveGame();
+            System.out.println("game will be save");
+        } else if (option == JOptionPane.NO_OPTION) {
+            // User clicked "No"
+            System.out.println("Game not saved.");
+            controller.stopGame();
+        }
+
     }
 
     // Delegation archieve -
