@@ -73,13 +73,21 @@ public class BoardView extends JPanel {
             rowLabels[rowLabels.length - 1 - i].setText(temp);
         }
 
-        // Flip column labels (move from top to bottom)
-        colLabelPanel = new JPanel(new GridLayout(1, COLS));
+        // // Flip column labels (move from top to bottom)
+        // colLabelPanel = new JPanel(new GridLayout(1, COLS));
+        // for (int i = 0; i < COLS; i++) {
+        // colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)),
+        // SwingConstants.CENTER);
+        // colLabelPanel.add(colLabels[i]);
+        // }
+
+        // Flip column labels (reverse order from 'a' to 'e')
+        colLabelPanel = new JPanel(new GridLayout(1, COLS)); // Reinitialize the panel for columns
         for (int i = 0; i < COLS; i++) {
-            colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
+            // Reverse the order of column labels
+            colLabels[i] = new JLabel(String.valueOf((char) ('a' + COLS - 1 - i)), SwingConstants.CENTER);
             colLabelPanel.add(colLabels[i]);
         }
-
         this.add(colLabelPanel, BorderLayout.NORTH); // Move to bottom
         // colLabelPanel = newColLabelPanel; // Update reference
 

@@ -79,6 +79,8 @@ public class GameController implements GameTimerListener {
         int modelX = modelCoordinates[0];
         int modelY = modelCoordinates[1];
 
+        System.out.println("In HC, Model X: " + modelX + " Model Y: " + modelY);
+
         sound = new Sound(this);
         selectedPiece = board.getPiece(modelX, modelY);
 
@@ -103,17 +105,12 @@ public class GameController implements GameTimerListener {
     }
 
     public int[] toModelCoordinates(int viewX, int viewY, boolean isFlipped) {
-        System.out.println("Flipped status in model cordinate: " + isFlipped);
-        // red turn
-        if (isFlipped) {
-
-            int[] modelRCoordinates = new int[] { 7 - viewX, 4 - viewY };
-            System.out.println("red player value in model: " + modelRCoordinates[0]);
-            return modelRCoordinates;
-        }
-        int[] modelBCoordinates = new int[] { viewX, viewY };
-        System.out.println("blue player value in model: " + modelBCoordinates[0]);
-        return modelBCoordinates; // No transformation for Blue's turn
+        // Calculate model coordinates based on view coordinates
+        int modelX = isFlipped ? 7 - viewX : viewX;
+        int modelY = isFlipped ? 4 - viewY : viewY;
+        System.out.println("Model X: " + modelX + " Model Y: " + modelY);
+        // Return the model coordinates as a simple array
+        return new int[] { modelX, modelY };
     }
 
     private void logMove(int x, int y) {
