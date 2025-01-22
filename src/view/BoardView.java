@@ -58,7 +58,6 @@ public class BoardView extends JPanel {
          this.add(colLabelPanel, BorderLayout.NORTH); // Column labels on the top
          this.add(gridPanel, BorderLayout.CENTER); // Board grid in the center
     }
-
     
     public void flipBoardView() {
         // Flip row labels (invert order)
@@ -67,16 +66,13 @@ public class BoardView extends JPanel {
             rowLabels[i].setText(rowLabels[rowLabels.length - 1 - i].getText());
             rowLabels[rowLabels.length - 1 - i].setText(temp);
         }
-    
-        // Flip column labels (move from top to bottom)
-        colLabelPanel = new JPanel(new GridLayout(1, COLS));
-        for (int i = 0; i < COLS; i++) {
-            colLabels[i] = new JLabel(String.valueOf((char) ('a' + i)), SwingConstants.CENTER);
-            colLabelPanel.add(colLabels[i]);
-        }
-    
-        this.add(colLabelPanel, BorderLayout.NORTH); // Move to bottom
-        //colLabelPanel = newColLabelPanel; // Update reference
+
+        // Reverse column labels (a-e -> e-a or vice versa)
+    for (int i = 0; i < colLabels.length / 2; i++) {
+        String temp = colLabels[i].getText();
+        colLabels[i].setText(colLabels[colLabels.length - 1 - i].getText());
+        colLabels[colLabels.length - 1 - i].setText(temp);
+    }
     
         // Refresh the grid panel
         gridPanel.revalidate();

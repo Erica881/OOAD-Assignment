@@ -86,6 +86,15 @@ public class Board {
             board[row - 1 - i] = temp;
         }
 
+        // Reverse the columns to flip horizontally
+        for (int i = 0; i < row; i++) { // Iterate over each row
+            for (int j = 0; j < COLS / 2; j++) { // Reverse columns for the row
+                Piece temp = board[i][j];
+                board[i][j] = board[i][COLS - 1 - j];
+                board[i][COLS - 1 - j] = temp;
+            }
+        }
+
         isFlipped = !isFlipped;
     }
 
