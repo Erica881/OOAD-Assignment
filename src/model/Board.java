@@ -161,6 +161,7 @@ public class Board {
     // }
     // }
 
+    // had called twice!
     public void movePiece(int newX, int newY, Piece piece) {
 
         if (piece != null) {
