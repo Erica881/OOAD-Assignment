@@ -18,6 +18,7 @@ public class BoardView extends JPanel {
     private JPanel colLabelPanel;
     private JPanel rowLabelPanel;
     private GameController controller;
+    private boolean isFlipped = false;
 
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
@@ -34,7 +35,7 @@ public class BoardView extends JPanel {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                buttons[i][j] = new JButton("");
+                buttons[i][j] = new JButton("i" + i + "j" + j);
                 buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 gridPanel.add(buttons[i][j]);
 
@@ -64,6 +65,7 @@ public class BoardView extends JPanel {
     }
 
     public void flipBoardView() {
+        isFlipped = !isFlipped;
         // Flip row labels (invert order)
         for (int i = 0; i < rowLabels.length / 2; i++) {
             String temp = rowLabels[i].getText();
@@ -125,5 +127,9 @@ public class BoardView extends JPanel {
                 buttons[i][j].setBackground(null);
             }
         }
+    }
+
+    public boolean isFlipped() {
+        return isFlipped;
     }
 }

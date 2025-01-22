@@ -43,9 +43,44 @@ public class GameController implements GameTimerListener {
 
     }
 
-    private void handleCellClick(int x, int y) {
+    // public void handleCellClick(int x, int y) {
+    // boolean isFlipped = mainView.getBoardView().isFlipped();
+    // System.out.println("isFlipped: " + isFlipped);
+
+    // int[] modelCoordinates = toModelCoordinates(x, y, isFlipped);
+    // int modelX = modelCoordinates[0];
+    // int modelY = modelCoordinates[1];
+
+    // sound = new Sound(this);
+    // selectedPiece = board.getPiece(modelX, modelY);
+
+    // if (isSelectedPieceValidate(selectedPiece)) {
+    // String formattedCoordinate = selectedPiece.formatCoordinate(x, y,
+    // board.isFlipped());
+    // // Get the available moves for the selected piece
+    // availableMoves = selectedPiece.getAvailableMoves(x, y, board);
+    // mainView.getBoardView().showAvailableMoves(availableMoves);
+    // logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
+    // + formattedCoordinate;
+    // // logMove(x, y);
+    // sound.soundMove();
+    // System.out.println(logMessage);
+    // // updateGameState(x, y, logMessage);
+    // }
+
+    // }
+
+    public void handleCellClick(int x, int y) {
+        boolean isFlipped = mainView.getBoardView().isFlipped();
+        System.out.println("isFlipped: " + isFlipped);
+
+        // Get model coordinates based on view coordinates and flipped status
+        int[] modelCoordinates = toModelCoordinates(x, y, isFlipped);
+        int modelX = modelCoordinates[0];
+        int modelY = modelCoordinates[1];
+
         sound = new Sound(this);
-        selectedPiece = board.getPiece(x, y);
+        selectedPiece = board.getPiece(modelX, modelY);
 
         if (isSelectedPieceValidate(selectedPiece)) {
             String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
@@ -54,18 +89,38 @@ public class GameController implements GameTimerListener {
             mainView.getBoardView().showAvailableMoves(availableMoves);
             logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
                     + formattedCoordinate;
-            // logMove(x, y);
             sound.soundMove();
             System.out.println(logMessage);
-            // updateGameState(x, y, logMessage);
         }
+    }
 
+    public int[] toViewCoordinates(int modelX, int modelY, boolean isFlipped) {
+
+        if (isFlipped) {
+            return new int[] { 7 - modelX, 4 - modelY }; // Flip both rows and columns
+        }
+        return new int[] { modelX, modelY }; // No flipping for Blue's turn
+    }
+
+    public int[] toModelCoordinates(int viewX, int viewY, boolean isFlipped) {
+        System.out.println("Flipped status in model cordinate: " + isFlipped);
+        // red turn
+        if (isFlipped) {
+
+            int[] modelRCoordinates = new int[] { 7 - viewX, 4 - viewY };
+            System.out.println("red player value in model: " + modelRCoordinates[0]);
+            return modelRCoordinates;
+        }
+        int[] modelBCoordinates = new int[] { viewX, viewY };
+        System.out.println("blue player value in model: " + modelBCoordinates[0]);
+        return modelBCoordinates; // No transformation for Blue's turn
     }
 
     private void logMove(int x, int y) {
         String logMessage = currentPlayer + " moved " + selectedPiece.getName() + " to (" + x + ", " + y + ")";
         mainView.updateStatus(logMessage);
         board.flipBoard();
+        mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
         for (int i = 0; i < 8; i++) {
@@ -166,9 +221,11 @@ public class GameController implements GameTimerListener {
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
-                int x = i;
-                int y = j;
+                // Use final or effectively final variables
+                final int x = i; // Make x final or effectively final
+                final int y = j; // Make y final or effectively final
 
+                // Add listener for each cell
                 mainView.getBoardView().addCellListener(x, y, e -> handleCellClick(x, y));
             }
         }

@@ -181,8 +181,8 @@ public class MainView {
         frame.getContentPane().remove(currentView); // Remove the current view
         currentView = newView; // Update the current view reference
         frame.add(currentView, BorderLayout.CENTER); // Add the new view
-        frame.revalidate(); // Refresh the frame
-        frame.repaint(); // Repaint the frame
+        // frame.revalidate(); // Refresh the frame
+        // frame.repaint(); // Repaint the frame
     }
 
     public JFrame getFrame() {
