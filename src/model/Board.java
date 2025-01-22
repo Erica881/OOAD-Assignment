@@ -28,12 +28,13 @@ public class Board {
         for (int row : new int[] { 0, 7 }) { // Rows 0 and 7
             String color = (row == 0) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = createPiece(pieceOrder[col], color);
+                int adjustCol = color.equals("Red") ? COLS - 1 - col : col;
+                board[row][adjustCol] = createPiece(pieceOrder[col], color);
             }
         }
 
         // Swap specific pieces for the desired coordinates
-        swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
+        //swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
