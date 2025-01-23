@@ -71,8 +71,34 @@ public class Piece {
     }
 
     public void move(int currentX, int currentY, Board board) {
-
+        // Get the available moves for the piece
+        ArrayList<int[]> availableMoves = getAvailableMoves(currentX, currentY, board);
+    
+        // Validate and perform the move
+        for (int[] move : availableMoves) {
+            int targetX = move[0];
+            int targetY = move[1];
+    
+            Piece targetPiece = board.getPiece(targetX, targetY);
+    
+            // Perform the move if the target position is valid
+            if (targetPiece == null || !targetPiece.getColor().equals(this.getColor())) {
+                // Capture opponent piece if present
+                if (targetPiece != null) {
+                    System.out.println(targetPiece.getNameNColour() + " captured by " + this.getNameNColour() + " at " + formatCoordinate(targetX, targetY, isFlipped));
+                }
+    
+                // Update the board
+                board.setPiece(targetX, targetY, this); // Place this piece in the target cell
+                board.setPiece(currentX, currentY, null); // Clear the current cell
+                return; // Exit after performing the first valid move
+            }
+        }
+    
+        // If no valid moves are found
+        System.err.println("No valid moves available for " + this.getNameNColour());
     }
+    
 
     public boolean getFlipped() {
         return isFlipped;
