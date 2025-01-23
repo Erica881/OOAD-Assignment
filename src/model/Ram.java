@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Ram extends Piece {
     private int direction = 1;
     private boolean moveBack = false;
@@ -40,7 +42,7 @@ public class Ram extends Piece {
         if (newX >= 0 && newX < board.getBoard().length) {
 
             Piece targetPosition = board.getPiece(newX, currentY);
-            //boolean isFlipped = targetPosition.getFlipped();
+            // boolean isFlipped = targetPosition.getFlipped();
 
             if (targetPosition == null) {
 
@@ -57,5 +59,11 @@ public class Ram extends Piece {
 
             }
         }
+    }
+
+    @Override
+    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAvailableMoves'");
     }
 }

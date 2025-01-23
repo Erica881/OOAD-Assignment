@@ -48,8 +48,7 @@ public class GameController implements GameTimerListener {
         if (isSelectedPieceValidate(selectedPiece)) {
             String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
             // Get the available moves for the selected piece
-            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
-            // board);
+            ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y, board);
 
             logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formattedCoordinate;
 

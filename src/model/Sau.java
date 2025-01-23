@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Sau extends Piece {
 
     public Sau(String colorTurn) {
@@ -14,5 +16,11 @@ public class Sau extends Piece {
     @Override
     public String getColor() {
         return super.getColor();
+    }
+
+    @Override
+    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAvailableMoves'");
     }
 }

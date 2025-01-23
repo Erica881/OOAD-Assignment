@@ -9,12 +9,11 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class Piece {
+public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
-
 
     // "Tor", "Red", (7, b)
     public Piece(String name, String color) {
@@ -77,6 +76,7 @@ public class Piece {
     public boolean getFlipped() {
         return isFlipped;
     }
+
     public void rotateImage() {
         try {
             String imagePath = "/resources/image/" + name + color + ".png";
@@ -88,7 +88,7 @@ public class Piece {
             if (!isFlipped) {
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
-                    flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
+                        flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
                     }
                 }
             } else { // Use the original image (unflipped)
@@ -106,8 +106,5 @@ public class Piece {
         }
     }
 
-    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-        // print the available move for the piece
-        return new ArrayList<>();
-    }
+    public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
 }
