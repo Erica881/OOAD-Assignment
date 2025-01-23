@@ -86,10 +86,8 @@ public class MainView {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 // open setting view
-                // showSettingView();
+                showSettingView();
 
-                // test for winning view
-                showWinningView();
             }
         });
         iconPanel.add(settingIcon);
