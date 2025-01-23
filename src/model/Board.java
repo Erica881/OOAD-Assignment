@@ -5,6 +5,7 @@ public class Board {
     // private boolean isGamePaused;
     private static final int ROWS = 8;
     private static final int COLS = 5;
+    private boolean isFlipped = false;
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
@@ -27,12 +28,13 @@ public class Board {
         for (int row : new int[] { 0, 7 }) { // Rows 0 and 7
             String color = (row == 0) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = createPiece(pieceOrder[col], color);
+                int adjustCol = color.equals("Red") ? COLS - 1 - col : col;
+                board[row][adjustCol] = createPiece(pieceOrder[col], color);
             }
         }
 
         // Swap specific pieces for the desired coordinates
-        swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
+        //swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
@@ -42,6 +44,13 @@ public class Board {
             }
         }
     }
+
+    // private String formatCoordinate(int row, int col) {
+    //     // Convert column index to a letter
+    //     char columnLetter = (char) ('a' + col);
+    //     // Return formatted coordinate
+    //     return "(" + (row + 1) + ", " + columnLetter + ")";
+    // }
 
     private void swapPieces(int x1, int y1, int x2, int y2) {
         Piece temp = board[x1][y1];
@@ -59,6 +68,14 @@ public class Board {
         };
     }
 
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+    
+    public void setFlipped(boolean flipped) {
+        this.isFlipped = flipped;
+    }
+
     public void flipBoard() {
         int row = board.length;
 
@@ -68,7 +85,19 @@ public class Board {
             board[i] = board[row - 1 - i];
             board[row - 1 - i] = temp;
         }
+
+        // Reverse the columns to flip horizontally
+        for (int i = 0; i < row; i++) { // Iterate over each row
+            for (int j = 0; j < COLS / 2; j++) { // Reverse columns for the row
+                Piece temp = board[i][j];
+                board[i][j] = board[i][COLS - 1 - j];
+                board[i][COLS - 1 - j] = temp;
+            }
+        }
+
+        isFlipped = !isFlipped;
     }
+
 
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
