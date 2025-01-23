@@ -85,6 +85,11 @@ public class BoardView extends JPanel {
         buttons[x][y].addActionListener(listener); // Add listener to each button
     }
 
+    // // Add a listener to a specific cell
+    // public void addMoveCellListener(int x, int y, ActionListener listener) {
+    // buttons[x][y].addActionListener(listener); // Add listener to each button
+    // }
+
     // Get a specific cell
     public JButton getCell(int x, int y) {
         return buttons[x][y]; // Return the button corresponding to the (x, y) position
@@ -108,13 +113,12 @@ public class BoardView extends JPanel {
         highlightedCells = availableMoves;
         System.out.println("highlighted cell triggered in view");
 
-        // // Change the background color of the buttons for the available moves
-        // for (int[] position : highlightedCells) {
-        // int x = position[0];
-        // int y = position[1];
-        // buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow
-        // for highlighting
-        // }
+        // Change the background color of the buttons for the available moves
+        for (int[] position : highlightedCells) {
+            int x = position[0];
+            int y = position[1];
+            buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow for highlighting
+        }
     }
 
     // Clear all highlights
@@ -129,4 +133,5 @@ public class BoardView extends JPanel {
 
         highlightedCells.clear();
     }
+
 }

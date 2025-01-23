@@ -14,11 +14,20 @@ public abstract class Piece {
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
+    private int x, y;
 
     // "Tor", "Red", (7, b)
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
+        this.image = loadImage();
+    }
+
+    public Piece(String name, String color, int x, int y) {
+        this.name = name;
+        this.color = color;
+        this.x = x;
+        this.y = y;
         this.image = loadImage();
     }
 
@@ -57,6 +66,22 @@ public abstract class Piece {
         return image;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public void setY(int newY) {
+        y = newY;
+    }
+
     // public void setKilled(boolean isKill) {
     // this.isKilled = isKill;
     // }
@@ -69,9 +94,9 @@ public abstract class Piece {
         return "(" + rowNumber + ", " + columnLetter + ")";
     }
 
-    public void move(int currentX, int currentY, Board board) {
+    // public void move(int currentX, int currentY, Piece fromPiece) {
 
-    }
+    // }
 
     public boolean getFlipped() {
         return isFlipped;

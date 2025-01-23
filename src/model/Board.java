@@ -30,26 +30,27 @@ public class Board {
             for (int col = 0; col < COLS; col++) {
                 int adjustCol = color.equals("Red") ? COLS - 1 - col : col;
                 board[row][adjustCol] = createPiece(pieceOrder[col], color);
+
             }
         }
 
         // Swap specific pieces for the desired coordinates
-        //swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
+        // swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = new Ram(color);
+                board[row][col] = new Ram(color, row, col);
             }
         }
     }
 
     // private String formatCoordinate(int row, int col) {
-    //     // Convert column index to a letter
-    //     char columnLetter = (char) ('a' + col);
-    //     // Return formatted coordinate
-    //     return "(" + (row + 1) + ", " + columnLetter + ")";
+    // // Convert column index to a letter
+    // char columnLetter = (char) ('a' + col);
+    // // Return formatted coordinate
+    // return "(" + (row + 1) + ", " + columnLetter + ")";
     // }
 
     private void swapPieces(int x1, int y1, int x2, int y2) {
@@ -71,7 +72,7 @@ public class Board {
     public boolean isFlipped() {
         return isFlipped;
     }
-    
+
     public void setFlipped(boolean flipped) {
         this.isFlipped = flipped;
     }
@@ -98,7 +99,6 @@ public class Board {
         isFlipped = !isFlipped;
     }
 
-
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
     }
@@ -111,12 +111,30 @@ public class Board {
         return board; // Return the 2D array representing the board
     }
 
-    public void movePiece(int x, int y) {
-        Piece piece = board[x][y];
+    public void movePiece(int toX, int toY, Piece fromPiece) {
+        // Piece piece = board[x][y];
 
-        if (piece != null) {
-            piece.move(x, y, this); // Let the piece handle its own movement
-        }
+        // if (piece != null) {
+        // piece.move(x, y, this); // Let the piece handle its own movement
+        // }
+        // println("fromX: " + getPiece(toX, toY));
+        System.out.println(
+                "fromX: " + fromPiece.getX() + " fromY: " + fromPiece.getY() + " toX: " + toX + " toY: " + toY);
+        // setPiece(toX, toY, fromPiece);
+        // board[toX][toY] = fromPiece;
+        int fromX = fromPiece.getX();
+        int fromY = fromPiece.getY();
+
+        // Remove the piece from its old position
+        board[fromX][fromY] = null;
+
+        // Update the piece's position
+        fromPiece.setX(toX);
+        fromPiece.setY(toY);
+
+        // Add the piece to its new position
+        board[toX][toY] = fromPiece;
+        System.out.println("Moved Piece successfull : " + getPiece(toX, toY));
     }
 
 }
