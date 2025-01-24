@@ -105,29 +105,6 @@ public class Board {
         return board; // Return the 2D array representing the board
     }
 
-    // public void transformTor() {
-    // System.out.println("transforming function works in board");
-    // // tranform to xor
-    // // Iterate over the board to find all Tor pieces
-    // for (int row = 0; row < ROWS; row++) {
-    // for (int col = 0; col < COLS; col++) {
-    // Piece piece = board[row][col];
-
-    // if (piece instanceof Tor) {
-    // // Transform the Tor piece into Xor
-    // // board[row][col] = new Tor(selectedPiece.getColor());
-    // board[row][col] = new Xor(piece.getColor(), row, col); // Replace with Xor
-    // piece
-
-    // // piece
-    // System.out.println("Transformed Tor at position (" + row + ", " + col + ") to
-    // Xor.");
-    // }
-    // }
-    // }
-
-    // }
-
     public void transformTor() {
         System.out.println("Transforming Tor pieces to Xor...");
         // Iterate over the board and transform each Tor piece
@@ -143,37 +120,21 @@ public class Board {
         }
     }
 
-    // public void transformXor(Piece selectedPiece) {
-    // System.out.println("transforming function works in board");
-    // // tranform to xor
-    // // Iterate over the board to find all Tor pieces
-    // for (int row = 0; row < ROWS; row++) {
-    // for (int col = 0; col < COLS; col++) {
-    // Piece piece = board[row][col];
+    public void transformTorXor() {
+        System.out.println("Transforming Tor to Xor and Xor to Tor...");
 
-    // if (piece instanceof Xor) {
-    // // Transform the Xor piece into Tor
-    // board[row][col] = createPiece("Tor", piece.getColor());
-
-    // // piece
-    // System.out.println("Transformed Xor at position (" + row + ", " + col + ") to
-    // Xor.");
-    // }
-    // }
-    // }
-    // }
-
-    public void transformXor() {
-        System.out.println("Transforming Xor pieces to Tor...");
-        // Iterate over the board and transform each Xor piece
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        // Iterate over the board and perform the transformations
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
                 Piece piece = getPiece(row, col);
-                if (piece instanceof Xor) {
-
-                    // Replace the Xor piece with a Tor piece of the same color
-                    setPiece(row, col, createPiece("Tor", piece.getColor(), row, col));
-                    System.out.println("Transformed Xor at position (" + row + ", " + col + ") to Tor.");
+                if (piece instanceof Tor) {
+                    // Transform Tor to Xor
+                    setPiece(row, col, new Xor(piece.getColor(), row, col));
+                    System.out.println("Transformed Tor at (" + row + ", " + col + ") to Xor.");
+                } else if (piece instanceof Xor) {
+                    // Transform Xor to Tor
+                    setPiece(row, col, new Tor(piece.getColor(), row, col));
+                    System.out.println("Transformed Xor at (" + row + ", " + col + ") to Tor.");
                 }
             }
         }
