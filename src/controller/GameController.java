@@ -31,6 +31,7 @@ public class GameController implements GameTimerListener {
     private Piece movePlaceForPiece;
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
+    private int turnNumber;
 
     public GameController(Board board) {
         this.board = board;
@@ -119,17 +120,6 @@ public class GameController implements GameTimerListener {
         System.out.println(logMessage);
     }
 
-    // public boolean isValidMove(int toX, int toY, ArrayList<int[]> availableMoves)
-    // {
-    // for (int[] move : availableMoves) {
-    // if (move[0] == toX && move[1] == toX) {
-    // System.out.println("Valid move: (" + toX + ", " + toY + ")");
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
-
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
@@ -216,8 +206,9 @@ public class GameController implements GameTimerListener {
                                 System.out.println(formattedMove);
                                 if (move[0] == boardX && move[1] == boardY) {
                                     board.movePiece(boardX, boardY, selectedPiece);
-                                    movePlaceForPiece = selectedPiece;
 
+                                    movePlaceForPiece = selectedPiece;
+                                    selectedPiece = null;
                                     System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
                                             + movePlaceForPiece.getY() + ")");
                                     updateGameState(boardX, boardY, logMessage);
