@@ -8,6 +8,10 @@ public class Sau extends Piece {
         super("Sau", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }
 
+    public Sau(String colorTurn, int x, int y) {
+        super("Sau", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
+    }
+
     @Override
     public String getName() {
         return "Sau";

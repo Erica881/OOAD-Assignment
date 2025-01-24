@@ -9,6 +9,10 @@ public class Tor extends Piece {
         super("Tor", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }
 
+    public Tor(String colorTurn, int x, int y) {
+        super("Tor", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
+    }
+
     @Override
     public String getName() {
         return "Tor";
@@ -18,13 +22,6 @@ public class Tor extends Piece {
     public String getColor() {
         return super.getColor();
     }
-
-    // @Override
-    // public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-    // // TODO Auto-generated method stub
-    // throw new UnsupportedOperationException("Unimplemented method
-    // 'getAvailableMoves'");
-    // }
 
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
@@ -76,13 +73,13 @@ public class Tor extends Piece {
 
     // Method to update the turn counter and handle transformation to Xor piece
     // after two turns
-    public void incrementTurnCounter() {
-        turns++;
+    // public void incrementTurnCounter() {
+    // turns++;
 
-        if (turns >= 2) {
-            System.out.println("Transforming to tor");
-            // transformToXor(); // After two turns, transform to Xor
-        }
-    }
+    // if (turns >= 2) {
+    // System.out.println("Transforming to tor");
+    // // transformToXor(); // After two turns, transform to Xor
+    // }
+    // }
 
 }

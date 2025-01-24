@@ -31,7 +31,8 @@ public class GameController implements GameTimerListener {
     private Piece movePlaceForPiece;
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
-    private int turnNumber;
+    // private int turnCounter = 0;
+    private int torTransformTurn = 0;
 
     public GameController(Board board) {
         this.board = board;
@@ -49,6 +50,7 @@ public class GameController implements GameTimerListener {
     }
 
     private void handleCellClick(int x, int y) {
+
         sound = new Sound(this);
         selectedPiece = board.getPiece(x, y);
 
@@ -86,6 +88,10 @@ public class GameController implements GameTimerListener {
         sound.soundMove();
         System.out.println(logMessage);
     }
+
+    // public int getTurnCounter() {
+    // return turnCounter;
+    // }
 
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
@@ -145,6 +151,7 @@ public class GameController implements GameTimerListener {
     }
 
     public void logMove(int boardX, int boardY) {
+
         movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
             // Format the available move coordinates
@@ -152,19 +159,96 @@ public class GameController implements GameTimerListener {
                     board.isFlipped());
             System.out.println(formattedMove);
             if (move[0] == boardX && move[1] == boardY) {
+                System.out.println("selected x: " + selectedPiece.getX() + ", selected y: " +
+                        selectedPiece.getY());
                 board.movePiece(boardX, boardY, selectedPiece);
 
                 movePlaceForPiece = selectedPiece;
-                selectedPiece = null;
+                // selectedPiece = null;
                 System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
                         + movePlaceForPiece.getY() + ")");
+                // turnCounter++;
+
                 updateGameState(boardX, boardY, logMessage);
 
                 isMoveInProgress = false; // Mark the move as completed
+
+                // System.out.println("turn counter: " + turnCounter);
                 return; // Exit to prevent further execution
             }
         }
     }
+
+    // public void logMove(int boardX, int boardY) {
+
+    // System.out.println("Selected x: " + selectedPiece.getX() + ", selected y: " +
+    // selectedPiece.getY());
+
+    // movePlaceForPiece = board.getPiece(boardX, boardY);
+    // for (int[] move : availableMoves) {
+    // // Format the available move coordinates
+    // String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
+    // board.isFlipped());
+    // System.out.println(formattedMove);
+    // if (move[0] == boardX && move[1] == boardY) {
+    // // selected piece got problem
+    // System.out.println("Selected x: " + selectedPiece.getX() + ", selected y: " +
+    // selectedPiece.getY());
+    // board.movePiece(boardX, boardY, selectedPiece);
+
+    // movePlaceForPiece = selectedPiece;
+    // System.out
+    // .println("Moved piece to (" + movePlaceForPiece.getX() + ", " +
+    // movePlaceForPiece.getY() + ")");
+
+    // updateGameState(boardX, boardY, logMessage);
+    // isMoveInProgress = false; // Mark the move as completed
+    // turnCounter++;
+    // System.out.println("Turn counter: " + turnCounter);
+    // return; // Exit to prevent further execution
+    // }
+    // }
+
+    // }
+
+    // Ensure selectedPiece is updated
+    public void updateSelectedPieceAfterTransformation() {
+        if (selectedPiece != null) {
+            int x = selectedPiece.getX();
+            int y = selectedPiece.getY();
+            selectedPiece = board.getPiece(x, y);
+            System.out.println("Updated selected piece after transformation: " + selectedPiece);
+        }
+    }
+
+    // public void torTransformation() {
+
+    // // Every 2 turns, transform Tor to Xor or Xor to Tor
+    // if (turnCounter % 2 == 0) {
+    // System.out.println("Transforming pieces from Tor to Xor or Xor to Tor...");
+
+    // // Transform all Tor pieces to Xor
+    // // board.transformTor();
+
+    // // // Increment the turn counter and ensure alternate transformations
+    // // torTransformTurn++;
+
+    // // // If it's the second transformation, change back to Tor
+    // // if (torTransformTurn % 2 == 0) {
+    // // System.out.println("Transforming back from Xor to Tor...");
+    // // board.transformXor();
+    // // }
+    // // // Update selectedPiece reference if it was transformed
+    // // if (selectedPiece != null) {
+    // // int x = selectedPiece.getX();
+    // // int y = selectedPiece.getY();
+    // // selectedPiece = board.getPiece(x, y);
+    // // System.out.println(
+    // // "Updated selectedPiece after transformation: " + selectedPiece.getX() +
+    // // selectedPiece.getY());
+    // // }
+    // }
+    // }
 
     public void attachBoardListener() {
         // Attach listeners to the board cells
@@ -173,6 +257,33 @@ public class GameController implements GameTimerListener {
                 final int x = i;
                 final int y = j;
 
+                // mainView.getBoardView().addCellListener(x, y, new ActionListener() {
+                // @Override
+                // public void actionPerformed(ActionEvent e) {
+
+                // // Map view coordinates to the correct board coordinates
+                // int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
+                // int boardX = mappedCoords[0];
+                // int boardY = mappedCoords[1];
+                // System.out.println("board x and y in listener: " + boardX + boardY);
+                // if (board.getPiece(boardX, boardY) != null
+                // && board.getPiece(boardX, boardY).getColor().equalsIgnoreCase(currentPlayer))
+                // {
+                // // Handle selection
+                // System.out.println("is move in progress: " + isMoveInProgress);
+                // handleCellClick(boardX, boardY);
+                // return;
+                // }
+                // // else {
+                // // System.out.println("board x and y in listener: " + boardX + boardY);
+                // logMove(boardX, boardY);
+                // // }
+                // isMoveInProgress = false; // Reset the flag if no valid move
+                // }
+                // });
+
+                // }
+
                 mainView.getBoardView().addCellListener(x, y, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -180,19 +291,33 @@ public class GameController implements GameTimerListener {
                         int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
                         int boardX = mappedCoords[0];
                         int boardY = mappedCoords[1];
+                        System.out.println("board x and y in listener: " + boardX + boardY);
 
-                        if (board.getPiece(boardX, boardY) != null
-                                && board.getPiece(boardX, boardY).getColor().equalsIgnoreCase(currentPlayer)) {
-                            // Handle selection
+                        // Check if a valid piece is selected for the current player
+                        Piece pieceAtCell = board.getPiece(boardX, boardY);
+                        if (pieceAtCell != null && pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
+                            // Handle piece selection
                             System.out.println("is move in progress: " + isMoveInProgress);
                             handleCellClick(boardX, boardY);
                         } else {
-                            logMove(boardX, boardY);
+                            // Trigger Tor/Xor transformation every 2 turns
+                            // if (turnCounter >= 2) {
+                            // torTransformation();
+                            // updateSelectedPieceAfterTransformation();
+                            // }
+                            // Preserve the previously selected piece for moving
+                            if (selectedPiece != null) {
+                                System.out.println("board x and y in listener: " + boardX + boardY);
+                                logMove(boardX, boardY);
+                            } else {
+                                System.out.println("No piece selected to make a move.");
+                            }
                         }
-                        isMoveInProgress = false; // Reset the flag if no valid move
+
+                        // Reset the flag if no valid move is in progress
+                        isMoveInProgress = false;
                     }
                 });
-
             }
         }
     }
