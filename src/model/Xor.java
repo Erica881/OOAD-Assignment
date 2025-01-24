@@ -20,7 +20,6 @@ public class Xor extends Piece {
 
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAvailableMoves'");
+        return new ArrayList<>();
     }
 }
