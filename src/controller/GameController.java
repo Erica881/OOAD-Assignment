@@ -31,7 +31,7 @@ public class GameController implements GameTimerListener {
     private Piece movePlaceForPiece;
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
-    // private int turnCounter = 0;
+    private int turnCounter = 0;
     private int torTransformTurn = 0;
 
     public GameController(Board board) {
@@ -89,14 +89,18 @@ public class GameController implements GameTimerListener {
         System.out.println(logMessage);
     }
 
-    // public int getTurnCounter() {
-    // return turnCounter;
-    // }
+    public int getTurnCounter() {
+        return turnCounter;
+    }
 
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
         // board.movePiece(x, y);
+        // Trigger Tor/Xor transformation every 2 turns
+        if (turnCounter >= 2) {
+            torTransformation();
+        }
         board.flipBoard();
         mainView.getBoardView().flipBoardView();
 
@@ -167,13 +171,13 @@ public class GameController implements GameTimerListener {
                 // selectedPiece = null;
                 System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
                         + movePlaceForPiece.getY() + ")");
-                // turnCounter++;
+                turnCounter++;
 
                 updateGameState(boardX, boardY, logMessage);
 
                 isMoveInProgress = false; // Mark the move as completed
 
-                // System.out.println("turn counter: " + turnCounter);
+                System.out.println("turn counter: " + turnCounter);
                 return; // Exit to prevent further execution
             }
         }
@@ -211,44 +215,34 @@ public class GameController implements GameTimerListener {
 
     // }
 
-    // Ensure selectedPiece is updated
-    public void updateSelectedPieceAfterTransformation() {
-        if (selectedPiece != null) {
-            int x = selectedPiece.getX();
-            int y = selectedPiece.getY();
-            selectedPiece = board.getPiece(x, y);
-            System.out.println("Updated selected piece after transformation: " + selectedPiece);
+    public void torTransformation() {
+
+        // Every 2 turns, transform Tor to Xor or Xor to Tor
+        if (turnCounter % 2 == 0) {
+            System.out.println("Transforming pieces from Tor to Xor or Xor to Tor...");
+
+            // Transform all Tor pieces to Xor
+            board.transformTor();
+
+            // Increment the turn counter and ensure alternate transformations
+            torTransformTurn++;
+
+            // If it's the second transformation, change back to Tor
+            if (torTransformTurn % 2 == 0) {
+                System.out.println("Transforming back from Xor to Tor...");
+                board.transformXor();
+            }
+            // Update selectedPiece reference if it was transformed
+            if (selectedPiece != null) {
+                int x = selectedPiece.getX();
+                int y = selectedPiece.getY();
+                selectedPiece = board.getPiece(x, y);
+                System.out.println(
+                        "Updated selectedPiece after transformation: " + selectedPiece.getX() +
+                                selectedPiece.getY());
+            }
         }
     }
-
-    // public void torTransformation() {
-
-    // // Every 2 turns, transform Tor to Xor or Xor to Tor
-    // if (turnCounter % 2 == 0) {
-    // System.out.println("Transforming pieces from Tor to Xor or Xor to Tor...");
-
-    // // Transform all Tor pieces to Xor
-    // // board.transformTor();
-
-    // // // Increment the turn counter and ensure alternate transformations
-    // // torTransformTurn++;
-
-    // // // If it's the second transformation, change back to Tor
-    // // if (torTransformTurn % 2 == 0) {
-    // // System.out.println("Transforming back from Xor to Tor...");
-    // // board.transformXor();
-    // // }
-    // // // Update selectedPiece reference if it was transformed
-    // // if (selectedPiece != null) {
-    // // int x = selectedPiece.getX();
-    // // int y = selectedPiece.getY();
-    // // selectedPiece = board.getPiece(x, y);
-    // // System.out.println(
-    // // "Updated selectedPiece after transformation: " + selectedPiece.getX() +
-    // // selectedPiece.getY());
-    // // }
-    // }
-    // }
 
     public void attachBoardListener() {
         // Attach listeners to the board cells
@@ -300,11 +294,7 @@ public class GameController implements GameTimerListener {
                             System.out.println("is move in progress: " + isMoveInProgress);
                             handleCellClick(boardX, boardY);
                         } else {
-                            // Trigger Tor/Xor transformation every 2 turns
-                            // if (turnCounter >= 2) {
-                            // torTransformation();
-                            // updateSelectedPieceAfterTransformation();
-                            // }
+
                             // Preserve the previously selected piece for moving
                             if (selectedPiece != null) {
                                 System.out.println("board x and y in listener: " + boardX + boardY);

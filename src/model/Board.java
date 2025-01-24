@@ -172,7 +172,7 @@ public class Board {
                 if (piece instanceof Xor) {
 
                     // Replace the Xor piece with a Tor piece of the same color
-                    setPiece(row, col, createPiece("Tor", piece.getColor()));
+                    setPiece(row, col, createPiece("Tor", piece.getColor(), row, col));
                     System.out.println("Transformed Xor at position (" + row + ", " + col + ") to Tor.");
                 }
             }
