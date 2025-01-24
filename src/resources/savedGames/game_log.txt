@@ -1,2 +1,12 @@
-Blue selected Ram at 6,0
-Red selected Ram at 1,3
+Blue selected Ram at (6, 0)
+Red selected Ram at (1, 4)
+Blue selected Ram at (5, 0)
+Red selected Ram at (2, 4)
+Blue selected Ram at (4, 0)
+Red selected Ram at (3, 4)
+Blue selected Ram at (3, 0)
+Red selected Ram at (4, 4)
+Blue selected Ram at (2, 0)
+Red selected Ram at (5, 4)
+Blue selected Ram at (1, 0)
+Red selected Ram at (6, 4)
