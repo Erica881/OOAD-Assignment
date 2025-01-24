@@ -49,21 +49,24 @@ public class GameController implements GameTimerListener {
 
     private void handleCellClick(int x, int y) {
         sound = new Sound(this);
+        System.out.println("x pased more mapX: " + x + " mapY: " + y);
         selectedPiece = board.getPiece(x, y);
 
         if (isSelectedPieceValidate(selectedPiece)) {
-            String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
+            // String formattedCoordinate = selectedPiece.formatCoordinate(x, y,
+            // board.isFlipped());
             // Get the available moves for the selected piece
             availableMoves = selectedPiece.getAvailableMoves(x, y, board);
             // Print the available moves
-            System.out.println("Available moves for Ram at " + formattedCoordinate + ":");
+            System.out.println("Available moves for Ram at " + x + "," + y + ":");
             for (int[] move : availableMoves) {
                 // print formatted available move
-                String formattedMove = selectedPiece.formatCoordinate(move[0], move[1], board.isFlipped());
-                System.out.println(formattedMove);
+                // String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
+                // board.isFlipped());
+                System.out.println("available move: " + move[0] + "," + move[1]);
             }
             mainView.getBoardView().highlightAvailableMoves(availableMoves);
-            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formattedCoordinate;
+            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + x + "," + y;
             System.out
                     .println("try getter x and y for piece x: " + selectedPiece.getX() + " y: " + selectedPiece.getY());
             sound.soundMove();
@@ -150,44 +153,87 @@ public class GameController implements GameTimerListener {
                 final int x = i;
                 final int y = j;
 
+                // mainView.getBoardView().addCellListener(x, y, new ActionListener() {
+                // @Override
+                // public void actionPerformed(ActionEvent e) {
+                // if (board.getPiece(x, y) != null || movePlaceForPiece != null) {
+                // System.out.println("board flip: " + board.isFlipped());
+                // // Handle selection
+                // handleCellClick(x, y);
+
+                // } else {
+                // movePlaceForPiece = board.getPiece(x, y);
+                // System.out.println("in mvoe process cell: " + x + " " + y);
+                // System.out.println("Available move passed: ");
+                // for (int[] move : availableMoves) {
+                // // print formatted available move
+                // String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
+                // board.isFlipped());
+                // System.out.println(formattedMove);
+                // if (move[0] == x && move[1] == y) {
+                // System.out.println("Valid move: (" + x + ", " + y + ")");
+                // // movePlaceForPiece.move(x, y, selectedPiece);
+                // board.movePiece(x, y, selectedPiece);
+                // movePlaceForPiece = selectedPiece;
+                // System.out.println(
+                // "Moved x" + movePlaceForPiece.getX() + " y" + movePlaceForPiece.getY());
+
+                // // mainView.getBoardView().updateCell(x, y, movePlaceForPiece);
+                // updateGameState(x, y, logMessage);
+
+                // isMoveInProgress = false; // Mark the move as completed
+                // return; // Exit to prevent further execution
+                // }
+                // }
+
+                // // return; // Exit to prevent further execution
+                // }
+                // isMoveInProgress = false; // Reset the flag if no valid move
+                // }
+                // });
+
                 mainView.getBoardView().addCellListener(x, y, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (board.getPiece(x, y) != null && isMoveInProgress == false) {
+                        // Map view coordinates to the correct board coordinates
+                        int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
+                        int boardX = mappedCoords[0];
+                        int boardY = mappedCoords[1];
 
+                        System.out.println("Debug: Button (" + x + ", " + y + ") clicked.");
+                        System.out.println("Mapped to board coordinates (" + boardX + ", " + boardY + ").");
+
+                        if (board.getPiece(boardX, boardY) != null && !isMoveInProgress) {
                             // Handle selection
-                            handleCellClick(x, y);
-
+                            handleCellClick(boardX, boardY);
                         } else {
-                            movePlaceForPiece = board.getPiece(x, y);
-                            System.out.println("i run empty piece cell" + x + " " + y);
-                            System.out.println("Available move passed: ");
+                            movePlaceForPiece = board.getPiece(boardX, boardY);
+                            System.out.println(
+                                    "Empty cell clicked at board coordinates (" + boardX + ", " + boardY + ")");
+                            System.out.println("Available move passed we have:");
                             for (int[] move : availableMoves) {
-                                // print formatted available move
+                                // Format the available move coordinates
                                 String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
                                         board.isFlipped());
                                 System.out.println(formattedMove);
-                                if (move[0] == x && move[1] == y) {
-                                    System.out.println("Valid move: (" + x + ", " + y + ")");
-                                    // movePlaceForPiece.move(x, y, selectedPiece);
-                                    board.movePiece(x, y, selectedPiece);
+                                if (move[0] == boardX && move[1] == boardY) {
+                                    System.out.println("Valid move to: (" + boardX + ", " + boardY + ")");
+                                    board.movePiece(boardX, boardY, selectedPiece);
                                     movePlaceForPiece = selectedPiece;
-                                    System.out.println(
-                                            "Moved x" + movePlaceForPiece.getX() + " y" + movePlaceForPiece.getY());
 
-                                    // mainView.getBoardView().updateCell(x, y, movePlaceForPiece);
-                                    updateGameState(x, y, logMessage);
+                                    System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
+                                            + movePlaceForPiece.getY() + ")");
+                                    updateGameState(boardX, boardY, logMessage);
 
                                     isMoveInProgress = false; // Mark the move as completed
                                     return; // Exit to prevent further execution
                                 }
                             }
-
-                            // return; // Exit to prevent further execution
                         }
                         isMoveInProgress = false; // Reset the flag if no valid move
                     }
                 });
+
             }
         }
     }

@@ -80,26 +80,42 @@ public class Board {
     public void flipBoard() {
         int row = board.length;
 
-        // Reverse the rows in the board
-        for (int i = 0; i < row / 2; i++) {
-            Piece[] temp = board[i];
-            board[i] = board[row - 1 - i];
-            board[row - 1 - i] = temp;
-        }
+        // // Reverse the rows in the board
+        // for (int i = 0; i < row / 2; i++) {
+        // Piece[] temp = board[i];
+        // board[i] = board[row - 1 - i];
+        // board[row - 1 - i] = temp;
+        // }
 
-        // Reverse the columns to flip horizontally
-        for (int i = 0; i < row; i++) { // Iterate over each row
-            for (int j = 0; j < COLS / 2; j++) { // Reverse columns for the row
-                Piece temp = board[i][j];
-                board[i][j] = board[i][COLS - 1 - j];
-                board[i][COLS - 1 - j] = temp;
-            }
-        }
+        // // Reverse the columns to flip horizontally
+        // for (int i = 0; i < row; i++) { // Iterate over each row
+        // for (int j = 0; j < COLS / 2; j++) { // Reverse columns for the row
+        // Piece temp = board[i][j];
+        // board[i][j] = board[i][COLS - 1 - j];
+        // board[i][COLS - 1 - j] = temp;
+        // }
+        // }
 
         isFlipped = !isFlipped;
     }
 
+    public int[] mapViewToBoardCoordinates(int x, int y) {
+        if (isFlipped()) {
+            // Translate the view coordinates to the flipped board's coordinates
+            int flippedX = ROWS - 1 - x;
+            int flippedY = COLS - 1 - y;
+            return new int[] { flippedX, flippedY };
+        }
+        // Return the original coordinates if the board is not flipped
+        return new int[] { x, y };
+    }
+
     public Piece getPiece(int x, int y) {
+        // if (isFlipped) {
+        // x = ROWS - 1 - x;
+        // y = COLS - 1 - y;
+        // return board[x][y];
+        // }
         return board[x][y]; // Return the piece at the given position
     }
 

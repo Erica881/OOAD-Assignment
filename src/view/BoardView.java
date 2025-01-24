@@ -16,6 +16,7 @@ public class BoardView extends JPanel {
     private JLabel[] colLabels; // Labels for columns (a-e)
     private JPanel colLabelPanel;
     private JPanel rowLabelPanel;
+    private boolean isFlipped = false;
 
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
@@ -31,7 +32,7 @@ public class BoardView extends JPanel {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                buttons[i][j] = new JButton("");
+                buttons[i][j] = new JButton("i" + i + "j" + j);
                 buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 gridPanel.add(buttons[i][j]);
 
@@ -61,6 +62,7 @@ public class BoardView extends JPanel {
     }
 
     public void flipBoardView() {
+        isFlipped = !isFlipped;
         // Flip row labels (invert order)
         for (int i = 0; i < rowLabels.length / 2; i++) {
             String temp = rowLabels[i].getText();
@@ -74,6 +76,38 @@ public class BoardView extends JPanel {
             colLabels[i].setText(colLabels[colLabels.length - 1 - i].getText());
             colLabels[colLabels.length - 1 - i].setText(temp);
         }
+        // Reverse the buttons' layout based on the flipped state
+        JButton[][] flippedButtons = new JButton[ROWS][COLS];
+        if (isFlipped) {
+            // Create a flipped version of the button texts
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    // Reverse rows and columns
+                    int flippedRow = ROWS - 1 - i;
+                    int flippedCol = COLS - 1 - j;
+
+                    // Update button text and store in flippedButtons
+                    flippedButtons[flippedRow][flippedCol] = buttons[i][j];
+                    flippedButtons[flippedRow][flippedCol].setText("i" + flippedRow + "j" + flippedCol);
+                }
+            }
+        } else {
+            // Revert to the original layout when unflipping
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    // Reverse rows and columns back to original positions
+                    int originalRow = ROWS - 1 - i;
+                    int originalCol = COLS - 1 - j;
+
+                    // Restore the button text and store in flippedButtons
+                    flippedButtons[originalRow][originalCol] = buttons[i][j];
+                    flippedButtons[originalRow][originalCol].setText("i" + originalRow + "j" + originalCol);
+                }
+            }
+        }
+
+        // Update the `buttons` array with the new layout
+        buttons = flippedButtons;
 
         // Refresh the grid panel
         gridPanel.revalidate();

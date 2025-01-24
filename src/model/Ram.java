@@ -33,9 +33,9 @@ public class Ram extends Piece {
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();
-
+        System.out.println("board flip in ram: " + board.isFlipped());
         // Generate available moves for the Ram piece
-        int newX = x - 1;
+        int newX = board.isFlipped() ? x + 1 : x - 1;
         // for (int i = 0; i <= 2; i++) {
 
         // newX = x - i;
@@ -58,10 +58,3 @@ public class Ram extends Piece {
         return availableMoves;
     }
 }
-// @Override
-// public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-// // TODO Auto-generated method stub
-// throw new UnsupportedOperationException("Unimplemented method
-// 'getAvailableMoves'");
-// }
-// }
