@@ -139,7 +139,7 @@ public class BoardView extends JPanel {
         }
     }
 
-    public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
+    public void highlightAvailableMoves(ArrayList<int[]> availableMoves, ArrayList<int[]> moveContainEnemy) {
         // First clear previous highlights
         clearHighlights();
 
@@ -151,6 +151,12 @@ public class BoardView extends JPanel {
             int x = position[0];
             int y = position[1];
             buttons[x][y].setBackground(Color.YELLOW); // Set background color to yellow for highlighting
+        }
+        // Highlight enemy-containing moves with red
+        for (int[] position : moveContainEnemy) {
+            int x = position[0];
+            int y = position[1];
+            buttons[x][y].setBackground(Color.RED); // Set background color to red for enemy-containing moves
         }
     }
 

@@ -57,12 +57,17 @@ public class GameController implements GameTimerListener {
             // Get the available moves for the selected piece
             availableMoves = selectedPiece.getAvailableMoves(x, y, board);
             // Print the available moves
+            ArrayList<int[]> moveContainEnemy = new ArrayList<>();
+
             System.out.println("Available moves for Ram at " + x + "," + y + ":");
             for (int[] move : availableMoves) {
                 // print formatted available move
                 System.out.println("available move: " + move[0] + "," + move[1]);
+                if (board.getPiece(move[0], move[1]) != null) {
+                    moveContainEnemy = availableMoves;
+                }
             }
-            mainView.getBoardView().highlightAvailableMoves(availableMoves);
+            mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
             logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + x + "," + y;
             sound.soundMove();
             System.out.println(logMessage);
@@ -71,15 +76,16 @@ public class GameController implements GameTimerListener {
 
     }
 
-    public boolean isValidMove(int toX, int toY, ArrayList<int[]> availableMoves) {
-        for (int[] move : availableMoves) {
-            if (move[0] == toX && move[1] == toX) {
-                System.out.println("Valid move: (" + toX + ", " + toY + ")");
-                return true;
-            }
-        }
-        return false;
-    }
+    // public boolean isValidMove(int toX, int toY, ArrayList<int[]> availableMoves)
+    // {
+    // for (int[] move : availableMoves) {
+    // if (move[0] == toX && move[1] == toX) {
+    // System.out.println("Valid move: (" + toX + ", " + toY + ")");
+    // return true;
+    // }
+    // }
+    // return false;
+    // }
 
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
