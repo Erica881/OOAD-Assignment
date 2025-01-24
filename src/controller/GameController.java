@@ -31,6 +31,7 @@ public class GameController implements GameTimerListener {
     private Piece movePlaceForPiece;
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
+    private int turnNumber;
 
     public GameController(Board board) {
         this.board = board;
@@ -47,39 +48,6 @@ public class GameController implements GameTimerListener {
 
     }
 
-    // private void handleCellClick(int x, int y) {
-    // sound = new Sound(this);
-    // selectedPiece = board.getPiece(x, y);
-
-    // if (isSelectedPieceValidate(selectedPiece)) {
-    // // String formattedCoordinate = selectedPiece.formatCoordinate(x,
-    // // y,board.isFlipped());
-    // // Get the available moves for the selected piece
-
-    // availableMoves = selectedPiece.getAvailableMoves(x, y, board);
-    // // Print the available moves
-    // ArrayList<int[]> moveContainEnemy = new ArrayList<>();
-
-    // System.out.println("Available moves for Ram at " + x + "," + y + ":");
-    // for (int[] move : availableMoves) {
-    // // print formatted available move
-    // System.out.println("available move: " + move[0] + "," + move[1]);
-    // if (board.getPiece(move[0], move[1]) != null
-    // && !board.getPiece(move[0], move[1]).getColor().equals(currentPlayer)) {
-    // moveContainEnemy = availableMoves;
-    // }
-    // }
-
-    // mainView.getBoardView().highlightAvailableMoves(availableMoves,
-    // moveContainEnemy);
-    // logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
-    // + x + "," + y;
-    // sound.soundMove();
-    // System.out.println(logMessage);
-
-    // }
-
-    // }
     private void handleCellClick(int x, int y) {
         sound = new Sound(this);
         selectedPiece = board.getPiece(x, y);
@@ -118,17 +86,6 @@ public class GameController implements GameTimerListener {
         sound.soundMove();
         System.out.println(logMessage);
     }
-
-    // public boolean isValidMove(int toX, int toY, ArrayList<int[]> availableMoves)
-    // {
-    // for (int[] move : availableMoves) {
-    // if (move[0] == toX && move[1] == toX) {
-    // System.out.println("Valid move: (" + toX + ", " + toY + ")");
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
 
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
@@ -187,6 +144,28 @@ public class GameController implements GameTimerListener {
 
     }
 
+    public void logMove(int boardX, int boardY) {
+        movePlaceForPiece = board.getPiece(boardX, boardY);
+        for (int[] move : availableMoves) {
+            // Format the available move coordinates
+            String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
+                    board.isFlipped());
+            System.out.println(formattedMove);
+            if (move[0] == boardX && move[1] == boardY) {
+                board.movePiece(boardX, boardY, selectedPiece);
+
+                movePlaceForPiece = selectedPiece;
+                selectedPiece = null;
+                System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
+                        + movePlaceForPiece.getY() + ")");
+                updateGameState(boardX, boardY, logMessage);
+
+                isMoveInProgress = false; // Mark the move as completed
+                return; // Exit to prevent further execution
+            }
+        }
+    }
+
     public void attachBoardListener() {
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
@@ -208,24 +187,7 @@ public class GameController implements GameTimerListener {
                             System.out.println("is move in progress: " + isMoveInProgress);
                             handleCellClick(boardX, boardY);
                         } else {
-                            movePlaceForPiece = board.getPiece(boardX, boardY);
-                            for (int[] move : availableMoves) {
-                                // Format the available move coordinates
-                                String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
-                                        board.isFlipped());
-                                System.out.println(formattedMove);
-                                if (move[0] == boardX && move[1] == boardY) {
-                                    board.movePiece(boardX, boardY, selectedPiece);
-                                    movePlaceForPiece = selectedPiece;
-
-                                    System.out.println("Moved piece to (" + movePlaceForPiece.getX() + ", "
-                                            + movePlaceForPiece.getY() + ")");
-                                    updateGameState(boardX, boardY, logMessage);
-
-                                    isMoveInProgress = false; // Mark the move as completed
-                                    return; // Exit to prevent further execution
-                                }
-                            }
+                            logMove(boardX, boardY);
                         }
                         isMoveInProgress = false; // Reset the flag if no valid move
                     }
