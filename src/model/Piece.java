@@ -9,17 +9,25 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class Piece {
+public abstract class Piece {
     private String name;
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
-
+    private int x, y;
 
     // "Tor", "Red", (7, b)
     public Piece(String name, String color) {
         this.name = name;
         this.color = color;
+        this.image = loadImage();
+    }
+
+    public Piece(String name, String color, int x, int y) {
+        this.name = name;
+        this.color = color;
+        this.x = x;
+        this.y = y;
         this.image = loadImage();
     }
 
@@ -58,6 +66,22 @@ public class Piece {
         return image;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public void setY(int newY) {
+        y = newY;
+    }
+
     // public void setKilled(boolean isKill) {
     // this.isKilled = isKill;
     // }
@@ -70,13 +94,14 @@ public class Piece {
         return "(" + rowNumber + ", " + columnLetter + ")";
     }
 
-    public void move(int currentX, int currentY, Board board) {
+    // public void move(int currentX, int currentY, Piece fromPiece) {
 
-    }
+    // }
 
     public boolean getFlipped() {
         return isFlipped;
     }
+
     public void rotateImage() {
         try {
             String imagePath = "/resources/image/" + name + color + ".png";
@@ -88,7 +113,7 @@ public class Piece {
             if (!isFlipped) {
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
-                    flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
+                        flippedImage.setRGB(x, height - 1 - y, originalImage.getRGB(x, y));
                     }
                 }
             } else { // Use the original image (unflipped)
@@ -106,8 +131,5 @@ public class Piece {
         }
     }
 
-    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-        // print the available move for the piece
-        return new ArrayList<>();
-    }
+    public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
 }

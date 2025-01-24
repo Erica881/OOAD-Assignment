@@ -1,12 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Ram extends Piece {
-    private int direction = 1;
+    // private int direction = 1;
     private boolean moveBack = false;
 
     public Ram(String colorTurn) {
         super("Ram", colorTurn);
-        this.direction = 1;
+        // this.direction = 1;
+    }
+
+    public Ram(String colorTurn, int x, int y) {
+        super("Ram", colorTurn, x, y);
+        // this.direction = 1;
     }
 
     @Override
@@ -24,38 +31,20 @@ public class Ram extends Piece {
     }
 
     @Override
-    public void move(int currentX, int currentY, Board board) {
-        int newX;
+    public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
+        ArrayList<int[]> availableMoves = new ArrayList<>();
+        // Generate available moves for the Ram piece
+        int newX = board.isFlipped() ? x + 1 : x - 1;
 
-        if (this.moveBack) {
-            newX = currentX + this.direction;
-        } else {
-            newX = currentX - this.direction;
-        }
-
-        if (newX == 0) {
-            this.movingBack(true);
-        }
-
-        if (newX >= 0 && newX < board.getBoard().length) {
-
-            Piece targetPosition = board.getPiece(newX, currentY);
-            //boolean isFlipped = targetPosition.getFlipped();
-
-            if (targetPosition == null) {
-
-                board.setPiece(newX, currentY, this);
-                board.setPiece(currentX, currentY, null);
-
-            } else if (!targetPosition.getColor().equals(this.getColor())) {
-
-                System.out.println(targetPosition.getNameNColour() + " has been eliminated by " + this.getNameNColour()
-                        + " at (" + newX + "," + currentY + ")");
-
-                board.setPiece(newX, currentY, this);
-                board.setPiece(currentX, currentY, null);
-
+        // Check if the new position is within the board boundaries
+        if (newX >= 0 && newX < board.getBoard().length && y < board.getBoard()[0].length) {
+            // Check if the new position is empty or occupied by an opponent's piece
+            if (board.getPiece(newX, y) == null
+                    || !board.getPiece(newX, y).getColor().equals(this.getColor())) {
+                availableMoves.add(new int[] { newX, y });
             }
         }
+
+        return availableMoves;
     }
 }
