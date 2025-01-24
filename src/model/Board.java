@@ -128,16 +128,9 @@ public class Board {
     }
 
     public void movePiece(int toX, int toY, Piece fromPiece) {
-        // Piece piece = board[x][y];
 
-        // if (piece != null) {
-        // piece.move(x, y, this); // Let the piece handle its own movement
-        // }
-        // println("fromX: " + getPiece(toX, toY));
         System.out.println(
                 "fromX: " + fromPiece.getX() + " fromY: " + fromPiece.getY() + " toX: " + toX + " toY: " + toY);
-        // setPiece(toX, toY, fromPiece);
-        // board[toX][toY] = fromPiece;
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
 
@@ -150,7 +143,6 @@ public class Board {
 
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
-        System.out.println("Moved Piece successfull : " + getPiece(toX, toY));
     }
 
 }

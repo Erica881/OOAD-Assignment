@@ -33,12 +33,8 @@ public class Ram extends Piece {
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();
-        System.out.println("board flip in ram: " + board.isFlipped());
         // Generate available moves for the Ram piece
         int newX = board.isFlipped() ? x + 1 : x - 1;
-        // for (int i = 0; i <= 2; i++) {
-
-        // newX = x - i;
 
         // Check if the new position is within the board boundaries
         if (newX >= 0 && newX < board.getBoard().length && y < board.getBoard()[0].length) {
@@ -48,12 +44,6 @@ public class Ram extends Piece {
                 availableMoves.add(new int[] { newX, y });
             }
         }
-
-        // // Print the available moves
-        // System.out.println("Available moves for Ram at (" + x + ", " + y + "):");
-        // for (int[] move : availableMoves) {
-        // System.out.println("(" + move[0] + ", " + move[1] + ")");
-        // }
 
         return availableMoves;
     }

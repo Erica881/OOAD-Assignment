@@ -145,7 +145,6 @@ public class BoardView extends JPanel {
 
         // Store the highlighted cells for later use
         highlightedCells = availableMoves;
-        System.out.println("highlighted cell triggered in view");
 
         // Change the background color of the buttons for the available moves
         for (int[] position : highlightedCells) {
