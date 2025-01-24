@@ -132,4 +132,5 @@ public abstract class Piece {
     }
 
     public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
+
 }

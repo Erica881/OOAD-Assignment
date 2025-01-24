@@ -93,12 +93,45 @@ public class Board {
         return board; // Return the 2D array representing the board
     }
 
-    public void movePiece(int toX, int toY, Piece fromPiece) {
+    // public void movePiece(int toX, int toY, Piece fromPiece) {
 
-        System.out.println(
-                "fromX: " + fromPiece.getX() + " fromY: " + fromPiece.getY() + " toX: " + toX + " toY: " + toY);
+    // System.out.println(
+    // "fromX: " + fromPiece.getX() + " fromY: " + fromPiece.getY() + " toX: " + toX
+    // + " toY: " + toY);
+    // int fromX = fromPiece.getX();
+    // int fromY = fromPiece.getY();
+
+    // // Remove the piece from its old position
+    // board[fromX][fromY] = null;
+
+    // // Update the piece's position
+    // fromPiece.setX(toX);
+    // fromPiece.setY(toY);
+
+    // // Add the piece to its new position
+    // board[toX][toY] = fromPiece;
+    // }
+
+    public void movePiece(int toX, int toY, Piece fromPiece) {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
+
+        System.out.println(
+                "Moving piece from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
+
+        // Check if there is an enemy piece at the target position
+        Piece targetPiece = board[toX][toY];
+        if (targetPiece != null) {
+            if (!targetPiece.getColor().equals(fromPiece.getColor())) {
+                // Capture the enemy piece
+                System.out.println("Captured " + targetPiece.getName() + " at (" + toX + ", " + toY + ")");
+                board[toX][toY] = null; // Remove the enemy piece from the board
+            } else {
+                // Invalid move: cannot capture your own piece
+                System.out.println("Invalid move: Target position contains your own piece!");
+                return;
+            }
+        }
 
         // Remove the piece from its old position
         board[fromX][fromY] = null;
@@ -109,6 +142,8 @@ public class Board {
 
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
+
+        System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY + ")");
     }
 
 }
