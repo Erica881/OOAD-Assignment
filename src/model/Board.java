@@ -5,7 +5,7 @@ public class Board {
     // private boolean isGamePaused;
     private static final int ROWS = 8;
     private static final int COLS = 5;
-    private boolean isFlipped = false;
+    private boolean Flipped = false;
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
@@ -45,19 +45,6 @@ public class Board {
         }
     }
 
-    // private String formatCoordinate(int row, int col) {
-    //     // Convert column index to a letter
-    //     char columnLetter = (char) ('a' + col);
-    //     // Return formatted coordinate
-    //     return "(" + (row + 1) + ", " + columnLetter + ")";
-    // }
-
-    private void swapPieces(int x1, int y1, int x2, int y2) {
-        Piece temp = board[x1][y1];
-        board[x1][y1] = board[x2][y2];
-        board[x2][y2] = temp;
-    }
-
     private Piece createPiece(String type, String color) {
         return switch (type) {
             case "Tor" -> new Tor(color);
@@ -69,11 +56,11 @@ public class Board {
     }
 
     public boolean isFlipped() {
-        return isFlipped;
+        return Flipped;
     }
     
     public void setFlipped(boolean flipped) {
-        this.isFlipped = flipped;
+        this.Flipped = flipped;
     }
 
     public void flipBoard() {
@@ -95,7 +82,7 @@ public class Board {
             }
         }
 
-        isFlipped = !isFlipped;
+        Flipped = !Flipped;
     }
 
 

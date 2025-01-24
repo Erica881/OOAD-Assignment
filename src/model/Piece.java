@@ -14,6 +14,7 @@ public class Piece {
     private String color;
     private ImageIcon image;
     private boolean isFlipped = false;
+    private String formattedCoordinate;
 
 
     // "Tor", "Red", (7, b)
@@ -64,11 +65,16 @@ public class Piece {
     //
     // not sure what to set, not using yet but might use in future
 
-    public String formatCoordinate(int x, int y, boolean isFlipped) {
+    public String setFormatCoordinate(int x, int y, boolean isFlipped) {
         char columnLetter = (char) ('a' + (isFlipped ? (4 - y) : y)); // Adjust column for flipped board
         int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
-        return "(" + rowNumber + ", " + columnLetter + ")";
+        return formattedCoordinate = "(" + rowNumber + ", " + columnLetter + ")";
     }
+
+    public String getCoordinate () {
+        return formattedCoordinate;
+    }
+
 
     public void move(int currentX, int currentY, Board board) {
         // Get the available moves for the piece
@@ -80,12 +86,13 @@ public class Piece {
             int targetY = move[1];
     
             Piece targetPiece = board.getPiece(targetX, targetY);
+            targetPiece.setFormatCoordinate(targetX, targetY, board.isFlipped());
     
             // Perform the move if the target position is valid
             if (targetPiece == null || !targetPiece.getColor().equals(this.getColor())) {
                 // Capture opponent piece if present
                 if (targetPiece != null) {
-                    System.out.println(targetPiece.getNameNColour() + " captured by " + this.getNameNColour() + " at " + formatCoordinate(targetX, targetY, isFlipped));
+                    System.out.println(targetPiece.getNameNColour() + " captured by " + this.getNameNColour() + " at " + targetPiece.getCoordinate());
                 }
     
                 // Update the board

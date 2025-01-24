@@ -44,21 +44,56 @@ public class GameController implements GameTimerListener {
     private void handleCellClick(int x, int y) {
         sound = new Sound(this);
         Piece selectedPiece = board.getPiece(x, y);
+        selectedPiece.setFormatCoordinate(x, y, board.isFlipped());
 
+        // Clear previous highlights first
+        mainView.getBoardView().clearHighlights();
+    
         if (isSelectedPieceValidate(selectedPiece)) {
-            String formattedCoordinate = selectedPiece.formatCoordinate(x, y, board.isFlipped());
-            // Get the available moves for the selected piece
-            // ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y,
-            // board);
-
-            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formattedCoordinate;
-
-            sound.soundMove();
+            logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + selectedPiece.getCoordinate();
+            mainView.updateStatus(logMessage);
             System.out.println(logMessage);
-            updateGameState(x, y, logMessage);
+    
+            ArrayList<int[]> availableMoves = selectedPiece.getAvailableMoves(x, y, board);
+            if (availableMoves.isEmpty()) {
+                mainView.updateStatus("No valid moves available for this piece.");
+                return;
+            }
+    
+            // Highlight the available moves
+            mainView.getBoardView().highlightAvailableMoves(availableMoves);
+    
+            // Add listeners for target selection (user input)
+            mainView.getBoardView().addMoveSelectionListener((targetX, targetY) -> {
+                // Ensure the selected move is valid
+                boolean isValidMove = false;
+                for (int[] move : availableMoves) {
+                    if (move[0] == targetX && move[1] == targetY) {
+                        isValidMove = true;
+                        break;
+                    }
+                }
+    
+                if (isValidMove) {
+                    // Execute the move
+                    selectedPiece.move(x, y, board);
+                    selectedPiece.setFormatCoordinate(x, y, board.isFlipped());
+    
+                    // Clear highlights after the move
+                    mainView.getBoardView().clearHighlights();
+            
+                    // Update game state and log the move
+                    logMessage = currentPlayer + " moved " + selectedPiece.getName() + " to " + selectedPiece.getCoordinate();
+                    updateGameState(targetX, targetY, logMessage);
+                } else {
+                    mainView.updateStatus("Invalid move. Please select a valid target.");
+                }
+            });
+        } else {
+            mainView.updateStatus("Invalid selection. Please select a valid piece.");
         }
-
     }
+    
 
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);

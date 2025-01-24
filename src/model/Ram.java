@@ -53,48 +53,33 @@ public class Ram extends Piece {
         return moves;
     }
 
+    @Override
     public void move(int currentX, int currentY, Board board) {
-        super.move(currentX, currentY, board);
-        return; // Only execute one move for simplicity
+        Piece selectedPiece = board.getPiece(currentX, currentY);
+        ArrayList<int[]> availableMoves = getAvailableMoves(currentX, currentY, board);
+
+        // Loop through available moves to execute one (this logic should already ensure valid moves are passed)
+        if (!availableMoves.isEmpty()) {
+            int[] move = availableMoves.get(0); // Always pick the first move
+            int targetX = move[0];
+            int targetY = move[1];
+
+            // Perform the move: Update the board
+            board.setPiece(targetX, targetY, this);
+            board.setPiece(currentX, currentY, null);
+
+            selectedPiece.setFormatCoordinate(targetX, targetY, board.isFlipped());
+
+            System.out.println(this.getNameNColour() + " moved to" + selectedPiece.getCoordinate());
+
+            return; // Exit after executing the move
+        }
+        
+        // If no valid moves, log an error
+        System.err.println("No valid moves available for " + this.getNameNColour());
     }
+    
 
     //System.err.println("No valid moves available for " + this.getNameNColour());
 }
 
-
-//     @Override
-//     public void move(int currentX, int currentY, Board board) {
-//         int newX;
-
-//         if (this.moveBack) {
-//             newX = currentX + this.direction;
-//         } else {
-//             newX = currentX - this.direction;
-//         }
-
-//         if (newX == 0) {
-//             this.movingBack(true);
-//         }
-
-//         if (newX >= 0 && newX < board.getBoard().length) {
-
-//             Piece targetPosition = board.getPiece(newX, currentY);
-//             //boolean isFlipped = targetPosition.getFlipped();
-
-//             if (targetPosition == null) {
-
-//                 board.setPiece(newX, currentY, this);
-//                 board.setPiece(currentX, currentY, null);
-
-//             } else if (!targetPosition.getColor().equals(this.getColor())) {
-
-//                 System.out.println(targetPosition.getNameNColour() + " has been eliminated by " + this.getNameNColour()
-//                         + " at (" + newX + "," + currentY + ")");
-
-//                 board.setPiece(newX, currentY, this);
-//                 board.setPiece(currentX, currentY, null);
-
-//             }
-//         }
-//     }
-// }

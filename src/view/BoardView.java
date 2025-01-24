@@ -7,15 +7,13 @@ import model.Piece;
 import java.awt.*;
 import java.awt.event.ActionListener;
 // import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class BoardView extends JPanel {
     private JButton[][] buttons; // 2D array of buttons to represent the board cells
     private JPanel gridPanel; // Panel for the board grid
     private JLabel[] rowLabels; // Labels for rows (1-8)
     private JLabel[] colLabels; // Labels for columns (a-e)
-    private JPanel colLabelPanel;
-    private JPanel rowLabelPanel;
-
     private static final int ROWS = 8; // 8 rows
     private static final int COLS = 5; // 5 columns
     private static final int BUTTON_SIZE = 50; // Smaller button size for compact board
@@ -98,6 +96,42 @@ public class BoardView extends JPanel {
         } else {
             cell.setIcon(null);
         }
+    }
+
+    public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
+        for (int[] move : availableMoves) {
+            int x = move[0];
+            int y = move[1];
+            buttons[x][y].setBackground(Color.YELLOW); // Highlight the valid cells
+        }
+    }
+
+    public void clearHighlights() {
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                buttons[i][j].setBackground(null); // Reset cell background
+            }
+        }
+    }
+    
+    public void addMoveSelectionListener(MoveSelectionListener listener) {
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                for (ActionListener al : buttons[i][j].getActionListeners()) {
+                    buttons[i][j].removeActionListener(al);
+                }
+                int x = i;
+                int y = j;
+                buttons[x][y].addActionListener(e -> {
+                    listener.onMoveSelected(x, y); // Notify the listener
+                });
+            }
+        }
+    }
+
+    @FunctionalInterface
+    public interface MoveSelectionListener {
+        void onMoveSelected(int targetX, int targetY);
     }
 
     // public void highlightAvailableMoves(ArrayList<int[]> availableMoves) {
