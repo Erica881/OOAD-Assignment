@@ -1,4 +1,1 @@
 Blue selected Ram at (6, 2)
-Red selected Ram at (1, 2)
-Blue selected Ram at (6, 1)
-Red selected Biz at (0, 3)

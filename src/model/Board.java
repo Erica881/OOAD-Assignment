@@ -137,8 +137,9 @@ public class Board {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
 
-        System.out.println(
-                "Moving piece from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
+        // System.out.println(
+        // "Moving piece from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY +
+        // ")");
 
         // Check if there is an enemy piece at the target position
         Piece targetPiece = board[toX][toY];
@@ -164,7 +165,8 @@ public class Board {
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
 
-        System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY + ")");
+        // System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY +
+        // ")");
 
     }
 

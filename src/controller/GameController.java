@@ -22,12 +22,12 @@ public class GameController {
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
     // private Stopwatch stopwatch;
-    private ArrayList<int[]> availableMoves;
+    private ArrayList<int[]> availableMoves = new ArrayList<>();
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
     private String logMessage;
     private String errorMessage;
-    private Piece selectedPiece;
+    private Piece selectedPiece = null;
     private Piece movePlaceForPiece;
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
@@ -51,13 +51,8 @@ public class GameController {
 
     private void handleCellClick(int x, int y) {
 
-        sound = new Sound(this);
+        // sound = new Sound(this);
         selectedPiece = board.getPiece(x, y);
-
-        if (!isSelectedPieceValidate(selectedPiece)) {
-            System.out.println("Invalid piece selection at (" + x + ", " + y + ").");
-            return;
-        }
 
         // Get the available moves for the selected piece
         availableMoves = selectedPiece.getAvailableMoves(x, y, board);
@@ -68,12 +63,13 @@ public class GameController {
             Piece targetPiece = board.getPiece(targetX, targetY);
 
             // Print available move
-            System.out.println("Available move: (" + targetX + ", " + targetY + ")");
+            // System.out.println("Available move: (" + targetX + ", " + targetY + ")");
 
             // Check if the move contains an enemy piece
             if (targetPiece != null && !targetPiece.getColor().equals(currentPlayer)) {
                 moveContainEnemy.add(move);
-                System.out.println("Enemy piece found at (" + targetX + ", " + targetY + ").");
+                // System.out.println("Enemy piece found at (" + targetX + ", " + targetY +
+                // ").");
             }
 
         }
@@ -84,7 +80,6 @@ public class GameController {
         // Log the action
         logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x + ", " + y + ")";
         sound.soundMove();
-        System.out.println(logMessage);
     }
 
     public int getTurnCounter() {
@@ -168,6 +163,8 @@ public class GameController {
 
                 movePlaceForPiece = selectedPiece;
                 // selectedPiece = null;
+                sound.soundMove();
+
                 turnCounter++;
 
                 updateGameState(boardX, boardY, logMessage);
@@ -194,38 +191,6 @@ public class GameController {
         }
     }
 
-    // public void attachBoardListener() {
-    // // Attach listeners to the board cells
-    // for (int i = 0; i < 8; i++) {
-    // for (int j = 0; j < 5; j++) {
-    // final int x = i;
-    // final int y = j;
-    // mainView.getBoardView().addCellListener(x, y, new ActionListener() {
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // // Map view coordinates to the correct board coordinates
-    // int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
-    // int boardX = mappedCoords[0];
-    // int boardY = mappedCoords[1];
-
-    // // Check if a valid piece is selected for the current player
-    // Piece pieceAtCell = board.getPiece(boardX, boardY);
-    // if (pieceAtCell != null &&
-    // pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
-    // // Handle piece selection
-    // handleCellClick(boardX, boardY);
-
-    // } else {
-    // logMove(boardX, boardY);
-    // }
-
-    // // Reset the flag if no valid move is in progress
-    // isMoveInProgress = false;
-    // }
-    // });
-    // }
-    // }
-    // }
     public void attachBoardListener() {
         final int[] selectedCell = { -1, -1 }; // Stores the currently selected cell's coordinates
 
@@ -243,36 +208,45 @@ public class GameController {
                         int boardX = mappedCoords[0];
                         int boardY = mappedCoords[1];
 
-                        // Check if the cell clicked is the same as the currently selected cell
-                        if (selectedCell[0] == boardX && selectedCell[1] == boardY) {
-                            // Clear selection and highlight
-                            System.out.println("Deselected  or invalid cell (" + boardX + ", " + boardY + ")");
-                            selectedCell[0] = -1;
-                            selectedCell[1] = -1;
-                            mainView.getBoardView().clearHighlights(); // Clear highlights
+                        // // Check if the cell clicked is the same as the currently selected cell
+                        // if (selectedCell[0] == boardX && selectedCell[1] == boardY) {
+                        // // Clear selection and highlight
+                        // System.out.println("Deselected or invalid cell (" + boardX + ", " + boardY +
+                        // ")");
+                        // selectedCell[0] = -1;
+                        // selectedCell[1] = -1;
+                        // mainView.getBoardView().clearHighlights(); // Clear highlights
+                        // } else {
+                        // // Update the selected cell
+                        // selectedCell[0] = boardX;
+                        // selectedCell[1] = boardY;
+
+                        // Check if a valid piece is selected for the current player
+                        Piece pieceAtCell = board.getPiece(boardX, boardY);
+                        // if (pieceAtCell != null &&
+                        // pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
+                        if (isSelectedPieceValidate(pieceAtCell) && !isMoveInProgress) {
+                            // Handle piece selection
+                            // System.out.println("Selected piece at (" + boardX + ", " + boardY + ")");
+                            handleCellClick(boardX, boardY);
                         } else {
-                            // Update the selected cell
-                            selectedCell[0] = boardX;
-                            selectedCell[1] = boardY;
-
-                            // Check if a valid piece is selected for the current player
-                            Piece pieceAtCell = board.getPiece(boardX, boardY);
-                            if (pieceAtCell != null && pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
-                                // Handle piece selection
-                                System.out.println("Selected piece at (" + boardX + ", " + boardY + ")");
-                                handleCellClick(boardX, boardY);
-                            } else {
-                                logMove(boardX, boardY);
-                                checkGameEnd();
-                            }
+                            isMoveInProgress = true;
+                            logMove(boardX, boardY);
+                            checkGameEnd();
                         }
-
-                        // Reset the flag if no valid move is in progress
                         isMoveInProgress = false;
+                        return;
+
+                        // }
+                        // Reset the flag if no valid move is in progress
+
                     }
                 });
             }
+
         }
+        return;
+
     }
 
     private void checkGameEnd() {
@@ -280,9 +254,6 @@ public class GameController {
         boolean isBlueSauAlive = false;
         boolean isRedSauAlive = false;
 
-        System.out.println("Checking game end ...");
-        System.out.println("blue sau capture: " + isBlueSauAlive);
-        System.out.println("red sau capture: " + isRedSauAlive);
         // Iterate through the board to check if both Sau pieces exist
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {
@@ -307,7 +278,6 @@ public class GameController {
     }
 
     private void endGame(String winingPlayer) {
-        System.out.println("Game Over! " + currentPlayer + " wins!");
 
         // Disable further moves or reset the game
         mainView.showWinningView(winingPlayer);
