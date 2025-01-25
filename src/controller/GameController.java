@@ -6,7 +6,6 @@ import view.BoardView;
 import view.MainView;
 import view.MenuView;
 import utility.*;
-import utility.Stopwatch.GameTimerListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +15,13 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-public class GameController implements GameTimerListener {
+public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
     private Sound sound;
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
-    private Stopwatch stopwatch;
+    // private Stopwatch stopwatch;
     private ArrayList<int[]> availableMoves;
     // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
@@ -34,17 +33,17 @@ public class GameController implements GameTimerListener {
     private boolean isMoveInProgress = false;
     private int turnCounter = 0;
     private boolean isGameOver = false;
+    private TimerController timerController;
 
     public GameController(Board board) {
         this.board = board;
 
         // initialize log manager
         this.logManager = new LogManager();
-
-        this.stopwatch = new Stopwatch(this);
-
         // Initialize views
-        mainView = new MainView(this);
+        this.mainView = new MainView(this);
+        this.timerController = new TimerController(mainView);
+
         sound = new Sound(this);
         mainView.display();
 
@@ -145,7 +144,8 @@ public class GameController implements GameTimerListener {
     }
 
     public void startGame() {
-        stopwatch.start();
+        // stopwatch.start();
+        timerController.startTimer();
         // board-related logic
         logManager.initializeSaveFile();
         board.initialize(); // Call initialize() to set up the board board.
@@ -325,28 +325,17 @@ public class GameController implements GameTimerListener {
         return isMuted;
     }
 
-    // Stops the timer
-    public void stopTimer() {
-        stopwatch.stop();
-    }
-
-    // Method from the GameTimerListener interface to update the view
-    @Override
-    public void onTimeUpdate(int seconds) {
-        // Inform the view to update the time label with the current seconds
-        mainView.updateTimeLabel(seconds);
-    }
-
     public void resumeGame() {
-        if (stopwatch != null) {
-            stopwatch.start();// Resume the game timer if it's paused
-        }
+        timerController.startTimer();
         mainView.updateStatus("Game resumed!"); // Optionally update the status label
     }
 
+    public void pauseGame() {
+        timerController.stopTimer();
+    }
+
     public void resetGame() {
-        stopwatch.reset();
-        stopwatch.start();
+        timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
         board.initialize(); // Reinitialize the board
         updateBoardView(); // Update the board view to reflect the new state
@@ -356,12 +345,16 @@ public class GameController implements GameTimerListener {
     }
 
     public void stopGame() {
-        stopwatch.reset();
-        board.initialize();
-
         mainView.getFrame().setVisible(false); // Hides the current game view
+
+        // stopwatch.reset();
+        timerController.stopTimer();
+        board.initialize();
+        currentPlayer = "Blue"; // Reset the player to the initial player
+        mainView.getBoardView().initialBoard();
         GameController newGameController = new GameController(board);
-        newGameController.mainView.getFrame().setVisible(true); // Show the new game view
+        newGameController.mainView.getFrame().setVisible(true); // Show the new game
+        logManager.initializeSaveFile(); // Optionally reset logs
 
         // new GameController(board);
         mainView.updateStatus("Game stopped!");
