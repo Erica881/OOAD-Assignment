@@ -38,7 +38,7 @@ public class LogManager {
         }
     }
 
-    public void saveGame() {
+    public void saveGame(String winningPlayer) {
         // Open the file save dialog to prompt the user where to save the file
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Game");
@@ -60,7 +60,7 @@ public class LogManager {
             // file
             try (BufferedReader reader = new BufferedReader(new FileReader(SAVE_FILE_PATH));
                     BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write("Red won the game!\n");
+                writer.write(winningPlayer + " won the game!\n");
                 String line;
                 while ((line = reader.readLine()) != null) {
                     writer.write(line);

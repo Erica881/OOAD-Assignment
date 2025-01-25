@@ -8,6 +8,8 @@ public class Board {
     private static final int ROWS = 8;
     private static final int COLS = 5;
     private boolean isFlipped = false;
+    boolean isBlueSauAlive = false;
+    boolean isRedSauAlive = false;
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
@@ -53,16 +55,6 @@ public class Board {
         board[x1][y1] = board[x2][y2];
         board[x2][y2] = temp;
     }
-
-    // private Piece createPiece(String type, String color, int x, int y) {
-    // return switch (type) {
-    // case "Tor" -> new Tor(color, x, y);
-    // case "Biz" -> new Biz(color);
-    // case "Sau" -> new Sau(color);
-    // case "Xor" -> new Xor(color);
-    // default -> throw new IllegalArgumentException("Invalid piece type: " + type);
-    // };
-    // }
 
     private Piece createPiece(String type, String color, int x, int y) {
         return switch (type) {
@@ -121,7 +113,6 @@ public class Board {
     }
 
     public void transformTorXor() {
-        System.out.println("Transforming Tor to Xor and Xor to Tor...");
 
         // Iterate over the board and perform the transformations
         for (int row = 0; row < board.length; row++) {
@@ -130,11 +121,9 @@ public class Board {
                 if (piece instanceof Tor) {
                     // Transform Tor to Xor
                     setPiece(row, col, new Xor(piece.getColor(), row, col));
-                    System.out.println("Transformed Tor at (" + row + ", " + col + ") to Xor.");
                 } else if (piece instanceof Xor) {
                     // Transform Xor to Tor
                     setPiece(row, col, new Tor(piece.getColor(), row, col));
-                    System.out.println("Transformed Xor at (" + row + ", " + col + ") to Tor.");
                 }
             }
         }
@@ -177,6 +166,14 @@ public class Board {
 
         System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY + ")");
 
+    }
+
+    public int getRows() {
+        return ROWS;
+    }
+
+    public int getCols() {
+        return COLS;
     }
 
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class GameController implements GameTimerListener {
     private Board board; // The model
@@ -32,7 +33,7 @@ public class GameController implements GameTimerListener {
     private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
     private int turnCounter = 0;
-    private int torTransformTurn = 0;
+    private boolean isGameOver = false;
 
     public GameController(Board board) {
         this.board = board;
@@ -94,11 +95,14 @@ public class GameController implements GameTimerListener {
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
+
         // Trigger Tor/Xor transformation every 2 turns
         if (turnCounter >= 2) {
             torTransformation();
         }
+
         board.flipBoard();
+
         mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
@@ -115,6 +119,7 @@ public class GameController implements GameTimerListener {
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
 
         updateBoardView();
+
         mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
         logManager.logAction(logMessage);
     }
@@ -172,6 +177,7 @@ public class GameController implements GameTimerListener {
                 return; // Exit to prevent further execution
             }
         }
+
     }
 
     public void torTransformation() {
@@ -257,6 +263,7 @@ public class GameController implements GameTimerListener {
                                 handleCellClick(boardX, boardY);
                             } else {
                                 logMove(boardX, boardY);
+                                checkGameEnd();
                             }
                         }
 
@@ -266,6 +273,45 @@ public class GameController implements GameTimerListener {
                 });
             }
         }
+    }
+
+    private void checkGameEnd() {
+
+        boolean isBlueSauAlive = false;
+        boolean isRedSauAlive = false;
+
+        System.out.println("Checking game end ...");
+        System.out.println("blue sau capture: " + isBlueSauAlive);
+        System.out.println("red sau capture: " + isRedSauAlive);
+        // Iterate through the board to check if both Sau pieces exist
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getCols(); j++) {
+                // Piece piece = board.getPiece(i, j);
+                Piece piece = board.getPiece(i, j);
+                if (piece instanceof Sau) {
+                    if (piece.getColor().equalsIgnoreCase("blue")) {
+                        isBlueSauAlive = true;
+                    } else if (piece.getColor().equalsIgnoreCase("red")) {
+                        isRedSauAlive = true;
+                    }
+                }
+            }
+        }
+        // Determine game-ending conditions
+        if (!isBlueSauAlive) {
+            endGame("Red"); // Red wins
+        } else if (!isRedSauAlive) {
+            endGame("Blue"); // Blue wins
+        }
+
+    }
+
+    private void endGame(String winingPlayer) {
+        System.out.println("Game Over! " + currentPlayer + " wins!");
+
+        // Disable further moves or reset the game
+        mainView.showWinningView(winingPlayer);
+        isGameOver = true; // Add a flag to track the game's state
     }
 
     public void setMute(boolean mute) {
@@ -312,6 +358,7 @@ public class GameController implements GameTimerListener {
     public void stopGame() {
         stopwatch.reset();
         board.initialize();
+
         mainView.getFrame().setVisible(false); // Hides the current game view
         GameController newGameController = new GameController(board);
         newGameController.mainView.getFrame().setVisible(true); // Show the new game view

@@ -112,13 +112,13 @@ public class MainView {
         switchView(settingView);
     }
 
-    public void showWinningView() {
+    public void showWinningView(String winningPlayer) {
         controller.stopTimer();
         // switchView(winningView);
 
         int option = JOptionPane.showConfirmDialog(
                 null, // Parent component, null will center it on screen
-                "The current player has won the game. Do you want to save the game?", // Message
+                "The " + winningPlayer + " has won the game. Do you want to save the game?", // Message
                 "Game Over", // Title of the dialog
                 JOptionPane.YES_NO_OPTION, // Option type (Yes/No buttons)
                 JOptionPane.QUESTION_MESSAGE); // Message type (Question icon)
@@ -126,13 +126,14 @@ public class MainView {
         // Handle the user's response
         if (option == JOptionPane.YES_OPTION) {
             // User clicked "Yes"
-            logManager.saveGame();
+            logManager.saveGame(winningPlayer);
             System.out.println("game will be save");
         } else if (option == JOptionPane.NO_OPTION) {
             // User clicked "No"
             System.out.println("Game not saved.");
             controller.stopGame();
         }
+        controller.stopGame();
 
     }
 
