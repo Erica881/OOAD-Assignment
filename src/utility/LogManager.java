@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class LogManager {
 
-    private static final String SAVE_FILE_PATH = "src/resources/savedGames/game_log.txt";
+    private static final String SAVE_FILE_PATH = "OOAD-Assignment/src/resources/savedGames/game_log.txt";
 
     public void initializeSaveFile() {
         File saveFile = new File(SAVE_FILE_PATH);
