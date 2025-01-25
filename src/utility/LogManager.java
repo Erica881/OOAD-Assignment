@@ -20,7 +20,6 @@ public class LogManager {
             if (!saveFile.exists())
                 saveFile.createNewFile();
             new FileWriter(saveFile, false).close(); // Clear the file
-            System.out.println("Log reseted.");
         } catch (IOException e) {
             e.printStackTrace();
         }
