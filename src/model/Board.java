@@ -10,6 +10,8 @@ public class Board {
     private boolean isFlipped = false;
     boolean isBlueSauAlive = false;
     boolean isRedSauAlive = false;
+    boolean isPieceCapture = false;
+    Piece capturedPiece = null;
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
@@ -146,6 +148,8 @@ public class Board {
         if (targetPiece != null) {
             if (!targetPiece.getColor().equals(fromPiece.getColor())) {
                 // Capture the enemy piece
+                isPieceCapture = true;
+                capturedPiece = targetPiece;
                 System.out.println("Captured " + targetPiece.getName() + " at (" + toX + ", " + toY + ")");
                 board[toX][toY] = null; // Remove the enemy piece from the board
             } else {
@@ -165,6 +169,14 @@ public class Board {
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
 
+    }
+
+    public boolean isPieceCapture() {
+        return isPieceCapture;
+    }
+
+    public Piece getCapturePiece() {
+        return capturedPiece;
     }
 
     public int getRows() {

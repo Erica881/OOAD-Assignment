@@ -155,6 +155,11 @@ public class GameController {
                         + formatCoordinate(selectedPiece.getX(), selectedPiece.getY())
                         + " to " + formatCoordinate(boardX, boardY);
                 board.movePiece(boardX, boardY, selectedPiece);
+                if (board.isPieceCapture()) {
+                    logMessage += " and captured " + board.getCapturePiece().getColor() + " "
+                            + board.getCapturePiece().getName() + " at "
+                            + formatCoordinate(board.getCapturePiece().getX(), board.getCapturePiece().getY());
+                }
                 movePlaceForPiece = selectedPiece;
                 sound.soundMove();
                 turnCounter++;
@@ -247,7 +252,6 @@ public class GameController {
     }
 
     private void endGame(String winingPlayer) {
-
         // Disable further moves or reset the game
         mainView.showWinningView(winingPlayer);
         // isGameOver = true; // Add a flag to track the game's state
