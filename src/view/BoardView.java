@@ -14,8 +14,6 @@ public class BoardView extends JPanel {
     private JPanel gridPanel; // Panel for the board grid
     private JLabel[] rowLabels; // Labels for rows (1-8)
     private JLabel[] colLabels; // Labels for columns (a-e)
-    private JPanel colLabelPanel;
-    private JPanel rowLabelPanel;
     private boolean isFlipped = false;
 
     private static final int ROWS = 8; // 8 rows
@@ -25,6 +23,13 @@ public class BoardView extends JPanel {
 
     public BoardView() {
         this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Padding around the board view
+
+        initialBoard();
+    }
+
+    public void initialBoard() {
+
         gridPanel = new JPanel(new GridLayout(ROWS, COLS)); // Set layout to 8 rows and 5 columns
         buttons = new JButton[ROWS][COLS];
         rowLabels = new JLabel[ROWS];
@@ -32,15 +37,11 @@ public class BoardView extends JPanel {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                buttons[i][j] = new JButton("i" + i + "j" + j);
+                buttons[i][j] = new JButton("");
                 buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 gridPanel.add(buttons[i][j]);
-
             }
         }
-        // Add padding around the board view
-        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 20px padding on all sides
-
         // Create row labels (1-8)
         JPanel rowLabelPanel = new JPanel(new GridLayout(ROWS, 1));
         for (int i = 0; i < ROWS; i++) {
@@ -88,7 +89,7 @@ public class BoardView extends JPanel {
 
                     // Update button text and store in flippedButtons
                     flippedButtons[flippedRow][flippedCol] = buttons[i][j];
-                    flippedButtons[flippedRow][flippedCol].setText("i" + flippedRow + "j" + flippedCol);
+                    // flippedCol);
                 }
             }
         } else {
@@ -101,7 +102,6 @@ public class BoardView extends JPanel {
 
                     // Restore the button text and store in flippedButtons
                     flippedButtons[originalRow][originalCol] = buttons[i][j];
-                    flippedButtons[originalRow][originalCol].setText("i" + originalRow + "j" + originalCol);
                 }
             }
         }

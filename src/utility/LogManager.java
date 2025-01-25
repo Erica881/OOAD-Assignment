@@ -27,8 +27,6 @@ public class LogManager {
     }
 
     public void logAction(String logMessage) {
-        // try (BufferedWriter writer = new BufferedWriter(new
-        // FileWriter(SAVE_FILE_PATH, true))) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_FILE_PATH, true))) {
             writer.write(logMessage);
             writer.newLine();

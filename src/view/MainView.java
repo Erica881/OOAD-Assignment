@@ -86,6 +86,7 @@ public class MainView {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 // open setting view
+                controller.pauseGame();
                 showSettingView();
 
             }
@@ -108,12 +109,12 @@ public class MainView {
     }
 
     public void showSettingView() {
-        controller.stopTimer();
+        // controller.stopTimer();
         switchView(settingView);
     }
 
     public void showWinningView(String winningPlayer) {
-        controller.stopTimer();
+        // controller.stopTimer();
         // switchView(winningView);
 
         int option = JOptionPane.showConfirmDialog(
@@ -181,6 +182,7 @@ public class MainView {
     }
 
     public void resumeGame() {
+
         // Update the UI if needed (e.g., hide settings view and show the game board)
         switchView(boardView);
         controller.resumeGame();

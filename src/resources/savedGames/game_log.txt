@@ -1,8 +1,4 @@
-Blue selected Ram at (6, 4)
-Red selected Ram at (1, 0)
-Blue selected Ram at (5, 4)
-Red selected Ram at (1, 1)
-Blue selected Tor at (7, 4)
-Red selected Ram at (2, 1)
-Blue selected Ram at (6, 0)
-Red selected Ram at (1, 4)
+Blue selected Ram at (7, b) to 
+Red selected Ram at (7, c) to 
+Blue selected Ram at (7, d) to 
+Red selected Ram at (7, d) to 

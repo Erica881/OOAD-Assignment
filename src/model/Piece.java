@@ -82,22 +82,6 @@ public abstract class Piece {
         y = newY;
     }
 
-    // public void setKilled(boolean isKill) {
-    // this.isKilled = isKill;
-    // }
-    //
-    // not sure what to set, not using yet but might use in future
-
-    public String formatCoordinate(int x, int y, boolean isFlipped) {
-        char columnLetter = (char) ('a' + (isFlipped ? (4 - y) : y)); // Adjust column for flipped board
-        int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
-        return "(" + rowNumber + ", " + columnLetter + ")";
-    }
-
-    // public void move(int currentX, int currentY, Piece fromPiece) {
-
-    // }
-
     public boolean getFlipped() {
         return isFlipped;
     }

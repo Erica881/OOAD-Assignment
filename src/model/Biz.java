@@ -28,12 +28,6 @@ public class Biz extends Piece {
         ArrayList<int[]> availableMoves = new ArrayList<>();
 
         // All possible L-shape moves (3x2 or 2x3)
-        // int[][] moves = {
-        // { 3, 2 }, { 3, -2 }, { -3, 2 }, { -3, -2 }, // Horizontal 3x2
-        // { 2, 3 }, { 2, -3 }, { -2, 3 }, { -2, -3 } // Vertical 2x3
-        // };
-
-        // All possible L-shape moves (3x2 or 2x3)
         int[][] moves = {
                 { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 }, // Horizontal 3x2
                 { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 } // Vertical 2x3
