@@ -78,7 +78,11 @@ public class GameController {
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
 
         // Log the action
-        logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x + ", " + y + ")";
+        String formatedCordCur = selectedPiece.formatCoordinate(x, y, board.isFlipped());
+        // String formatedCordMoved = movePlaceForPiece.formatCoordinate(x, y,
+        // board.isFlipped());
+
+        logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formatedCordCur + " to ";
         sound.soundMove();
     }
 
@@ -156,8 +160,8 @@ public class GameController {
         movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
             // Format the available move coordinates
-            String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
-                    board.isFlipped());
+            // String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
+            // board.isFlipped());
             if (move[0] == boardX && move[1] == boardY) {
                 board.movePiece(boardX, boardY, selectedPiece);
 
@@ -223,11 +227,9 @@ public class GameController {
 
                         // Check if a valid piece is selected for the current player
                         Piece pieceAtCell = board.getPiece(boardX, boardY);
-                        // if (pieceAtCell != null &&
-                        // pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
+
                         if (isSelectedPieceValidate(pieceAtCell) && !isMoveInProgress) {
                             // Handle piece selection
-                            // System.out.println("Selected piece at (" + boardX + ", " + boardY + ")");
                             handleCellClick(boardX, boardY);
                         } else {
                             isMoveInProgress = true;
