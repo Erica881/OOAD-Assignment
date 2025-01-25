@@ -29,10 +29,9 @@ public class GameController {
     private String errorMessage;
     private Piece selectedPiece = null;
     private Piece movePlaceForPiece;
-    private boolean isPieceSelected = false;
     private boolean isMoveInProgress = false;
     private int turnCounter = 0;
-    private boolean isGameOver = false;
+    // private boolean isGameOver = false;
     private TimerController timerController;
 
     public GameController(Board board) {
@@ -61,27 +60,15 @@ public class GameController {
             int targetX = move[0];
             int targetY = move[1];
             Piece targetPiece = board.getPiece(targetX, targetY);
-
-            // Print available move
-            // System.out.println("Available move: (" + targetX + ", " + targetY + ")");
-
             // Check if the move contains an enemy piece
             if (targetPiece != null && !targetPiece.getColor().equals(currentPlayer)) {
                 moveContainEnemy.add(move);
-                // System.out.println("Enemy piece found at (" + targetX + ", " + targetY +
-                // ").");
             }
 
         }
 
         // Highlight available moves and enemy-containing moves
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
-
-        // Log the action
-        // board.isFlipped());
-
-        // logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
-        // + formatedCordCur + " to ";
         sound.soundMove();
     }
 
@@ -148,7 +135,6 @@ public class GameController {
         logManager.initializeSaveFile();
         board.initialize(); // Call initialize() to set up the board board.
         attachBoardListener();
-
         // Update the board view with the initial state of the board
         updateBoardView();
 
@@ -162,33 +148,21 @@ public class GameController {
     }
 
     public void logMove(int boardX, int boardY) {
-
-        // Piece fromPiece = selectedPiece;
-
         movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
             if (move[0] == boardX && move[1] == boardY) {
-
                 logMessage = selectedPiece.getColor() + " " + selectedPiece.getName() + " move from "
                         + formatCoordinate(selectedPiece.getX(), selectedPiece.getY())
                         + " to " + formatCoordinate(boardX, boardY);
-
                 board.movePiece(boardX, boardY, selectedPiece);
-
                 movePlaceForPiece = selectedPiece;
-
                 sound.soundMove();
-
                 turnCounter++;
-
                 updateGameState(boardX, boardY, logMessage);
-
                 isMoveInProgress = false; // Mark the move as completed
-
                 return; // Exit to prevent further execution
             }
         }
-
     }
 
     public void torTransformation() {
@@ -221,19 +195,6 @@ public class GameController {
                         int boardX = mappedCoords[0];
                         int boardY = mappedCoords[1];
 
-                        // // Check if the cell clicked is the same as the currently selected cell
-                        // if (selectedCell[0] == boardX && selectedCell[1] == boardY) {
-                        // // Clear selection and highlight
-                        // System.out.println("Deselected or invalid cell (" + boardX + ", " + boardY +
-                        // ")");
-                        // selectedCell[0] = -1;
-                        // selectedCell[1] = -1;
-                        // mainView.getBoardView().clearHighlights(); // Clear highlights
-                        // } else {
-                        // // Update the selected cell
-                        // selectedCell[0] = boardX;
-                        // selectedCell[1] = boardY;
-
                         // Check if a valid piece is selected for the current player
                         Piece pieceAtCell = board.getPiece(boardX, boardY);
 
@@ -242,19 +203,12 @@ public class GameController {
                             handleCellClick(boardX, boardY);
 
                         } else {
-
                             isMoveInProgress = true;
                             logMove(boardX, boardY);
-
                             checkGameEnd();
                         }
-                        // sound.soundNotify();
                         isMoveInProgress = false;
                         return;
-
-                        // }
-                        // Reset the flag if no valid move is in progress
-
                     }
                 });
             }
@@ -296,7 +250,7 @@ public class GameController {
 
         // Disable further moves or reset the game
         mainView.showWinningView(winingPlayer);
-        isGameOver = true; // Add a flag to track the game's state
+        // isGameOver = true; // Add a flag to track the game's state
     }
 
     public void setMute(boolean mute) {
@@ -323,7 +277,6 @@ public class GameController {
         timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
         board.initialize(); // Reinitialize the board
-        // mainView.getBoardView().initialBoard();
         updateBoardView(); // Update the board view to reflect the new state
         logManager.initializeSaveFile(); // Optionally reset logs
         mainView.updateStatus("Board has been reset."); // Update the status
@@ -333,7 +286,6 @@ public class GameController {
     public void stopGame() {
         mainView.getFrame().setVisible(false); // Hides the current game view
 
-        // stopwatch.reset();
         timerController.stopTimer();
         board.initialize();
         currentPlayer = "Blue"; // Reset the player to the initial player
@@ -341,8 +293,6 @@ public class GameController {
         GameController newGameController = new GameController(board);
         newGameController.mainView.getFrame().setVisible(true); // Show the new game
         logManager.initializeSaveFile(); // Optionally reset logs
-
-        // new GameController(board);
         mainView.updateStatus("Game stopped!");
     }
 

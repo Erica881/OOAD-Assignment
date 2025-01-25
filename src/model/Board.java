@@ -38,9 +38,6 @@ public class Board {
             }
         }
 
-        // Swap specific pieces for the desired coordinates
-        // swapPieces(0, 4, 0, 0); // Swap Red Xor and Blue Xor
-
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
@@ -143,8 +140,6 @@ public class Board {
     public void movePiece(int toX, int toY, Piece fromPiece) {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
-        System.out.println(
-                "from in board move Piece: " + formatCoordinate(fromX, fromY) + " to " + formatCoordinate(toX, toY));
 
         // Check if there is an enemy piece at the target position
         Piece targetPiece = board[toX][toY];
@@ -169,9 +164,6 @@ public class Board {
 
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
-
-        // System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY +
-        // ")");
 
     }
 
