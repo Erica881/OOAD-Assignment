@@ -5,8 +5,8 @@ import controller.GameController;
 public class Board {
     private Piece[][] board;
     // private boolean isGamePaused;
-    private static final int ROWS = 8;
-    private static final int COLS = 5;
+    private static final int rows = 8;
+    private static final int cols = 5;
     private boolean isFlipped = false;
     boolean isBlueSauAlive = false;
     boolean isRedSauAlive = false;
@@ -14,15 +14,15 @@ public class Board {
     Piece capturedPiece = null;
 
     public Board() {
-        this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
+        this.board = new Piece[rows][cols]; // 5x8 grid for the board
         initialize(); // Call initialize() to set up the board
     }
 
     // Initialize the board with pieces
     public void initialize() {
         // Clear the board
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 board[row][col] = null; // clear all positions
             }
         }
@@ -33,8 +33,8 @@ public class Board {
         // Place top row (Red) and bottom row (Blue)
         for (int row : new int[] { 0, 7 }) { // Rows 0 and 7
             String color = (row == 0) ? "Red" : "Blue";
-            for (int col = 0; col < COLS; col++) {
-                int adjustCol = color.equals("Red") ? COLS - 1 - col : col;
+            for (int col = 0; col < cols; col++) {
+                int adjustCol = color.equals("Red") ? cols - 1 - col : col;
                 board[row][adjustCol] = createPiece(pieceOrder[col], color, row, adjustCol);
 
             }
@@ -43,7 +43,7 @@ public class Board {
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
-            for (int col = 0; col < COLS; col++) {
+            for (int col = 0; col < cols; col++) {
                 board[row][col] = new Ram(color, row, col);
             }
         }
@@ -76,8 +76,8 @@ public class Board {
     public int[] mapViewToBoardCoordinates(int x, int y) {
         if (isFlipped()) {
             // Translate the view coordinates to the flipped board's coordinates
-            int flippedX = ROWS - 1 - x;
-            int flippedY = COLS - 1 - y;
+            int flippedX = rows - 1 - x;
+            int flippedY = cols - 1 - y;
             return new int[] { flippedX, flippedY };
         }
         // Return the original coordinates if the board is not flipped
@@ -99,8 +99,8 @@ public class Board {
     public void transformTor() {
         System.out.println("Transforming Tor pieces to Xor...");
         // Iterate over the board and transform each Tor piece
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 Piece piece = getPiece(row, col);
                 if (piece instanceof Tor) {
                     // Replace the Tor piece with an Xor piece of the same color
@@ -180,11 +180,11 @@ public class Board {
     }
 
     public int getRows() {
-        return ROWS;
+        return rows;
     }
 
     public int getCols() {
-        return COLS;
+        return cols;
     }
 
 }
