@@ -6,7 +6,6 @@ import model.Piece;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-// import java.util.ArrayList;
 import java.util.ArrayList;
 
 public class BoardView extends JPanel {
@@ -89,7 +88,6 @@ public class BoardView extends JPanel {
 
                     // Update button text and store in flippedButtons
                     flippedButtons[flippedRow][flippedCol] = buttons[i][j];
-                    // flippedCol);
                 }
             }
         } else {
@@ -118,11 +116,6 @@ public class BoardView extends JPanel {
     public void addCellListener(int x, int y, ActionListener listener) {
         buttons[x][y].addActionListener(listener); // Add listener to each button
     }
-
-    // // Add a listener to a specific cell
-    // public void addMoveCellListener(int x, int y, ActionListener listener) {
-    // buttons[x][y].addActionListener(listener); // Add listener to each button
-    // }
 
     // Get a specific cell
     public JButton getCell(int x, int y) {

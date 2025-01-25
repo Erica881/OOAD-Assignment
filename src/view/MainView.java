@@ -4,10 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import controller.GameController;
 import utility.*;
@@ -16,7 +12,6 @@ public class MainView {
     private BoardView boardView;
     private MenuView menuView;
     private SettingView settingView;
-    private SettingView winningView;
     private LogManager logManager;
     private JFrame frame;
     private JPanel statusPanel, iconPanel, currentView;
@@ -114,9 +109,6 @@ public class MainView {
     }
 
     public void showWinningView(String winningPlayer) {
-        // controller.stopTimer();
-        // switchView(winningView);
-
         int option = JOptionPane.showConfirmDialog(
                 null, // Parent component, null will center it on screen
                 "The " + winningPlayer + " has won the game. Do you want to save the game?", // Message
@@ -138,7 +130,7 @@ public class MainView {
 
     }
 
-    // Delegation archieve -
+    // Delegation archieve
     public void startGame() {
         switchView(boardView);
         // Inform the controller that the game has started

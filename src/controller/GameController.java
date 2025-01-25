@@ -2,18 +2,12 @@ package controller;
 
 import model.*;
 import model.sound.Sound;
-import view.BoardView;
 import view.MainView;
-import view.MenuView;
 import utility.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 public class GameController {
     private Board board; // The model
@@ -21,17 +15,13 @@ public class GameController {
     private Sound sound;
     private final LogManager logManager; // Log manager
     private boolean isMuted = false; // Centralized mute state
-    // private Stopwatch stopwatch;
     private ArrayList<int[]> availableMoves = new ArrayList<>();
-    // private BoardView boardView; // The board view within MainView
     private String currentPlayer = "Blue";
     private String logMessage;
     private String errorMessage;
     private Piece selectedPiece = null;
-    private Piece movePlaceForPiece;
     private boolean isMoveInProgress = false;
     private int turnCounter = 0;
-    // private boolean isGameOver = false;
     private TimerController timerController;
 
     public GameController(Board board) {
@@ -49,8 +39,6 @@ public class GameController {
     }
 
     private void handleCellClick(int x, int y) {
-
-        // sound = new Sound(this);
         selectedPiece = board.getPiece(x, y);
 
         // Get the available moves for the selected piece
@@ -84,9 +72,7 @@ public class GameController {
         if (turnCounter >= 2) {
             torTransformation();
         }
-
         board.flipBoard();
-
         mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
@@ -98,12 +84,9 @@ public class GameController {
                 }
             }
         }
-
         // Switch players
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
-
         updateBoardView();
-
         mainView.updateStatus("Board flipped. It's now " + currentPlayer + "'s turn.");
         logManager.logAction(logMessage);
     }
@@ -129,13 +112,10 @@ public class GameController {
     }
 
     public void startGame() {
-        // stopwatch.start();
         timerController.startTimer();
-        // board-related logic
         logManager.initializeSaveFile();
         board.initialize(); // Call initialize() to set up the board board.
         attachBoardListener();
-        // Update the board view with the initial state of the board
         updateBoardView();
 
     }
@@ -148,7 +128,6 @@ public class GameController {
     }
 
     public void logMove(int boardX, int boardY) {
-        movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
             if (move[0] == boardX && move[1] == boardY) {
                 logMessage = selectedPiece.getColor() + " " + selectedPiece.getName() + " move from "
@@ -160,7 +139,7 @@ public class GameController {
                             + board.getCapturePiece().getName() + " at "
                             + formatCoordinate(board.getCapturePiece().getX(), board.getCapturePiece().getY());
                 }
-                movePlaceForPiece = selectedPiece;
+                // movePlaceForPiece = selectedPiece;
                 sound.soundMove();
                 turnCounter++;
                 updateGameState(boardX, boardY, logMessage);
