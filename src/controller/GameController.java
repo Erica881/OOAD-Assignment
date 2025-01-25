@@ -259,7 +259,15 @@ public class GameController {
     public void resetGame() {
         timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
+        turnCounter = 0;
+
+        if (board.isFlipped()) {
+            board.flipBoard(); // Ensure the model's flip state is reset
+            mainView.getBoardView().flipBoardView(); // Reset the UI to unflipped state
+        }
         board.initialize(); // Reinitialize the board
+        
+        mainView.getBoardView().clearHighlights(); // Clear any lingering highlights
         updateBoardView(); // Update the board view to reflect the new state
         logManager.initializeSaveFile(); // Optionally reset logs
         mainView.updateStatus("Board has been reset."); // Update the status

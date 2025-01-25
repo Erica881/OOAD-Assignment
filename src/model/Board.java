@@ -1,6 +1,6 @@
 package model;
 
-import controller.GameController;
+//import controller.GameController;
 
 public class Board {
     private Piece[][] board;
@@ -21,6 +21,8 @@ public class Board {
     // Initialize the board with pieces
     public void initialize() {
         // Clear the board
+        isFlipped = false;
+        
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 board[row][col] = null; // clear all positions
@@ -47,12 +49,6 @@ public class Board {
                 board[row][col] = new Ram(color, row, col);
             }
         }
-    }
-
-    private void swapPieces(int x1, int y1, int x2, int y2) {
-        Piece temp = board[x1][y1];
-        board[x1][y1] = board[x2][y2];
-        board[x2][y2] = temp;
     }
 
     private Piece createPiece(String type, String color, int x, int y) {
