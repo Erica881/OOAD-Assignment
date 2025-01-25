@@ -11,19 +11,38 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class LogManager {
-
-    private static final String SAVE_FILE_PATH = "OOAD-Assignment/src/resources/savedGames/game_log.txt";
+    private static final String SAVE_FILE_PATH = new File("").getAbsolutePath() + "/resources/savedGames/game_log.txt";
 
     public void initializeSaveFile() {
         File saveFile = new File(SAVE_FILE_PATH);
         try {
-            if (!saveFile.exists())
-                saveFile.createNewFile();
+            if (!saveFile.exists()) {
+                // Ensure parent directories exist
+                saveFile.getParentFile().mkdirs();
+                saveFile.createNewFile(); // Create the file if it doesn't exist
+            }
             new FileWriter(saveFile, false).close(); // Clear the file
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error creating or clearing the save file: " + e.getMessage());
         }
     }
+
+// public class LogManager {
+//     String absolutePath = new File("").getAbsolutePath(); // Get the current working directory
+//     String saveFilePath = absolutePath + "/resources/savedGames/game_log.txt";
+//     File saveFile = new File(saveFilePath);
+//     private static final String SAVE_FILE_PATH = "OOAD-Assignment/src/resources/savedGames/game_log.txt";
+
+//     public void initializeSaveFile() {
+//         File saveFile = new File(SAVE_FILE_PATH);
+//         try {
+//             if (!saveFile.exists())
+//                 saveFile.createNewFile();
+//             new FileWriter(saveFile, false).close(); // Clear the file
+//         } catch (IOException e) {
+//             e.printStackTrace();
+//         }
+//     }
 
     public void logAction(String logMessage) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_FILE_PATH, true))) {
