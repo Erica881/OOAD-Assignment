@@ -89,7 +89,6 @@ public class BoardView extends JPanel {
 
                     // Update button text and store in flippedButtons
                     flippedButtons[flippedRow][flippedCol] = buttons[i][j];
-                    // flippedButtons[flippedRow][flippedCol].setText("i" + flippedRow + "j" +
                     // flippedCol);
                 }
             }
@@ -103,7 +102,6 @@ public class BoardView extends JPanel {
 
                     // Restore the button text and store in flippedButtons
                     flippedButtons[originalRow][originalCol] = buttons[i][j];
-                    // flippedButtons[originalRow][originalCol].setText();
                 }
             }
         }

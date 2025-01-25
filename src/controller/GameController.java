@@ -78,11 +78,10 @@ public class GameController {
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
 
         // Log the action
-        String formatedCordCur = selectedPiece.formatCoordinate(x, y, board.isFlipped());
-        // String formatedCordMoved = movePlaceForPiece.formatCoordinate(x, y,
         // board.isFlipped());
 
-        logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at " + formatedCordCur + " to ";
+        // logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at "
+        // + formatedCordCur + " to ";
         sound.soundMove();
     }
 
@@ -155,18 +154,29 @@ public class GameController {
 
     }
 
+    public String formatCoordinate(int x, int y) {
+        char columnLetter = (char) ('a' + y); // Adjust
+        // column for flipped board
+        int rowNumber = x + 1; // Adjust row number for flipped board
+        return "(" + rowNumber + ", " + columnLetter + ")";
+    }
+
     public void logMove(int boardX, int boardY) {
+
+        // Piece fromPiece = selectedPiece;
 
         movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
-            // Format the available move coordinates
-            // String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
-            // board.isFlipped());
             if (move[0] == boardX && move[1] == boardY) {
+
+                logMessage = selectedPiece.getColor() + " " + selectedPiece.getName() + " move from "
+                        + formatCoordinate(selectedPiece.getX(), selectedPiece.getY())
+                        + " to " + formatCoordinate(boardX, boardY);
+
                 board.movePiece(boardX, boardY, selectedPiece);
 
                 movePlaceForPiece = selectedPiece;
-                // selectedPiece = null;
+
                 sound.soundMove();
 
                 turnCounter++;
@@ -196,7 +206,6 @@ public class GameController {
     }
 
     public void attachBoardListener() {
-        final int[] selectedCell = { -1, -1 }; // Stores the currently selected cell's coordinates
 
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
@@ -231,11 +240,15 @@ public class GameController {
                         if (isSelectedPieceValidate(pieceAtCell) && !isMoveInProgress) {
                             // Handle piece selection
                             handleCellClick(boardX, boardY);
+
                         } else {
+
                             isMoveInProgress = true;
                             logMove(boardX, boardY);
+
                             checkGameEnd();
                         }
+                        // sound.soundNotify();
                         isMoveInProgress = false;
                         return;
 

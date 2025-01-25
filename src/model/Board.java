@@ -133,13 +133,18 @@ public class Board {
         return x >= 0 && x < 8 && y >= 0 && y < 5; // Update board dimensions as needed
     }
 
+    public String formatCoordinate(int x, int y) {
+        char columnLetter = (char) ('a' + y); // Adjust
+        // column for flipped board
+        int rowNumber = x + 1; // Adjust row number for flipped board
+        return "(" + rowNumber + ", " + columnLetter + ")";
+    }
+
     public void movePiece(int toX, int toY, Piece fromPiece) {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
-
-        // System.out.println(
-        // "Moving piece from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY +
-        // ")");
+        System.out.println(
+                "from in board move Piece: " + formatCoordinate(fromX, fromY) + " to " + formatCoordinate(toX, toY));
 
         // Check if there is an enemy piece at the target position
         Piece targetPiece = board[toX][toY];
