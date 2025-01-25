@@ -94,7 +94,6 @@ public class GameController implements GameTimerListener {
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
-        // board.movePiece(x, y);
         // Trigger Tor/Xor transformation every 2 turns
         if (turnCounter >= 2) {
             torTransformation();
@@ -189,12 +188,47 @@ public class GameController implements GameTimerListener {
         }
     }
 
+    // public void attachBoardListener() {
+    // // Attach listeners to the board cells
+    // for (int i = 0; i < 8; i++) {
+    // for (int j = 0; j < 5; j++) {
+    // final int x = i;
+    // final int y = j;
+    // mainView.getBoardView().addCellListener(x, y, new ActionListener() {
+    // @Override
+    // public void actionPerformed(ActionEvent e) {
+    // // Map view coordinates to the correct board coordinates
+    // int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
+    // int boardX = mappedCoords[0];
+    // int boardY = mappedCoords[1];
+
+    // // Check if a valid piece is selected for the current player
+    // Piece pieceAtCell = board.getPiece(boardX, boardY);
+    // if (pieceAtCell != null &&
+    // pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
+    // // Handle piece selection
+    // handleCellClick(boardX, boardY);
+
+    // } else {
+    // logMove(boardX, boardY);
+    // }
+
+    // // Reset the flag if no valid move is in progress
+    // isMoveInProgress = false;
+    // }
+    // });
+    // }
+    // }
+    // }
     public void attachBoardListener() {
+        final int[] selectedCell = { -1, -1 }; // Stores the currently selected cell's coordinates
+
         // Attach listeners to the board cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
                 final int x = i;
                 final int y = j;
+
                 mainView.getBoardView().addCellListener(x, y, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -203,14 +237,29 @@ public class GameController implements GameTimerListener {
                         int boardX = mappedCoords[0];
                         int boardY = mappedCoords[1];
 
-                        // Check if a valid piece is selected for the current player
-                        Piece pieceAtCell = board.getPiece(boardX, boardY);
-                        if (pieceAtCell != null && pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
-                            // Handle piece selection
-                            handleCellClick(boardX, boardY);
+                        // Check if the cell clicked is the same as the currently selected cell
+                        if (selectedCell[0] == boardX && selectedCell[1] == boardY) {
+                            // Clear selection and highlight
+                            System.out.println("Deselected  or invalid cell (" + boardX + ", " + boardY + ")");
+                            selectedCell[0] = -1;
+                            selectedCell[1] = -1;
+                            mainView.getBoardView().clearHighlights(); // Clear highlights
                         } else {
-                            logMove(boardX, boardY);
+                            // Update the selected cell
+                            selectedCell[0] = boardX;
+                            selectedCell[1] = boardY;
+
+                            // Check if a valid piece is selected for the current player
+                            Piece pieceAtCell = board.getPiece(boardX, boardY);
+                            if (pieceAtCell != null && pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
+                                // Handle piece selection
+                                System.out.println("Selected piece at (" + boardX + ", " + boardY + ")");
+                                handleCellClick(boardX, boardY);
+                            } else {
+                                logMove(boardX, boardY);
+                            }
                         }
+
                         // Reset the flag if no valid move is in progress
                         isMoveInProgress = false;
                     }

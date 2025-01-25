@@ -140,6 +140,10 @@ public class Board {
         }
     }
 
+    public boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 5; // Update board dimensions as needed
+    }
+
     public void movePiece(int toX, int toY, Piece fromPiece) {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
