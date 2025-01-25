@@ -3,8 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class Tor extends Piece {
-    private int turns = 0; // Track the number of turns the Tor has made
-
+    
     public Tor(String colorTurn) {
         super("Tor", colorTurn); // Hardcoded color "Gold" for the Tor piece
     }

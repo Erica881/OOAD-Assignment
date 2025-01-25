@@ -1,7 +1,5 @@
 package model;
 
-//import controller.GameController;
-
 public class Board {
     private Piece[][] board;
     // private boolean isGamePaused;
