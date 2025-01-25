@@ -308,6 +308,7 @@ public class GameController {
         timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
         board.initialize(); // Reinitialize the board
+        // mainView.getBoardView().initialBoard();
         updateBoardView(); // Update the board view to reflect the new state
         logManager.initializeSaveFile(); // Optionally reset logs
         mainView.updateStatus("Board has been reset."); // Update the status
