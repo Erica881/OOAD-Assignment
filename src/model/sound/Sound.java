@@ -47,7 +47,6 @@ public class Sound {
     }
 
     public void toggleMute(boolean mute) {
-        // isMuted = !isMuted; // Toggle the mute state
 
         if (mute) {
             controller.setMute(mute);

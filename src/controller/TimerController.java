@@ -3,7 +3,6 @@ package controller;
 import utility.Stopwatch;
 import utility.Stopwatch.GameTimerListener;
 import view.MainView;
-import utility.*;
 
 public class TimerController implements GameTimerListener {
     private Stopwatch stopwatch;

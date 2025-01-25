@@ -71,15 +71,4 @@ public class Tor extends Piece {
         return moves;
     }
 
-    // Method to update the turn counter and handle transformation to Xor piece
-    // after two turns
-    // public void incrementTurnCounter() {
-    // turns++;
-
-    // if (turns >= 2) {
-    // System.out.println("Transforming to tor");
-    // // transformToXor(); // After two turns, transform to Xor
-    // }
-    // }
-
 }

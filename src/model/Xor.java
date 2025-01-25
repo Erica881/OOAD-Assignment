@@ -23,12 +23,6 @@ public class Xor extends Piece {
         return super.getColor();
     }
 
-    // @Override
-    // public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-    // System.out.println("get available move in xor");
-    // return new ArrayList<>();
-    // }
-
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();
