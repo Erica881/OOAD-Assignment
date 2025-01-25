@@ -10,6 +10,8 @@ public class Board {
     private boolean isFlipped = false;
     boolean isBlueSauAlive = false;
     boolean isRedSauAlive = false;
+    private String coordinate;
+
 
     public Board() {
         this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
@@ -50,10 +52,14 @@ public class Board {
         }
     }
 
-    private void swapPieces(int x1, int y1, int x2, int y2) {
-        Piece temp = board[x1][y1];
-        board[x1][y1] = board[x2][y2];
-        board[x2][y2] = temp;
+    public String setCoordinate(int x, int y) {
+        char columnLetter = (char) ('a' + (isFlipped ? (4 - y) : y)); // Adjust column for flipped board
+        int rowNumber = isFlipped ? 8 - x : x + 1; // Adjust row number for flipped board
+        return coordinate = "(" + rowNumber + ", " + columnLetter + ")";
+    }
+
+    public String getCoordinate() {
+        return coordinate;
     }
 
     private Piece createPiece(String type, String color, int x, int y) {
@@ -98,7 +104,6 @@ public class Board {
     }
 
     public void transformTor() {
-        System.out.println("Transforming Tor pieces to Xor...");
         // Iterate over the board and transform each Tor piece
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -106,7 +111,6 @@ public class Board {
                 if (piece instanceof Tor) {
                     // Replace the Tor piece with an Xor piece of the same color
                     setPiece(row, col, new Xor(piece.getColor(), row, col));
-                    System.out.println("Transformed Tor at position (" + row + ", " + col + ") to Xor.");
                 }
             }
         }
@@ -137,15 +141,21 @@ public class Board {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
 
+        setCoordinate(fromX, fromY);
+        String fromCoordinate = getCoordinate();
+     
+        setCoordinate(toX, toY);
+        String toCoordinate = getCoordinate();
+        
         System.out.println(
-                "Moving piece from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
+                "Moving piece from " + fromCoordinate + " to " + toCoordinate);
 
         // Check if there is an enemy piece at the target position
         Piece targetPiece = board[toX][toY];
         if (targetPiece != null) {
             if (!targetPiece.getColor().equals(fromPiece.getColor())) {
                 // Capture the enemy piece
-                System.out.println("Captured " + targetPiece.getName() + " at (" + toX + ", " + toY + ")");
+                System.out.println("Captured " + targetPiece.getName() + " at " + toCoordinate + "!");
                 board[toX][toY] = null; // Remove the enemy piece from the board
             } else {
                 // Invalid move: cannot capture your own piece
@@ -163,9 +173,6 @@ public class Board {
 
         // Add the piece to its new position
         board[toX][toY] = fromPiece;
-
-        System.out.println(fromPiece.getName() + " moved to (" + toX + ", " + toY + ")");
-
     }
 
     public int getRows() {

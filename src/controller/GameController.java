@@ -2,19 +2,13 @@ package controller;
 
 import model.*;
 import model.sound.Sound;
-import view.BoardView;
 import view.MainView;
-import view.MenuView;
 import utility.*;
 import utility.Stopwatch.GameTimerListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 public class GameController implements GameTimerListener {
     private Board board; // The model
@@ -54,9 +48,11 @@ public class GameController implements GameTimerListener {
 
         sound = new Sound(this);
         selectedPiece = board.getPiece(x, y);
+        board.setCoordinate(x, y);
+        String coordinate = board.getCoordinate();
 
         if (!isSelectedPieceValidate(selectedPiece)) {
-            System.out.println("Invalid piece selection at (" + x + ", " + y + ").");
+            System.out.println("Invalid piece selection at " + coordinate + ".");
             return;
         }
 
@@ -68,13 +64,9 @@ public class GameController implements GameTimerListener {
             int targetY = move[1];
             Piece targetPiece = board.getPiece(targetX, targetY);
 
-            // Print available move
-            System.out.println("Available move: (" + targetX + ", " + targetY + ")");
-
             // Check if the move contains an enemy piece
             if (targetPiece != null && !targetPiece.getColor().equals(currentPlayer)) {
                 moveContainEnemy.add(move);
-                System.out.println("Enemy piece found at (" + targetX + ", " + targetY + ").");
             }
 
         }
@@ -83,7 +75,7 @@ public class GameController implements GameTimerListener {
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
 
         // Log the action
-        logMessage = currentPlayer + " selected " + selectedPiece.getName() + " at (" + x + ", " + y + ")";
+        logMessage = currentPlayer + " player selected " + selectedPiece.getName() + " at " + coordinate + ".";
         sound.soundMove();
         System.out.println(logMessage);
     }
@@ -160,9 +152,7 @@ public class GameController implements GameTimerListener {
 
         movePlaceForPiece = board.getPiece(boardX, boardY);
         for (int[] move : availableMoves) {
-            // Format the available move coordinates
-            String formattedMove = selectedPiece.formatCoordinate(move[0], move[1],
-                    board.isFlipped());
+          
             if (move[0] == boardX && move[1] == boardY) {
                 board.movePiece(boardX, boardY, selectedPiece);
 
@@ -194,38 +184,7 @@ public class GameController implements GameTimerListener {
         }
     }
 
-    // public void attachBoardListener() {
-    // // Attach listeners to the board cells
-    // for (int i = 0; i < 8; i++) {
-    // for (int j = 0; j < 5; j++) {
-    // final int x = i;
-    // final int y = j;
-    // mainView.getBoardView().addCellListener(x, y, new ActionListener() {
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // // Map view coordinates to the correct board coordinates
-    // int[] mappedCoords = board.mapViewToBoardCoordinates(x, y);
-    // int boardX = mappedCoords[0];
-    // int boardY = mappedCoords[1];
-
-    // // Check if a valid piece is selected for the current player
-    // Piece pieceAtCell = board.getPiece(boardX, boardY);
-    // if (pieceAtCell != null &&
-    // pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
-    // // Handle piece selection
-    // handleCellClick(boardX, boardY);
-
-    // } else {
-    // logMove(boardX, boardY);
-    // }
-
-    // // Reset the flag if no valid move is in progress
-    // isMoveInProgress = false;
-    // }
-    // });
-    // }
-    // }
-    // }
+  
     public void attachBoardListener() {
         final int[] selectedCell = { -1, -1 }; // Stores the currently selected cell's coordinates
 
@@ -245,8 +204,11 @@ public class GameController implements GameTimerListener {
 
                         // Check if the cell clicked is the same as the currently selected cell
                         if (selectedCell[0] == boardX && selectedCell[1] == boardY) {
+                            board.setCoordinate(boardX, boardY);
+                            String coordinate = board.getCoordinate();
+
                             // Clear selection and highlight
-                            System.out.println("Deselected  or invalid cell (" + boardX + ", " + boardY + ")");
+                            System.out.println("Deselected  or invalid cell " + coordinate + ".");
                             selectedCell[0] = -1;
                             selectedCell[1] = -1;
                             mainView.getBoardView().clearHighlights(); // Clear highlights
@@ -257,9 +219,9 @@ public class GameController implements GameTimerListener {
 
                             // Check if a valid piece is selected for the current player
                             Piece pieceAtCell = board.getPiece(boardX, boardY);
+
                             if (pieceAtCell != null && pieceAtCell.getColor().equalsIgnoreCase(currentPlayer)) {
                                 // Handle piece selection
-                                System.out.println("Selected piece at (" + boardX + ", " + boardY + ")");
                                 handleCellClick(boardX, boardY);
                             } else {
                                 logMove(boardX, boardY);
@@ -280,9 +242,6 @@ public class GameController implements GameTimerListener {
         boolean isBlueSauAlive = false;
         boolean isRedSauAlive = false;
 
-        System.out.println("Checking game end ...");
-        System.out.println("blue sau capture: " + isBlueSauAlive);
-        System.out.println("red sau capture: " + isRedSauAlive);
         // Iterate through the board to check if both Sau pieces exist
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {

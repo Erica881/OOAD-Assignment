@@ -32,7 +32,7 @@ public class BoardView extends JPanel {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                buttons[i][j] = new JButton("i" + i + "j" + j);
+                buttons[i][j] = new JButton();
                 buttons[i][j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE)); // Smaller size of each cell
                 gridPanel.add(buttons[i][j]);
 
@@ -88,7 +88,6 @@ public class BoardView extends JPanel {
 
                     // Update button text and store in flippedButtons
                     flippedButtons[flippedRow][flippedCol] = buttons[i][j];
-                    flippedButtons[flippedRow][flippedCol].setText("i" + flippedRow + "j" + flippedCol);
                 }
             }
         } else {
@@ -101,7 +100,6 @@ public class BoardView extends JPanel {
 
                     // Restore the button text and store in flippedButtons
                     flippedButtons[originalRow][originalCol] = buttons[i][j];
-                    flippedButtons[originalRow][originalCol].setText("i" + originalRow + "j" + originalCol);
                 }
             }
         }

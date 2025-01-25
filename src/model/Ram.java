@@ -42,7 +42,6 @@ public class Ram extends Piece {
             // Check if the new position is empty or occupied by an opponent's piece
             if (board.getPiece(newX, y) == null
                     || !board.getPiece(newX, y).getColor().equals(this.getColor())) {
-                System.out.println("currennt piece color: " + this.getColor());
                 availableMoves.add(new int[] { newX, y });
             }
         } else {

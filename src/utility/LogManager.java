@@ -60,7 +60,7 @@ public class LogManager {
             // file
             try (BufferedReader reader = new BufferedReader(new FileReader(SAVE_FILE_PATH));
                     BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write(winningPlayer + " won the game!\n");
+                writer.write(winningPlayer + " won the game! ☆*: .｡. o(≧▽≦)o .｡.:*☆\n");
                 String line;
                 while ((line = reader.readLine()) != null) {
                     writer.write(line);
