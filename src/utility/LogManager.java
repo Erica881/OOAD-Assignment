@@ -34,8 +34,7 @@ public class LogManager {
             writer.write(logMessage);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("Error writing to save file: " + e.getMessage());
-            // e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
