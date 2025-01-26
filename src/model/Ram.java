@@ -21,7 +21,7 @@ public class Ram extends Piece {
         int newX = board.isFlipped() ? x + 1 : x - 1;
 
         // Check if the new position is within the board boundaries
-        if (newX >= 0 && newX < board.getBoard().length && y < board.getBoard()[0].length && moveBack == false) {
+        if (board.isWithinBounds(newX, y)) {
             // Check if the new position is empty or occupied by an opponent's piece
             if (board.getPiece(newX, y) == null
                     || !board.getPiece(newX, y).getColor().equals(this.getColor())) {

@@ -104,7 +104,6 @@ public class MainView {
     }
 
     public void showSettingView() {
-        // controller.stopTimer();
         switchView(settingView);
     }
 

@@ -61,10 +61,6 @@ public class GameController {
         sound.soundMove();
     }
 
-    public int getTurnCounter() {
-        return turnCounter;
-    }
-
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
@@ -231,7 +227,6 @@ public class GameController {
     private void endGame(String winingPlayer) {
         // Disable further moves or reset the game
         mainView.showWinningView(winingPlayer);
-        // isGameOver = true; // Add a flag to track the game's state
     }
 
     public void setMute(boolean mute) {
