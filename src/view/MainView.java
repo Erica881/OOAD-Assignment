@@ -3,6 +3,18 @@ managing different views like the board, menu, and settings.
 
 Design Pattern: Acts as part of the MVC pattern, representing the View component.
 
+Composition:
+1. With view: BoardView, MenuView, and SettingView are all part of MainView. 
+These objects are created within MainView and managed directly by it. 
+The lifecycle of these view components is tied to MainView.
+2. Log Manager: LogManager is owned and managed by MainView. 
+
+Delegation: 
+1. Gmame Logic - mainview delegated to controller for specific actions to trigger
+2. Sound: mainview delegated to controller for updating sound status
+3. Setting logic: Actions like pausing, resuming, or resetting the game are delegated to the GameController
+
+
 Written by: Hui May*/
 
 package view;
