@@ -3,27 +3,10 @@ package model;
 import java.util.ArrayList;
 
 public class Ram extends Piece {
-    // private int direction = 1;
     private boolean moveBack = false;
-
-    public Ram(String colorTurn) {
-        super("Ram", colorTurn);
-        // this.direction = 1;
-    }
 
     public Ram(String colorTurn, int x, int y) {
         super("Ram", colorTurn, x, y);
-        // this.direction = 1;
-    }
-
-    @Override
-    public String getName() {
-        return "Ram";
-    }
-
-    @Override
-    public String getColor() {
-        return super.getColor();
     }
 
     public void movingBack(boolean backward) {

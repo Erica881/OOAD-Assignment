@@ -14,13 +14,6 @@ public abstract class Piece {
     private boolean isFlipped = false;
     private int x, y;
 
-    // "Tor", "Red", (7, b)
-    public Piece(String name, String color) {
-        this.name = name;
-        this.color = color;
-        this.image = loadImage();
-    }
-
     public Piece(String name, String color, int x, int y) {
         this.name = name;
         this.color = color;
@@ -113,6 +106,7 @@ public abstract class Piece {
         }
     }
 
+    // polymorphism -
     public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
 
 }
