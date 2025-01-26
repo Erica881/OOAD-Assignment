@@ -5,8 +5,9 @@
  for different Piece types (Xor, Tor, Biz, Sau, Ram) in a centralized and avoid unwarranted if/else/switch statements.
 2. Strategy pattern is used for the transformation logic of Tor and Xor pieces.
 
-Delegation: Delegates piece creation to the PieceFactory 
-           interface via a map (pieceFactoryMap).
+Delegation: Delegates piece creation to the PieceFactory interface via a map (pieceFactoryMap).
+Composition: Board and Piece, if the Board is destroyed or reset, the Piece objects are also destroyed.
+Single Responsibility Principle (SRP):The Board class is solely responsible for managing the pieces' positions.
 
 Written by: Kah Wei */
 

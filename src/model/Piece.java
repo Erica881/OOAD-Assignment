@@ -1,7 +1,7 @@
 /*The Piece class serves as an abstract base class for all chess pieces, 
  providing common properties and methods. (INHERITANCE)
 
-Encapsulation: Encapsulates the properties and behavior of the chess pieces.
+Encapsulation: Encapsulates the properties of the chess piece and allows controllers to access the piece.
 
 Written by: Hui May */
 
