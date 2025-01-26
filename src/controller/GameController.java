@@ -48,13 +48,13 @@ public class GameController {
 
         // Refactor: Filter moves containing enemy pieces using streams
         ArrayList<int[]> moveContainEnemy = availableMoves.stream()
-            .filter(move -> {
-                int targetX = move[0];
-                int targetY = move[1];
-                Piece targetPiece = board.getPiece(targetX, targetY);
-                return targetPiece != null && !targetPiece.getColor().equalsIgnoreCase(currentPlayer);
-            })
-            .collect(Collectors.toCollection(ArrayList::new));
+                .filter(move -> {
+                    int targetX = move[0];
+                    int targetY = move[1];
+                    Piece targetPiece = board.getPiece(targetX, targetY);
+                    return targetPiece != null && !targetPiece.getColor().equalsIgnoreCase(currentPlayer);
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
 
         // Highlight available moves and enemy-containing moves
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
@@ -77,13 +77,11 @@ public class GameController {
         mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
-        IntStream.range(0, 8).forEach(i -> 
-            IntStream.range(0, 5)
+        IntStream.range(0, 8).forEach(i -> IntStream.range(0, 5)
                 .mapToObj(j -> board.getPiece(i, j))
                 .filter(piece -> piece != null)
-                .forEach(Piece::rotateImage)
-        );
-        
+                .forEach(Piece::rotateImage));
+
         // Switch players
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
         updateBoardView();
@@ -111,6 +109,7 @@ public class GameController {
         }
     }
 
+    // Template method
     public void startGame() {
         timerController.startTimer();
         logManager.initializeSaveFile();
@@ -260,13 +259,11 @@ public class GameController {
         timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
         turnCounter = 0;
-
         if (board.isFlipped()) {
             board.flipBoard(); // Ensure the model's flip state is reset
             mainView.getBoardView().flipBoardView(); // Reset the UI to unflipped state
         }
         board.initialize(); // Reinitialize the board
-        
         mainView.getBoardView().clearHighlights(); // Clear any lingering highlights
         updateBoardView(); // Update the board view to reflect the new state
         logManager.initializeSaveFile(); // Optionally reset logs
@@ -274,9 +271,9 @@ public class GameController {
         System.out.println("Log reseted.");
     }
 
+    // Template method
     public void stopGame() {
         mainView.getFrame().setVisible(false); // Hides the current game view
-
         timerController.stopTimer();
         board.initialize();
         currentPlayer = "Blue"; // Reset the player to the initial player

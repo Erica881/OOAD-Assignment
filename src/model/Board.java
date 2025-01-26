@@ -186,6 +186,27 @@ public class Board {
 
     }
 
+    // // skip over piece move
+    // public boolean skipOver(Piece piece) {
+    // // Check if the new position is within bounds
+    // if (!isWithinBounds(piece.getX(), piece.getY())) {
+    // return false;
+    // }
+
+    // // Get the piece at the new position
+    // Piece pieceAtNewPos = getPiece(piece.getX(), piece.getY());
+
+    // // If there is no piece at the new position, or it's an opponent's piece, the
+    // // move is allowed
+    // if (pieceAtNewPos == null ||
+    // !pieceAtNewPos.getColor().equals(this.getColor())) {
+    // return true;
+    // }
+
+    // // If there's a piece of the same color, cannot move (skip over it)
+    // return false;
+    // }
+
     public boolean isPieceCapture() {
         return isPieceCapture;
     }

@@ -37,7 +37,7 @@ public class Tor extends Piece {
                 int newY = y + i * dy;
 
                 // If new position is within bounds
-                if (newX >= 0 && newX < board.getBoard().length && newY >= 0 && newY < board.getBoard()[0].length) {
+                if (board.isWithinBounds(newX, newY)) {
                     // If there's a piece, the Tor cannot skip over it
                     Piece pieceAtNewPos = board.getPiece(newX, newY);
                     if (pieceAtNewPos == null || !pieceAtNewPos.getColor().equals(this.getColor())) {
