@@ -1,1 +1,0 @@
-Blue Ram move from (7, c) to (6, c)
