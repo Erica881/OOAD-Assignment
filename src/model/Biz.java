@@ -1,6 +1,9 @@
 //The Biz class represents the "Biz" chess piece, 
 //capable of moving in an L-shape like a knight.
-//Written by: Kah Wei
+//
+//Subclassing: Inherits from Piece to define specific behavior for the "Biz" piece.
+//
+//Written by: Hui May
 package model;
 
 import java.util.ArrayList;
@@ -8,9 +11,11 @@ import java.util.ArrayList;
 public class Biz extends Piece {
 
     public Biz(String colorTurn, int x, int y) {
-        super("Biz", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
+        super("Biz", colorTurn, x, y); 
     }
 
+    //Polymorphism:
+    //Implements getAvailableMoves() to override the abstract method in Piece.
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

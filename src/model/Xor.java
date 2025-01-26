@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Xor extends Piece {
 
     public Xor(String colorTurn, int x, int y) {
-        super("Xor", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
+        super("Xor", colorTurn, x, y); 
     }
 
     @Override

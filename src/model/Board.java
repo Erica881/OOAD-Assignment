@@ -1,6 +1,11 @@
-//The Board class manages the chessboard's state, pieces, and transformations.
-//Design Pattern: Centralized state management for the game model.
-//Written by: Kah Wei
+/*The Board class manages the chessboard's state, pieces, and transformations.
+
+Design Pattern: Centralized state management for the game model.
+
+Delegation: Delegates piece creation to the PieceFactory 
+           interface via a map (pieceFactoryMap).
+
+Written by: Kah Wei */
 
 package model;
 
@@ -73,10 +78,12 @@ public class Board {
         }
     }
 
+    //Encapsulation, setter
     public boolean isFlipped() {
         return isFlipped;
     }
 
+    //Encapsulation, getter
     public void flipBoard() {
         isFlipped = !isFlipped;
     }
@@ -92,10 +99,12 @@ public class Board {
         return new int[] { x, y };
     }
 
+    //Encapsulation, getter
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
     }
 
+    //Encapsulation, setter
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece; // Set a piece at the given position
     }

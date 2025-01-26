@@ -1,3 +1,10 @@
+/*The MainView class represents the main graphical user interface for the game, 
+managing different views like the board, menu, and settings.
+
+Design Pattern: Acts as part of the MVC pattern, representing the View component.
+
+Written by: Hui May*/
+
 package view;
 
 import javax.swing.*;

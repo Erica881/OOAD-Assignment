@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Sau extends Piece {
 
     public Sau(String colorTurn, int x, int y) {
-        super("Sau", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
+        super("Sau", colorTurn, x, y); 
     }
 
     //Calculates all valid one-step moves in any direction for the Sau piece.

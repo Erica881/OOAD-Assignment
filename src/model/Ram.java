@@ -1,6 +1,9 @@
-//The Ram class represents the "Ram" chess piece, capable of moving forward 
-//or backward based on its state.
-//Written by: Hui May
+/*The Ram class represents the "Ram" chess piece, capable of moving forward 
+or backward based on its state.
+
+Subclassing: Inherits from Piece to define specific behavior for the "Ram" piece.
+
+Written by: Hui May */
 
 package model;
 
@@ -13,6 +16,7 @@ public class Ram extends Piece {
         super("Ram", colorTurn, x, y);
     }
 
+    
     public void movingBack() {
         moveBack = !moveBack;
         this.rotateImage();
@@ -20,6 +24,7 @@ public class Ram extends Piece {
 
     //Determines valid forward or backward moves for the Ram piece, 
     //considering the current state of the board
+    //Polymorphism: Overrides the abstract method in Piece
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

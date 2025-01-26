@@ -1,6 +1,7 @@
-//The Piece class serves as an abstract base class for all chess pieces, 
-//providing common properties and methods. (INHERITANCE)
-//Written by: Hui May
+/*The Piece class serves as an abstract base class for all chess pieces, 
+ providing common properties and methods. (INHERITANCE)
+
+Written by: Hui May */
 
 
 package model;
@@ -46,38 +47,47 @@ public abstract class Piece {
         }
     }
 
+    // Encapsulation, Getters
     public String getName() {
         return name;
     }
 
+    // Encapsulation, Getters
     public String getColor() {
         return color;
     }
 
+    // Encapsulation, Getters
     public String getNameNColour() {
         return name + " (" + color + ")";
     }
 
+    // Encapsulation, Getters
     public ImageIcon getImage() {
         return image;
     }
 
+    // Encapsulation, Getters
     public int getX() {
         return x;
     }
 
+    // Encapsulation, Getters
     public int getY() {
         return y;
     }
 
+    // Encapsulation, Setters
     public void setX(int newX) {
         x = newX;
     }
 
+    // Encapsulation, Setters
     public void setY(int newY) {
         y = newY;
     }
 
+    // Encapsulation, Getters
     public boolean getFlipped() {
         return isFlipped;
     }
@@ -111,6 +121,7 @@ public abstract class Piece {
         }
     }
 
+    
     public boolean skipOver(int newX, int newY, Board board) {
         // Check if the new position is within bounds
         if (!board.isWithinBounds(newX, newY)) {
