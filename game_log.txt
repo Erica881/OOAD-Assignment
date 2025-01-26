@@ -1,3 +1,0 @@
-Blue Ram move from (7, c) to (6, c)
-Red Ram move from (2, b) to (3, b)
-Blue Ram move from (7, e) to (6, e)
