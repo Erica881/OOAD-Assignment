@@ -1,8 +1,9 @@
 /*The Piece class serves as an abstract base class for all chess pieces, 
  providing common properties and methods. (INHERITANCE)
 
-Written by: Hui May */
+Encapsulation: Encapsulates the properties and behavior of the chess pieces.
 
+Written by: Hui May */
 
 package model;
 
@@ -121,7 +122,6 @@ public abstract class Piece {
         }
     }
 
-    
     public boolean skipOver(int newX, int newY, Board board) {
         // Check if the new position is within bounds
         if (!board.isWithinBounds(newX, newY)) {

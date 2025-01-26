@@ -1,6 +1,8 @@
-//The Tor class represents the "Tor" chess piece, 
-//capable of moving orthogonally across the board.
-//Written by: Kah Wei
+/*The Tor class represents the "Tor" chess piece, 
+capable of moving orthogonally across the board.
+Subclassing: Inherits from Piece to define specific behavior for the "Ram" piece.
+
+Written by: Kah Wei*/
 
 package model;
 
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 public class Tor extends Piece {
 
     public Tor(String colorTurn, int x, int y) {
-        super("Tor", colorTurn, x, y); 
+        super("Tor", colorTurn, x, y);
     }
 
     // Method in child class
@@ -18,7 +20,7 @@ public class Tor extends Piece {
         return super.skipOver(newX, newY, board);
     }
 
-    //Calculates valid orthogonal moves for the Tor piece.
+    // Calculates valid orthogonal moves for the Tor piece.
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

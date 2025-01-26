@@ -1,6 +1,9 @@
 /*The Board class manages the chessboard's state, pieces, and transformations.
 
-Design Pattern: Centralized state management for the game model.
+ Design pattern - 
+1. Factory Pattern is used, allows encapsulate the creation logic 
+ for different Piece types (Xor, Tor, Biz, Sau, Ram) in a centralized and avoid unwarranted if/else/switch statements.
+2. Strategy pattern is used for the transformation logic of Tor and Xor pieces.
 
 Delegation: Delegates piece creation to the PieceFactory 
            interface via a map (pieceFactoryMap).
@@ -18,17 +21,14 @@ interface PieceFactory {
 
 public class Board {
     private Piece[][] board;
-    // private boolean isGamePaused;
-    private static final int ROWS = 8;
-    private static final int COLS = 5;
+    private static final int rows = 8;
+    private static final int cols = 5;
     private boolean isFlipped = false;
-    boolean isBlueSauAlive = false;
-    boolean isRedSauAlive = false;
-    boolean isPieceCapture = false;
-    Piece capturedPiece = null;
+    private boolean isPieceCapture = false;
+    private Piece capturedPiece = null;
 
     public Board() {
-        this.board = new Piece[ROWS][COLS]; // 5x8 grid for the board
+        this.board = new Piece[rows][cols]; // 5x8 grid for the board
         initialize(); // Call initialize() to set up the board
     }
 
@@ -37,8 +37,8 @@ public class Board {
         // Clear the board
         isFlipped = false;
 
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 board[row][col] = null; // clear all positions
             }
         }
@@ -56,34 +56,37 @@ public class Board {
 
         // Place top row (Red) and bottom row (Blue)
         java.util.stream.IntStream.of(0, 7) // Rows 0 (Red) and 7 (Blue)
-        .forEach(row -> {
-            String color = (row == 0) ? "Red" : "Blue";
-            java.util.stream.IntStream.range(0, COLS)
-                .mapToObj(col -> new Object[] { col, pieceFactoryMap.get(pieceOrder[col]) }) // Map column to piece factory
-                .filter(entry -> entry[1] != null) // Filter out invalid piece types
-                .forEach(entry -> {
-                    int col = (int) entry[0];
-                    PieceFactory factory = (PieceFactory) entry[1];
-                    int adjustCol = (color.equals("Red")) ? COLS - 1 - col : col; // Flip Red's column order
-                    board[row][adjustCol] = factory.create(color, row, adjustCol); // Create and place the piece
+                .forEach(row -> {
+                    String color = (row == 0) ? "Red" : "Blue";
+                    java.util.stream.IntStream.range(0, cols)
+                            .mapToObj(col -> new Object[] { col, pieceFactoryMap.get(pieceOrder[col]) }) // Map column
+                                                                                                         // to piece
+                                                                                                         // factory
+                            .filter(entry -> entry[1] != null) // Filter out invalid piece types
+                            .forEach(entry -> {
+                                int col = (int) entry[0];
+                                PieceFactory factory = (PieceFactory) entry[1];
+                                int adjustCol = (color.equals("Red")) ? cols - 1 - col : col; // Flip Red's column order
+                                board[row][adjustCol] = factory.create(color, row, adjustCol); // Create and place the
+                                                                                               // piece
+                            });
                 });
-        });
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
-            for (int col = 0; col < COLS; col++) {
+            for (int col = 0; col < cols; col++) {
                 board[row][col] = pieceFactoryMap.get("Ram").create(color, row, col);
             }
         }
     }
 
-    //Encapsulation, setter
+    // Encapsulation, setter
     public boolean isFlipped() {
         return isFlipped;
     }
 
-    //Encapsulation, getter
+    // Encapsulation, getter
     public void flipBoard() {
         isFlipped = !isFlipped;
     }
@@ -91,28 +94,28 @@ public class Board {
     public int[] mapViewToBoardCoordinates(int x, int y) {
         if (isFlipped()) {
             // Translate the view coordinates to the flipped board's coordinates
-            int flippedX = ROWS - 1 - x;
-            int flippedY = COLS - 1 - y;
+            int flippedX = rows - 1 - x;
+            int flippedY = cols - 1 - y;
             return new int[] { flippedX, flippedY };
         }
         // Return the original coordinates if the board is not flipped
         return new int[] { x, y };
     }
 
-    //Encapsulation, getter
+    // Encapsulation, getter
     public Piece getPiece(int x, int y) {
         return board[x][y]; // Return the piece at the given position
     }
 
-    //Encapsulation, setter
+    // Encapsulation, setter
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece; // Set a piece at the given position
     }
 
     public void transformTor() {
         // Iterate over the board and transform each Tor piece
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 Piece piece = getPiece(row, col);
                 if (piece instanceof Tor) {
                     // Replace the Tor piece with an Xor piece of the same color
@@ -122,7 +125,7 @@ public class Board {
         }
     }
 
-    //Transforms Tor pieces into Xor and vice versa, depending on the turn counter.
+    // Transforms Tor pieces into Xor and vice versa, depending on the turn counter.
     public void transformTorXor() {
         // Create a HashMap to map piece types to their transformation logic
         Map<Class<? extends Piece>, String> transformationMap = new HashMap<>();
@@ -135,8 +138,8 @@ public class Board {
         pieceFactoryMap.put("Tor", (color, x, y) -> new Tor(color, x, y));
 
         // Iterate over the board and perform transformations
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 Piece piece = getPiece(row, col);
                 if (piece != null && transformationMap.containsKey(piece.getClass())) {
                     // Get the target piece type from the transformation map
@@ -194,11 +197,11 @@ public class Board {
     }
 
     public int getRows() {
-        return ROWS;
+        return rows;
     }
 
     public int getCols() {
-        return COLS;
+        return cols;
     }
 
 }
