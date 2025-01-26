@@ -98,12 +98,7 @@ public class Board {
         board[x][y] = piece; // Set a piece at the given position
     }
 
-    public Piece[][] getBoard() {
-        return board; // Return the 2D array representing the board
-    }
-
     public void transformTor() {
-        System.out.println("Transforming Tor pieces to Xor...");
         // Iterate over the board and transform each Tor piece
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -111,7 +106,6 @@ public class Board {
                 if (piece instanceof Tor) {
                     // Replace the Tor piece with an Xor piece of the same color
                     setPiece(row, col, new Xor(piece.getColor(), row, col));
-                    System.out.println("Transformed Tor at position (" + row + ", " + col + ") to Xor.");
                 }
             }
         }
@@ -148,13 +142,6 @@ public class Board {
         return x >= 0 && x < 8 && y >= 0 && y < 5; // Update board dimensions as needed
     }
 
-    public String formatCoordinate(int x, int y) {
-        char columnLetter = (char) ('a' + y); // Adjust
-        // column for flipped board
-        int rowNumber = x + 1; // Adjust row number for flipped board
-        return "(" + rowNumber + ", " + columnLetter + ")";
-    }
-
     public void movePiece(int toX, int toY, Piece fromPiece) {
         int fromX = fromPiece.getX();
         int fromY = fromPiece.getY();
@@ -185,27 +172,6 @@ public class Board {
         board[toX][toY] = fromPiece;
 
     }
-
-    // // skip over piece move
-    // public boolean skipOver(Piece piece) {
-    // // Check if the new position is within bounds
-    // if (!isWithinBounds(piece.getX(), piece.getY())) {
-    // return false;
-    // }
-
-    // // Get the piece at the new position
-    // Piece pieceAtNewPos = getPiece(piece.getX(), piece.getY());
-
-    // // If there is no piece at the new position, or it's an opponent's piece, the
-    // // move is allowed
-    // if (pieceAtNewPos == null ||
-    // !pieceAtNewPos.getColor().equals(this.getColor())) {
-    // return true;
-    // }
-
-    // // If there's a piece of the same color, cannot move (skip over it)
-    // return false;
-    // }
 
     public boolean isPieceCapture() {
         return isPieceCapture;

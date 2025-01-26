@@ -117,11 +117,6 @@ public class BoardView extends JPanel {
         buttons[x][y].addActionListener(listener); // Add listener to each button
     }
 
-    // Get a specific cell
-    public JButton getCell(int x, int y) {
-        return buttons[x][y]; // Return the button corresponding to the (x, y) position
-    }
-
     // Update a cell with the piece's name and color
     public void updateCell(int x, int y, Piece piece) {
         JButton cell = buttons[x][y];
