@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+//Wrote by Hui May and Kahwei
 public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
@@ -66,7 +67,7 @@ public class GameController {
         mainView.getBoardView().clearHighlights();
 
         // Trigger Tor/Xor transformation every 2 turns
-        if (turnCounter >= 2) {
+        if (turnCounter >= 4 && turnCounter % 4 == 0) {
             torTransformation();
         }
         board.flipBoard();
@@ -147,7 +148,7 @@ public class GameController {
 
     public void torTransformation() {
         // Perform transformation every 2 turns
-        if (turnCounter % 2 == 0) {
+        if (turnCounter % 4 == 0) {
             board.transformTorXor();
 
             // Update the selected piece reference if it was transformed
