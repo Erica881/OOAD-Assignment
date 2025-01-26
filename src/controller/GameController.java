@@ -83,7 +83,7 @@ public class GameController {
                 .filter(piece -> piece != null)
                 .forEach(Piece::rotateImage)
         );
-        
+
         // Switch players
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
         updateBoardView();
@@ -204,29 +204,27 @@ public class GameController {
 
     private void checkGameEnd() {
 
-        boolean isBlueSauAlive = false;
-        boolean isRedSauAlive = false;
+       boolean isBlueSauAlive = IntStream.range(0, board.getRows())
+        .anyMatch(i -> IntStream.range(0, board.getCols())
+            .mapToObj(j -> board.getPiece(i, j))
+            .filter(piece -> piece instanceof Sau)
+            .anyMatch(piece -> piece.getColor().equalsIgnoreCase("blue"))
+        );
 
-        // Iterate through the board to check if both Sau pieces exist
-        for (int i = 0; i < board.getRows(); i++) {
-            for (int j = 0; j < board.getCols(); j++) {
-                // Piece piece = board.getPiece(i, j);
-                Piece piece = board.getPiece(i, j);
-                if (piece instanceof Sau) {
-                    if (piece.getColor().equalsIgnoreCase("blue")) {
-                        isBlueSauAlive = true;
-                    } else if (piece.getColor().equalsIgnoreCase("red")) {
-                        isRedSauAlive = true;
-                    }
-                }
-            }
-        }
-        // Determine game-ending conditions
-        if (!isBlueSauAlive) {
-            endGame("Red"); // Red wins
-        } else if (!isRedSauAlive) {
-            endGame("Blue"); // Blue wins
-        }
+    // Check if any Red Sau piece is alive
+    boolean isRedSauAlive = IntStream.range(0, board.getRows())
+        .anyMatch(i -> IntStream.range(0, board.getCols())
+            .mapToObj(j -> board.getPiece(i, j))
+            .filter(piece -> piece instanceof Sau)
+            .anyMatch(piece -> piece.getColor().equalsIgnoreCase("red"))
+        );
+
+    // Determine game-ending conditions
+    if (!isBlueSauAlive) {
+        endGame("Red"); // Red wins
+    } else if (!isRedSauAlive) {
+        endGame("Blue"); // Blue wins
+    }
 
     }
 
