@@ -106,7 +106,7 @@ public abstract class Piece {
         }
     }
 
-    // polymorphism -
+    // polymorphism - only modify the getAvailableMoves method for different piece
     public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
 
 }
