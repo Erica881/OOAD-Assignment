@@ -1,3 +1,7 @@
+//The Xor class represents the "Xor" chess piece, 
+//capable of moving diagonally across the board.
+//Written by: Kah Wei
+
 package model;
 
 import java.util.ArrayList;

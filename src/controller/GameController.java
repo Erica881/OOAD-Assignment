@@ -1,3 +1,11 @@
+/*
+The GameController class manages game logic and interaction between the model and view.
+Design Pattern: Acts as part of the MVC pattern, representing the Controller component.
+
+Written by:
+ - Kah Wei
+ - Hui May
+*/
 package controller;
 
 import model.*;
@@ -11,7 +19,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//Wrote by Hui May and Kahwei
 public class GameController {
     private Board board; // The model
     private MainView mainView; // The main view
@@ -27,6 +34,7 @@ public class GameController {
     private int turnCounter = 0;
     private TimerController timerController;
 
+    //Kah Wei
     public GameController(Board board) {
         this.board = board;
 
@@ -41,6 +49,7 @@ public class GameController {
 
     }
 
+    //Kah Wei:  Handles clicks on cells, fetching moves for the selected piece and highlighting them.
     private void handleCellClick(int x, int y) {
         selectedPiece = board.getPiece(x, y);
 
@@ -62,6 +71,7 @@ public class GameController {
         sound.soundMove();
     }
 
+    //Hui May: Updates the game state, including flipping the board and switching players.
     private void updateGameState(int x, int y, String logMessage) {
         mainView.updateStatus(logMessage);
         mainView.getBoardView().clearHighlights();
@@ -87,6 +97,7 @@ public class GameController {
         logManager.logAction(logMessage);
     }
 
+    //Hui May
     public boolean isSelectedPieceValidate(Piece selectedPiece) {
         if (selectedPiece == null || (!selectedPiece.getColor().equalsIgnoreCase(currentPlayer))) {
             sound.soundNotify();
@@ -97,6 +108,7 @@ public class GameController {
         return true;
     }
 
+    //Hui May
     private void updateBoardView() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
@@ -107,7 +119,7 @@ public class GameController {
         }
     }
 
-    // Template method
+    // Kah Wei: Template method used
     public void startGame() {
         timerController.startTimer();
         logManager.initializeSaveFile();
@@ -117,6 +129,7 @@ public class GameController {
 
     }
 
+    //Hui May
     public String formatCoordinate(int x, int y) {
         char columnLetter = (char) ('a' + y); // Adjust
         // column for flipped board
@@ -124,6 +137,7 @@ public class GameController {
         return "(" + rowNumber + ", " + columnLetter + ")";
     }
 
+    //Kah Wei
     public void logMove(int boardX, int boardY) {
         for (int[] move : availableMoves) {
             if (move[0] == boardX && move[1] == boardY) {
@@ -146,6 +160,7 @@ public class GameController {
         }
     }
 
+    //Kah Wei
     public void torTransformation() {
         // Perform transformation every 2 turns
         if (turnCounter % 4 == 0) {
@@ -160,6 +175,7 @@ public class GameController {
         }
     }
 
+    //Kah Wei
     public void attachBoardListener() {
 
         // Attach listeners to the board cells
@@ -199,37 +215,41 @@ public class GameController {
 
     }
 
+    //hui may
     private void checkGameEnd() {
 
-    boolean isBlueSauAlive = IntStream.range(0, board.getRows())
-    .anyMatch(i -> IntStream.range(0, board.getCols())
-        .mapToObj(j -> board.getPiece(i, j))
-        .filter(piece -> piece instanceof Sau)
-        .anyMatch(piece -> piece.getColor().equalsIgnoreCase("blue"))
-    );
-
-    // Check if any Red Sau piece is alive
-    boolean isRedSauAlive = IntStream.range(0, board.getRows())
+        // Check if any Blue Sau piece is alive
+        boolean isBlueSauAlive = IntStream.range(0, board.getRows())
         .anyMatch(i -> IntStream.range(0, board.getCols())
             .mapToObj(j -> board.getPiece(i, j))
             .filter(piece -> piece instanceof Sau)
-            .anyMatch(piece -> piece.getColor().equalsIgnoreCase("red"))
+            .anyMatch(piece -> piece.getColor().equalsIgnoreCase("blue"))
         );
 
-    // Determine game-ending conditions
-    if (!isBlueSauAlive) {
-        endGame("Red"); // Red wins
-    } else if (!isRedSauAlive) {
-        endGame("Blue"); // Blue wins
-    }
+        // Check if any Red Sau piece is alive
+        boolean isRedSauAlive = IntStream.range(0, board.getRows())
+            .anyMatch(i -> IntStream.range(0, board.getCols())
+                .mapToObj(j -> board.getPiece(i, j))
+                .filter(piece -> piece instanceof Sau)
+                .anyMatch(piece -> piece.getColor().equalsIgnoreCase("red"))
+            );
+
+        // Determine game-ending conditions
+        if (!isBlueSauAlive) {
+            endGame("Red"); // Red wins
+        } else if (!isRedSauAlive) {
+            endGame("Blue"); // Blue wins
+        }
 
     }
 
+    //Kah Wei
     private void endGame(String winingPlayer) {
         // Disable further moves or reset the game
         mainView.showWinningView(winingPlayer);
     }
 
+    //kah wei
     public void setMute(boolean mute) {
         isMuted = mute;
         String status = isMuted ? "Sound muted." : "Sound unmuted.";
@@ -237,19 +257,23 @@ public class GameController {
         mainView.updateSoundIcon(mute);
     }
 
+    //kah wei
     public boolean getMuteStatus() {
         return isMuted;
     }
 
+    //kah wei
     public void resumeGame() {
         timerController.startTimer();
         mainView.updateStatus("Game resumed!"); // Optionally update the status label
     }
 
+    //kah wei
     public void pauseGame() {
         timerController.stopTimer();
     }
 
+    //hui may
     public void resetGame() {
         timerController.resetTimer();
         currentPlayer = "Blue"; // Reset the player to the initial player
@@ -266,7 +290,7 @@ public class GameController {
         System.out.println("Log reseted.");
     }
 
-    // Template method
+    // Kah Wei: Template method used
     public void stopGame() {
         mainView.getFrame().setVisible(false); // Hides the current game view
         timerController.stopTimer();

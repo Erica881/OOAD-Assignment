@@ -1,3 +1,6 @@
+//The Biz class represents the "Biz" chess piece, 
+//capable of moving in an L-shape like a knight.
+//Written by: Kah Wei
 package model;
 
 import java.util.ArrayList;
