@@ -8,6 +8,8 @@ import utility.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GameController {
     private Board board; // The model
@@ -43,17 +45,16 @@ public class GameController {
 
         // Get the available moves for the selected piece
         availableMoves = selectedPiece.getAvailableMoves(x, y, board);
-        ArrayList<int[]> moveContainEnemy = new ArrayList<>();
-        for (int[] move : availableMoves) {
-            int targetX = move[0];
-            int targetY = move[1];
-            Piece targetPiece = board.getPiece(targetX, targetY);
-            // Check if the move contains an enemy piece
-            if (targetPiece != null && !targetPiece.getColor().equals(currentPlayer)) {
-                moveContainEnemy.add(move);
-            }
 
-        }
+        // Refactor: Filter moves containing enemy pieces using streams
+        ArrayList<int[]> moveContainEnemy = availableMoves.stream()
+            .filter(move -> {
+                int targetX = move[0];
+                int targetY = move[1];
+                Piece targetPiece = board.getPiece(targetX, targetY);
+                return targetPiece != null && !targetPiece.getColor().equalsIgnoreCase(currentPlayer);
+            })
+            .collect(Collectors.toCollection(ArrayList::new));
 
         // Highlight available moves and enemy-containing moves
         mainView.getBoardView().highlightAvailableMoves(availableMoves, moveContainEnemy);
@@ -76,14 +77,13 @@ public class GameController {
         mainView.getBoardView().flipBoardView();
 
         // Rotate images for all pieces
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 5; j++) {
-                Piece piece = board.getPiece(i, j);
-                if (piece != null) {
-                    piece.rotateImage(); // Rotate the image of the piece
-                }
-            }
-        }
+        IntStream.range(0, 8).forEach(i -> 
+            IntStream.range(0, 5)
+                .mapToObj(j -> board.getPiece(i, j))
+                .filter(piece -> piece != null)
+                .forEach(Piece::rotateImage)
+        );
+        
         // Switch players
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
         updateBoardView();
