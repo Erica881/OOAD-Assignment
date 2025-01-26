@@ -106,6 +106,25 @@ public abstract class Piece {
         }
     }
 
+    public boolean skipOver(int newX, int newY, Board board) {
+        // Check if the new position is within bounds
+        if (!board.isWithinBounds(newX, newY)) {
+            return false;
+        }
+
+        // Get the piece at the new position
+        Piece pieceAtNewPos = board.getPiece(newX, newY);
+
+        // If there is no piece at the new position, or it's an opponent's piece, the
+        // move is allowed
+        if (pieceAtNewPos == null || !pieceAtNewPos.getColor().equals(this.getColor())) {
+            return true;
+        }
+
+        // If there's a piece of the same color, cannot move (skip over it)
+        return false;
+    }
+
     // polymorphism - only modify the getAvailableMoves method for different piece
     public abstract ArrayList<int[]> getAvailableMoves(int x, int y, Board board);
 

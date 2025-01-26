@@ -8,6 +8,12 @@ public class Tor extends Piece {
         super("Tor", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
     }
 
+    // Method in child class
+    public boolean skipOver(int newX, int newY, Board board) {
+        // Call the parent class method using 'super'
+        return super.skipOver(newX, newY, board);
+    }
+
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

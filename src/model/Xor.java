@@ -31,11 +31,16 @@ public class Xor extends Piece {
 
             // Traverse in the current diagonal direction until blocked
             while (board.isWithinBounds(newX, newY)) {
-                Piece pieceAtCell = board.getPiece(newX, newY);
+                ;
 
-                if (pieceAtCell == null || !pieceAtCell.getColor().equals(this.getColor())) {
+                if (board.isWithinBounds(newX, newY)) {
+                    Piece pieceAtCell = board.getPiece(newX, newY);
                     // Cell is empty, add to available moves
-                    availableMoves.add(new int[] { newX, newY });
+                    if (pieceAtCell == null || !pieceAtCell.getColor().equals(this.getColor())) {
+                        availableMoves.add(new int[] { newX, newY });
+                    }
+                    if (pieceAtCell != null)
+                        break; // Stop if the piece is not empty
                 } else {
                     // Cell is occupied, stop further movement in this direction
                     break;
