@@ -1,5 +1,12 @@
 package model;
 
+import java.util.HashMap;
+import java.util.Map;
+
+interface PieceFactory {
+    Piece create(String color, int x, int y);
+}
+
 public class Board {
     private Piece[][] board;
     // private boolean isGamePaused;
@@ -20,7 +27,7 @@ public class Board {
     public void initialize() {
         // Clear the board
         isFlipped = false;
-        
+
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 board[row][col] = null; // clear all positions
@@ -30,33 +37,38 @@ public class Board {
         // Piece order for the top (Red) and bottom (Blue) rows
         String[] pieceOrder = { "Xor", "Biz", "Sau", "Biz", "Tor" };
 
+        // Create a HashMap to map piece types to their creation logic
+        Map<String, PieceFactory> pieceFactoryMap = new HashMap<>();
+        pieceFactoryMap.put("Xor", (c, x, y) -> new Xor(c, x, y));
+        pieceFactoryMap.put("Biz", (c, x, y) -> new Biz(c, x, y));
+        pieceFactoryMap.put("Sau", (c, x, y) -> new Sau(c, x, y));
+        pieceFactoryMap.put("Tor", (c, x, y) -> new Tor(c, x, y));
+        pieceFactoryMap.put("Ram", (c, x, y) -> new Ram(c, x, y));
+
         // Place top row (Red) and bottom row (Blue)
-        for (int row : new int[] { 0, 7 }) { // Rows 0 and 7
+        for (int row : new int[] { 0, 7 }) { // Rows 0 (Red) and 7 (Blue)
             String color = (row == 0) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                int adjustCol = color.equals("Red") ? COLS - 1 - col : col;
-                board[row][adjustCol] = createPiece(pieceOrder[col], color, row, adjustCol);
+                String pieceType = pieceOrder[col];
+                PieceFactory factory = pieceFactoryMap.get(pieceType);
 
+                if (factory != null) {
+                    int adjustCol = (color.equals("Red")) ? COLS - 1 - col : col; // Flip Red's column order
+                    board[row][adjustCol] = factory.create(color, row, adjustCol); // Create and place the piece
+                } else {
+                    System.out.println("Invalid piece type: " + pieceType);
+                }
             }
+
         }
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
             String color = (row == 1) ? "Red" : "Blue";
             for (int col = 0; col < COLS; col++) {
-                board[row][col] = new Ram(color, row, col);
+                board[row][col] = pieceFactoryMap.get("Ram").create(color, row, col);
             }
         }
-    }
-
-    private Piece createPiece(String type, String color, int x, int y) {
-        return switch (type) {
-            case "Tor" -> new Tor(color, x, y);
-            case "Biz" -> new Biz(color, x, y);
-            case "Sau" -> new Sau(color, x, y);
-            case "Xor" -> new Xor(color, x, y);
-            default -> throw new IllegalArgumentException("Invalid piece type: " + type);
-        };
     }
 
     public boolean isFlipped() {
@@ -106,17 +118,27 @@ public class Board {
     }
 
     public void transformTorXor() {
+        // Create a HashMap to map piece types to their transformation logic
+        Map<Class<? extends Piece>, String> transformationMap = new HashMap<>();
+        transformationMap.put(Tor.class, "Xor");
+        transformationMap.put(Xor.class, "Tor");
 
-        // Iterate over the board and perform the transformations
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
+        // PieceFactory map for creating pieces
+        Map<String, PieceFactory> pieceFactoryMap = new HashMap<>();
+        pieceFactoryMap.put("Xor", (color, x, y) -> new Xor(color, x, y));
+        pieceFactoryMap.put("Tor", (color, x, y) -> new Tor(color, x, y));
+
+        // Iterate over the board and perform transformations
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
                 Piece piece = getPiece(row, col);
-                if (piece instanceof Tor) {
-                    // Transform Tor to Xor
-                    setPiece(row, col, new Xor(piece.getColor(), row, col));
-                } else if (piece instanceof Xor) {
-                    // Transform Xor to Tor
-                    setPiece(row, col, new Tor(piece.getColor(), row, col));
+                if (piece != null && transformationMap.containsKey(piece.getClass())) {
+                    // Get the target piece type from the transformation map
+                    String targetPieceType = transformationMap.get(piece.getClass());
+                    PieceFactory factory = pieceFactoryMap.get(targetPieceType);
+                    // Replace the current piece with the transformed piece
+                    setPiece(row, col, factory.create(piece.getColor(), row, col));
+
                 }
             }
         }
@@ -163,6 +185,27 @@ public class Board {
         board[toX][toY] = fromPiece;
 
     }
+
+    // // skip over piece move
+    // public boolean skipOver(Piece piece) {
+    // // Check if the new position is within bounds
+    // if (!isWithinBounds(piece.getX(), piece.getY())) {
+    // return false;
+    // }
+
+    // // Get the piece at the new position
+    // Piece pieceAtNewPos = getPiece(piece.getX(), piece.getY());
+
+    // // If there is no piece at the new position, or it's an opponent's piece, the
+    // // move is allowed
+    // if (pieceAtNewPos == null ||
+    // !pieceAtNewPos.getColor().equals(this.getColor())) {
+    // return true;
+    // }
+
+    // // If there's a piece of the same color, cannot move (skip over it)
+    // return false;
+    // }
 
     public boolean isPieceCapture() {
         return isPieceCapture;
