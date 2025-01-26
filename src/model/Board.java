@@ -69,7 +69,6 @@ public class Board {
                 board[row][col] = pieceFactoryMap.get("Ram").create(color, row, col);
             }
         }
-
     }
 
     public boolean isFlipped() {
@@ -119,17 +118,27 @@ public class Board {
     }
 
     public void transformTorXor() {
+        // Create a HashMap to map piece types to their transformation logic
+        Map<Class<? extends Piece>, String> transformationMap = new HashMap<>();
+        transformationMap.put(Tor.class, "Xor");
+        transformationMap.put(Xor.class, "Tor");
 
-        // Iterate over the board and perform the transformations
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
+        // PieceFactory map for creating pieces
+        Map<String, PieceFactory> pieceFactoryMap = new HashMap<>();
+        pieceFactoryMap.put("Xor", (color, x, y) -> new Xor(color, x, y));
+        pieceFactoryMap.put("Tor", (color, x, y) -> new Tor(color, x, y));
+
+        // Iterate over the board and perform transformations
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
                 Piece piece = getPiece(row, col);
-                if (piece instanceof Tor) {
-                    // Transform Tor to Xor
-                    setPiece(row, col, new Xor(piece.getColor(), row, col));
-                } else if (piece instanceof Xor) {
-                    // Transform Xor to Tor
-                    setPiece(row, col, new Tor(piece.getColor(), row, col));
+                if (piece != null && transformationMap.containsKey(piece.getClass())) {
+                    // Get the target piece type from the transformation map
+                    String targetPieceType = transformationMap.get(piece.getClass());
+                    PieceFactory factory = pieceFactoryMap.get(targetPieceType);
+                    // Replace the current piece with the transformed piece
+                    setPiece(row, col, factory.create(piece.getColor(), row, col));
+
                 }
             }
         }
