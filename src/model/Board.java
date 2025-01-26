@@ -46,21 +46,19 @@ public class Board {
         pieceFactoryMap.put("Ram", (c, x, y) -> new Ram(c, x, y));
 
         // Place top row (Red) and bottom row (Blue)
-        for (int row : new int[] { 0, 7 }) { // Rows 0 (Red) and 7 (Blue)
+        java.util.stream.IntStream.of(0, 7) // Rows 0 (Red) and 7 (Blue)
+        .forEach(row -> {
             String color = (row == 0) ? "Red" : "Blue";
-            for (int col = 0; col < COLS; col++) {
-                String pieceType = pieceOrder[col];
-                PieceFactory factory = pieceFactoryMap.get(pieceType);
-
-                if (factory != null) {
+            java.util.stream.IntStream.range(0, COLS)
+                .mapToObj(col -> new Object[] { col, pieceFactoryMap.get(pieceOrder[col]) }) // Map column to piece factory
+                .filter(entry -> entry[1] != null) // Filter out invalid piece types
+                .forEach(entry -> {
+                    int col = (int) entry[0];
+                    PieceFactory factory = (PieceFactory) entry[1];
                     int adjustCol = (color.equals("Red")) ? COLS - 1 - col : col; // Flip Red's column order
                     board[row][adjustCol] = factory.create(color, row, adjustCol); // Create and place the piece
-                } else {
-                    System.out.println("Invalid piece type: " + pieceType);
-                }
-            }
-
-        }
+                });
+        });
 
         // Place Ram pieces in rows 1 (Red) and 6 (Blue)
         for (int row : new int[] { 1, 6 }) { // Rows 1 and 6
