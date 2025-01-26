@@ -3,23 +3,9 @@ package model;
 import java.util.ArrayList;
 
 public class Tor extends Piece {
-    
-    public Tor(String colorTurn) {
-        super("Tor", colorTurn); // Hardcoded color "Gold" for the Tor piece
-    }
 
     public Tor(String colorTurn, int x, int y) {
         super("Tor", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
-    }
-
-    @Override
-    public String getName() {
-        return "Tor";
-    }
-
-    @Override
-    public String getColor() {
-        return super.getColor();
     }
 
     @Override
