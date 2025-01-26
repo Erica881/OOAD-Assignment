@@ -21,14 +21,11 @@ public class LogManager {
                 saveFile.createNewFile();
             System.out.println("Game saved to: " + saveFile.getAbsolutePath());
 
-            if (!saveFile.exists()) {
-                // Ensure parent directories exist
-                saveFile.getParentFile().mkdirs();
-                saveFile.createNewFile(); // Create the file if it doesn't exist
-            }
             new FileWriter(saveFile, false).close(); // Clear the file
         } catch (IOException e) {
-            System.err.println("Error creating or clearing the save file: " + e.getMessage());
+            e.printStackTrace();
+            // System.err.println("Error creating or clearing the save file: " +
+            // e.getMessage());
         }
     }
 
