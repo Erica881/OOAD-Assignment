@@ -1,0 +1,4 @@
+Blue Ram move from (7, c) to (6, c)
+Red Ram move from (2, c) to (3, c)
+Blue Biz move from (8, b) to (6, a)
+Red Biz move from (1, d) to (3, e)

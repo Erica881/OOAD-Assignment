@@ -65,6 +65,7 @@ public class MainView {
         soundIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
+                // observer design pattern
                 setMute(!controller.getMuteStatus()); // Mute or unmute when clicked
             }
         });
