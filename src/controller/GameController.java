@@ -204,12 +204,12 @@ public class GameController {
 
     private void checkGameEnd() {
 
-       boolean isBlueSauAlive = IntStream.range(0, board.getRows())
-        .anyMatch(i -> IntStream.range(0, board.getCols())
-            .mapToObj(j -> board.getPiece(i, j))
-            .filter(piece -> piece instanceof Sau)
-            .anyMatch(piece -> piece.getColor().equalsIgnoreCase("blue"))
-        );
+    boolean isBlueSauAlive = IntStream.range(0, board.getRows())
+    .anyMatch(i -> IntStream.range(0, board.getCols())
+        .mapToObj(j -> board.getPiece(i, j))
+        .filter(piece -> piece instanceof Sau)
+        .anyMatch(piece -> piece.getColor().equalsIgnoreCase("blue"))
+    );
 
     // Check if any Red Sau piece is alive
     boolean isRedSauAlive = IntStream.range(0, board.getRows())
