@@ -1,3 +1,7 @@
+//The Tor class represents the "Tor" chess piece, 
+//capable of moving orthogonally across the board.
+//Written by: Kah Wei
+
 package model;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ public class Tor extends Piece {
         return super.skipOver(newX, newY, board);
     }
 
+    //Calculates valid orthogonal moves for the Tor piece.
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

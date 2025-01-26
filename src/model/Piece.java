@@ -1,3 +1,8 @@
+//The Piece class serves as an abstract base class for all chess pieces, 
+//providing common properties and methods. (INHERITANCE)
+//Written by: Hui May
+
+
 package model;
 
 import java.awt.Image;

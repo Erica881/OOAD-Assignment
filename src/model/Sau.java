@@ -1,3 +1,6 @@
+//The Sau class represents the "Sau" chess piece, capable of moving one step in any direction.
+//Written by: Hui May
+
 package model;
 
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ public class Sau extends Piece {
         super("Sau", colorTurn, x, y); // Hardcoded color "Gold" for the Tor piece
     }
 
+    //Calculates all valid one-step moves in any direction for the Sau piece.
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();

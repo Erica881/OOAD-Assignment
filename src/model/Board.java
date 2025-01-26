@@ -1,3 +1,7 @@
+//The Board class manages the chessboard's state, pieces, and transformations.
+//Design Pattern: Centralized state management for the game model.
+//Written by: Kah Wei
+
 package model;
 
 import java.util.HashMap;
@@ -109,6 +113,7 @@ public class Board {
         }
     }
 
+    //Transforms Tor pieces into Xor and vice versa, depending on the turn counter.
     public void transformTorXor() {
         // Create a HashMap to map piece types to their transformation logic
         Map<Class<? extends Piece>, String> transformationMap = new HashMap<>();
