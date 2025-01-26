@@ -150,7 +150,6 @@ public class Board {
                 // Capture the enemy piece
                 isPieceCapture = true;
                 capturedPiece = targetPiece;
-                System.out.println("Captured " + targetPiece.getName() + " at (" + toX + ", " + toY + ")");
                 board[toX][toY] = null; // Remove the enemy piece from the board
             } else {
                 // Invalid move: cannot capture your own piece

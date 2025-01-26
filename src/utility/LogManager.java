@@ -19,6 +19,8 @@ public class LogManager {
         try {
             if (!saveFile.exists())
                 saveFile.createNewFile();
+            System.out.println("Game saved to: " + saveFile.getAbsolutePath());
+
             new FileWriter(saveFile, false).close(); // Clear the file
         } catch (IOException e) {
             e.printStackTrace();
