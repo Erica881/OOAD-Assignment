@@ -33,7 +33,7 @@ public class Xor extends Piece {
             while (board.isWithinBounds(newX, newY)) {
                 Piece pieceAtCell = board.getPiece(newX, newY);
 
-                if (pieceAtCell == null) {
+                if (pieceAtCell == null || !pieceAtCell.getColor().equals(this.getColor())) {
                     // Cell is empty, add to available moves
                     availableMoves.add(new int[] { newX, newY });
                 } else {
