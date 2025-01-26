@@ -14,35 +14,6 @@ public class Ram extends Piece {
         this.rotateImage();
     }
 
-    // @Override
-    // public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
-
-    //     ArrayList<int[]> availableMoves = new ArrayList<>();
-    //     // Generate available moves for the Ram piece
-    //     int newX = board.isFlipped() ? x + 1 : x - 1;
-
-    //     // Check if the new position is within the board boundaries
-    //     if (board.isWithinBounds(newX, y)) {
-    //         // Check if the new position is empty or occupied by an opponent's piece
-    //         if (board.getPiece(newX, y) == null
-    //                 || !board.getPiece(newX, y).getColor().equals(this.getColor())) {
-    //             // System.out.println("currennt piece color: " + this.getColor());
-    //             availableMoves.add(new int[] { newX, y });
-    //         }
-    //     } else {
-    //         movingBack();
-    //         int moveBackX = board.isFlipped() ? x - 1 : x + 1;
-
-    //         if (board.getPiece(moveBackX, y) == null
-    //                 || !board.getPiece(moveBackX, y).getColor().equals(this.getColor())) {
-    //             availableMoves.add(new int[] { moveBackX, y });
-    //         }
-
-    //     }
-
-    //     return availableMoves;
-    // }
-
     @Override
     public ArrayList<int[]> getAvailableMoves(int x, int y, Board board) {
         ArrayList<int[]> availableMoves = new ArrayList<>();
